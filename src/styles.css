@@ -1,0 +1,489 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
+
+:root {
+  --bg: #fbf7f1; /* airy ivory */
+  --card: rgba(255, 255, 255, 0.72);
+  --ink: #141212;
+  --muted: #6e6460;
+
+  --primary: #c6a274; /* warm gold */
+  --blush: #f2e0cc; /* blush cream */
+  --rose: #e9c7c3; /* optional rose */
+  --border: rgba(20, 18, 18, 0.1);
+  --shadow: 0 18px 45px rgba(20, 18, 18, 0.1);
+  --radius: 22px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: radial-gradient(
+      900px 600px at 20% 0%,
+      rgba(198, 162, 116, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 90% 20%,
+      rgba(242, 224, 204, 0.35),
+      transparent 65%
+    ),
+    var(--bg);
+  color: var(--ink);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.container {
+  width: min(1240px, calc(100% - 64px));
+  margin: 0 auto;
+}
+.main {
+  min-height: 60vh;
+}
+
+/* NAV */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+  background: rgba(251, 247, 241, 0.78);
+  border-bottom: 1px solid var(--border);
+}
+.navRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  gap: 16px;
+}
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.brandMark {
+  font-family: "Playfair Display", serif;
+  font-size: 28px;
+  letter-spacing: 0.2px;
+}
+.brandSub {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.navLink {
+  font-size: 14px;
+  color: var(--muted);
+}
+.navLink.active {
+  color: var(--ink);
+}
+.menuBtn {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 10px;
+}
+.menuBtn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--ink);
+  margin: 5px 0;
+}
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 14px;
+  transition: transform 0.15s ease, filter 0.15s ease, background 0.15s ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.98);
+}
+.btnPrimary {
+  background: linear-gradient(
+    180deg,
+    var(--primary),
+    rgba(198, 162, 116, 0.88)
+  );
+  border-color: rgba(198, 162, 116, 0.45);
+}
+.btnGhost {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* HERO */
+.hero {
+  padding: 56px 0 28px;
+}
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 28px;
+  align-items: center;
+}
+.pill {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid rgba(198, 162, 116, 0.35);
+  background: rgba(242, 224, 204, 0.55);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(40px, 4.2vw, 58px);
+  line-height: 1.02;
+  margin: 14px 0 12px;
+}
+.h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 34px;
+  margin: 0;
+}
+.accent {
+  color: rgba(198, 162, 116, 1);
+}
+.lead {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 58ch;
+}
+.row {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.heroCard {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.heroImg {
+  height: 360px;
+  background: radial-gradient(
+      500px 280px at 30% 30%,
+      rgba(198, 162, 116, 0.22),
+      transparent 60%
+    ),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(242, 224, 204, 0.85));
+}
+.heroCardCaption {
+  padding: 14px 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.chips span {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* SECTIONS */
+.section {
+  padding: 42px 0;
+}
+.sectionHead {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.muted {
+  color: var(--muted);
+}
+.tiny {
+  font-size: 12px;
+}
+
+.cards3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: 0 10px 30px rgba(20, 18, 18, 0.06);
+  padding: 22px;
+}
+.cardTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.cardTitle {
+  font-weight: 700;
+}
+.price {
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+}
+.list {
+  margin: 14px 0 18px;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.featured {
+  border-color: rgba(198, 162, 116, 0.55);
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(242, 224, 204, 0.7);
+  border: 1px solid rgba(198, 162, 116, 0.3);
+}
+
+/* CTA STRIP */
+.ctaStrip {
+  padding: 22px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(242, 224, 204, 0.35);
+}
+.ctaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.ctaTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+}
+
+/* GALLERY */
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.thumb {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 10px 28px rgba(20, 18, 18, 0.06);
+}
+.thumbImg {
+  height: 240px;
+  background: radial-gradient(
+      500px 250px at 30% 30%,
+      rgba(198, 162, 116, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(233, 199, 195, 0.55));
+}
+.thumbMeta {
+  padding: 14px 16px;
+}
+.thumbTitle {
+  font-weight: 700;
+}
+
+/* gallery filters */
+.filterRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.chipBtn {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.55);
+  padding: 10px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--muted);
+}
+.chipBtn.active {
+  color: var(--ink);
+  border-color: rgba(198, 162, 116, 0.45);
+  background: rgba(242, 224, 204, 0.7);
+}
+
+/* FAQ */
+.faq {
+  display: grid;
+  gap: 10px;
+}
+.faqItem {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+}
+.faqQ {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: transparent;
+  border: 0;
+  font-weight: 700;
+  cursor: pointer;
+}
+.faqA {
+  padding: 0 16px 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.faqIcon {
+  font-size: 18px;
+  color: rgba(198, 162, 116, 1);
+}
+
+/* CONTACT */
+.contactGrid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 14px;
+  align-items: start;
+}
+.form label {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+input,
+textarea {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 12px;
+  background: rgba(255, 255, 255, 0.75);
+  font: inherit;
+}
+textarea {
+  resize: vertical;
+}
+
+/* FOOTER */
+.footer {
+  border-top: 1px solid var(--border);
+  background: rgba(251, 247, 241, 0.82);
+  padding: 30px 0 18px;
+}
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 14px;
+}
+.footerBrand {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.footerTitle {
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.footerLinks {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+}
+.footerBottom {
+  padding-top: 16px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+  .cards3 {
+    grid-template-columns: 1fr;
+  }
+  .grid3 {
+    grid-template-columns: 1fr;
+  }
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+  .footerGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .menuBtn {
+    display: block;
+  }
+  .navLinks {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: 64px;
+    display: none;
+    flex-direction: column;
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(251, 247, 241, 0.96);
+    border: 1px solid var(--border);
+  }
+  .navLinks.open {
+    display: flex;
+  }
+}

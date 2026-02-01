@@ -1,0 +1,267 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------- BASE ---------------- */
+@layer base {
+  body {
+    @apply bg-[#FBF7F1] text-[#141212] font-sans;
+  }
+}
+
+/* ---------------- COMPONENTS ---------------- */
+@layer components {
+  /* Layout */
+  .container {
+    @apply mx-auto w-[min(1240px,calc(100%-64px))];
+  }
+
+  /* Gallery extras */
+  .galleryGrid {
+    @apply gap-6;
+  }
+  .thumbMeta {
+    @apply p-5;
+  }
+  .thumbTop {
+    @apply flex items-center justify-between gap-3 mb-1;
+  }
+  .thumbPill {
+    @apply rounded-full border border-black/10 bg-white/70 px-3 py-1
+         text-[11px] uppercase tracking-[.08em] text-[#6E6460];
+  }
+  .thumbActions {
+    @apply mt-4 flex flex-wrap gap-2;
+  }
+
+  .heroPhotoWrap {
+    @apply relative h-[360px];
+  }
+  .heroPhoto {
+    @apply h-full w-full object-cover;
+  }
+  .heroPhotoOverlay {
+    @apply absolute inset-0;
+    background: linear-gradient(
+      135deg,
+      rgba(242, 224, 204, 0.3),
+      rgba(255, 255, 255, 0.08)
+    );
+  }
+  .card,
+  .thumb,
+  .heroCard {
+    @apply transition duration-200 ease-out;
+  }
+
+  .card:hover,
+  .thumb:hover,
+  .heroCard:hover {
+    @apply -translate-y-0.5 shadow-xl;
+  }
+
+  .btn {
+    @apply transition duration-200 ease-out;
+  }
+
+  .btn:hover {
+    @apply -translate-y-0.5;
+  }
+
+  .navLink {
+    @apply transition;
+  }
+  .navLink:hover {
+    @apply text-[#141212];
+  }
+
+  /* NAVBAR */
+  .nav {
+    @apply sticky top-0 z-50 border-b border-black/10
+           bg-[#FBF7F1]/80 backdrop-blur;
+  }
+  .navRow {
+    @apply flex items-center justify-between py-3 gap-4;
+  }
+
+  .brand {
+    @apply flex flex-col leading-none;
+  }
+  .brandMark {
+    @apply font-serif text-[28px];
+  }
+  .brandSub {
+    @apply mt-1 text-[12px] tracking-[0.12em] text-[#6E6460];
+  }
+
+  .menuBtn {
+    @apply md:hidden flex flex-col gap-1.5 p-2;
+  }
+  .menuBtn span {
+    @apply block h-[2px] w-5 bg-[#141212];
+  }
+
+  .navLinks {
+    @apply hidden md:flex items-center gap-5;
+  }
+  .navLinks.open {
+    @apply absolute left-6 right-6 top-[64px]
+           flex flex-col gap-4 rounded-2xl
+           border border-black/10 bg-[#FBF7F1]
+           p-5 shadow-lg md:hidden;
+    animation: menuPop 0.18s ease-out;
+  }
+  @keyframes menuPop {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .navLink {
+    @apply text-sm text-[#6E6460];
+  }
+  .navLink.active {
+    @apply text-[#141212];
+  }
+
+  /* BUTTONS */
+  .btn {
+    @apply inline-flex items-center justify-center
+           rounded-full border border-black/10
+           px-4 py-3 text-sm font-semibold
+           transition hover:-translate-y-[1px];
+  }
+  .btnPrimary {
+    @apply bg-[#C6A274] border-[#C6A274]/50;
+  }
+  .btnGhost {
+    @apply bg-white/60;
+  }
+
+  /* HERO */
+  .hero {
+    @apply py-16;
+  }
+  .heroGrid {
+    @apply grid gap-10 items-center
+           md:grid-cols-[1.15fr_0.85fr];
+  }
+  .pill {
+    @apply inline-flex items-center gap-2
+           rounded-full border border-[#C6A274]/35
+           bg-[#F2E0CC]/60 px-3 py-2
+           text-xs uppercase tracking-[.08em];
+  }
+
+  .h1 {
+    @apply font-serif text-[clamp(40px,4.2vw,58px)]
+           leading-[1.02] mt-3 mb-3;
+  }
+  .h2 {
+    @apply font-serif text-[34px];
+  }
+  .accent {
+    @apply text-[#C6A274];
+  }
+  .lead {
+    @apply text-[#6E6460] text-base leading-7 max-w-[58ch];
+  }
+
+  .row {
+    @apply mt-5 flex flex-wrap gap-3;
+  }
+
+  .chips {
+    @apply mt-4 flex flex-wrap gap-2;
+  }
+  .chips span {
+    @apply rounded-full border border-black/10
+           bg-white/60 px-3 py-2 text-xs text-[#6E6460];
+  }
+
+  /* HERO CARD */
+  .heroCard {
+    @apply rounded-[22px] border border-black/10
+           bg-white/60 shadow-lg overflow-hidden;
+  }
+  .heroImg {
+    @apply h-[360px];
+    background: radial-gradient(
+        500px 280px at 30% 30%,
+        rgba(198, 162, 116, 0.2),
+        transparent 60%
+      ),
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.6),
+        rgba(242, 224, 204, 0.9)
+      );
+  }
+  .heroCardCaption {
+    @apply px-4 py-3 text-sm text-[#6E6460];
+  }
+
+  /* SECTIONS */
+  .section {
+    @apply py-16;
+  }
+  .sectionHead {
+    @apply mb-5;
+  }
+  .muted {
+    @apply text-[#6E6460];
+  }
+
+  /* CARDS */
+  .cards3 {
+    @apply grid gap-6 md:grid-cols-3;
+  }
+  .card {
+    @apply relative rounded-[22px]
+           border border-black/10 bg-white/65
+           p-6 shadow-md;
+  }
+  .featured {
+    @apply border-[#C6A274]/60;
+  }
+  .badge {
+    @apply absolute top-3 right-3
+           rounded-full border border-[#C6A274]/30
+           bg-[#F2E0CC]/70 px-3 py-1.5
+           text-[10px] uppercase tracking-[.08em];
+  }
+
+  .cardTop {
+    @apply flex justify-between items-baseline mb-2;
+  }
+  .cardTitle {
+    @apply font-bold;
+  }
+  .price {
+    @apply font-serif text-[28px];
+  }
+
+  .list {
+    @apply list-disc pl-5 mt-3 mb-5
+           text-[#6E6460] leading-7;
+  }
+
+  /* CTA STRIP */
+  .ctaStrip {
+    @apply border-y border-black/10
+           bg-[#F2E0CC]/35 py-10;
+  }
+  .ctaRow {
+    @apply flex flex-wrap items-center justify-between gap-4;
+  }
+  .ctaTitle {
+    @apply font-serif text-[22px];
+  }
+}
