@@ -1,3 +1,4 @@
+// components/Navbar.jsx
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
@@ -44,8 +45,9 @@ export default function Navbar() {
               {item.label}
             </NavLink>
           ))}
+
           <Link
-            className="btn btnPrimary"
+            className="btn btnPrimary navCta"
             to="/contact"
             onClick={() => setOpen(false)}
           >

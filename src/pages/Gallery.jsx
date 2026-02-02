@@ -2,22 +2,95 @@ import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import SeoLite from "../components/SeoLite.jsx";
 
+// NOTE:
+// - Only "White Garden" is available now.
+// - Everything else is "Pre-order" with lead time.
+// Adjust leadWeeks if you want (I recommend 6+ weeks to be safe).
 const data = [
-  { name: "Blush Romance", category: "Blush", note: "Wedding favorite" },
-  { name: "Ivory Classic", category: "Ivory", note: "Timeless" },
-  { name: "White Garden", category: "White", note: "Bright & airy" },
-  { name: "Neutral Modern", category: "Neutral", note: "Minimal luxe" },
-  { name: "Soft Pink Ombré", category: "Blush", note: "Photos beautifully" },
+  {
+    name: "White Garden",
+    category: "White",
+    note: "Bright & airy (available now)",
+    status: "available",
+    leadWeeks: 0,
+  },
+  {
+    name: "Ivory Classic",
+    category: "Ivory",
+    note: "Timeless (pre-order)",
+    status: "preorder",
+    leadWeeks: 6,
+  },
+  {
+    name: "Blush Romance",
+    category: "Blush",
+    note: "Wedding favorite (pre-order)",
+    status: "preorder",
+    leadWeeks: 6,
+  },
+  {
+    name: "Neutral Modern",
+    category: "Neutral",
+    note: "Minimal luxe (pre-order)",
+    status: "preorder",
+    leadWeeks: 6,
+  },
+  {
+    name: "Soft Pink Ombré",
+    category: "Blush",
+    note: "Photographs beautifully (pre-order)",
+    status: "preorder",
+    leadWeeks: 6,
+  },
   {
     name: "Custom Palette",
     category: "Custom",
-    note: "Made to match your theme",
+    note: "Made to match your theme (pre-order)",
+    status: "preorder",
+    leadWeeks: 8,
   },
 ];
 
+const categories = ["All", "Blush", "Ivory", "White", "Neutral", "Custom"];
+
+function categoryStyle(category) {
+  // simple “fake photo” backgrounds so cards don’t look empty
+  // (swap these later with real images when you have them)
+  switch (category) {
+    case "White":
+      return "bg-gradient-to-br from-white via-[#f6f3ee] to-[#efe7dd]";
+    case "Ivory":
+      return "bg-gradient-to-br from-[#fff7ea] via-[#f2e6d5] to-[#e9dcc8]";
+    case "Blush":
+      return "bg-gradient-to-br from-[#ffe9ef] via-[#f7d6de] to-[#ead0d5]";
+    case "Neutral":
+      return "bg-gradient-to-br from-[#f6f0e8] via-[#eadfce] to-[#dfd0bc]";
+    case "Custom":
+      return "bg-gradient-to-br from-[#f7efe7] via-[#eddcc9] to-[#f3e6d9]";
+    default:
+      return "bg-gradient-to-br from-white via-[#f6f3ee] to-[#efe7dd]";
+  }
+}
+
+function pillForCategory(category) {
+  switch (category) {
+    case "White":
+      return "border-black/10 bg-white/60 text-black/60";
+    case "Ivory":
+      return "border-black/10 bg-white/45 text-black/60";
+    case "Blush":
+      return "border-black/10 bg-white/45 text-black/60";
+    case "Neutral":
+      return "border-black/10 bg-white/45 text-black/60";
+    case "Custom":
+      return "border-black/10 bg-white/45 text-black/60";
+    default:
+      return "border-black/10 bg-white/45 text-black/60";
+  }
+}
+
 export default function Gallery() {
   const [filter, setFilter] = useState("All");
-  const categories = ["All", "Blush", "Ivory", "White", "Neutral", "Custom"];
 
   const items = useMemo(() => {
     if (filter === "All") return data;
@@ -25,56 +98,162 @@ export default function Gallery() {
   }, [filter]);
 
   return (
-    <div>
+    <div className="min-h-screen bg-[#fbf7f2] text-[#1b1b1b]">
       <SeoLite
-        title="Flower Wall Gallery | Bloom Flower Wall Rentals Clermont, FL"
-        description="Browse airy ivory and blush flower wall styles for weddings, showers, birthdays, and brand events. Serving Clermont, FL and surrounding areas with delivery + setup."
+        title="Flower Wall Gallery | Clermont, FL Flower Wall Rentals | Bloom"
+        description="Browse airy white, ivory, and blush flower wall styles for weddings, showers, birthdays, and brand events in Clermont, FL and surrounding areas."
       />
 
-      <section className="section">
+      <section className="py-14">
         <div className="container">
-          <div className="sectionHead">
-            <h1 className="h2">Gallery</h1>
-            <p className="muted">
+          {/* Header */}
+          <div className="max-w-2xl">
+            <h1 className="font-serif text-[44px] leading-[1.05] tracking-tight">
+              Gallery
+            </h1>
+            <p className="mt-3 text-sm leading-relaxed text-black/60">
               Choose a vibe, then request a quote for your date + city/venue.
             </p>
+
+            {/* Availability notice */}
+            <div className="mt-6 rounded-2xl border border-black/10 bg-white/55 p-4 shadow-sm">
+              <div className="text-sm font-semibold text-black/70">
+                Availability
+              </div>
+              <p className="mt-1 text-sm text-black/60 leading-relaxed">
+                <span className="font-medium text-black/75">
+                  White Garden is available now.
+                </span>{" "}
+                Other styles can be offered as a{" "}
+                <span className="font-medium text-black/75">pre-order</span>{" "}
+                with{" "}
+                <span className="font-medium text-black/75">6–8+ weeks</span>{" "}
+                notice (perfect for clients booking ahead).
+              </p>
+              <div className="mt-3 flex flex-wrap gap-3">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:opacity-90 active:opacity-85"
+                >
+                  Request a Quote
+                </Link>
+                <Link
+                  to="/pricing"
+                  className="inline-flex items-center justify-center rounded-full border border-black/15 bg-white/60 px-5 py-2.5 text-sm font-medium text-black shadow-sm transition hover:bg-white/80 active:bg-white/65"
+                >
+                  View Pricing
+                </Link>
+              </div>
+            </div>
           </div>
 
-          <div className="filterRow">
-            {categories.map((c) => (
-              <button
-                key={c}
-                className={`chipBtn ${filter === c ? "active" : ""}`}
-                onClick={() => setFilter(c)}
-              >
-                {c}
-              </button>
-            ))}
+          {/* Filters */}
+          <div className="mt-10 flex flex-wrap gap-2">
+            {categories.map((c) => {
+              const active = filter === c;
+              return (
+                <button
+                  key={c}
+                  onClick={() => setFilter(c)}
+                  className={[
+                    "rounded-full border px-4 py-2 text-sm transition shadow-sm",
+                    active
+                      ? "border-black/15 bg-black text-white"
+                      : "border-black/10 bg-white/55 text-black/65 hover:bg-white/75",
+                  ].join(" ")}
+                  type="button"
+                >
+                  {c}
+                </button>
+              );
+            })}
           </div>
 
-          <div className="grid3 galleryGrid">
-            {items.map((x) => (
-              <div key={x.name} className="thumb">
-                <div className="thumbImg" />
-                <div className="thumbMeta">
-                  <div className="thumbTop">
-                    <div className="thumbTitle">{x.name}</div>
-                    <span className="thumbPill">{x.category}</span>
+          {/* Cards */}
+          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {items.map((x) => {
+              const isAvailable = x.status === "available";
+              return (
+                <div
+                  key={x.name}
+                  className="group overflow-hidden rounded-3xl border border-black/10 bg-white/55 shadow-md transition hover:-translate-y-0.5 hover:shadow-xl"
+                >
+                  {/* “photo” area */}
+                  <div className={`relative h-44 ${categoryStyle(x.category)}`}>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-black/10 via-transparent to-white/10" />
+
+                    {/* top pills */}
+                    <div className="absolute left-4 top-4 flex items-center gap-2">
+                      <span
+                        className={[
+                          "rounded-full border px-3 py-1 text-[11px] uppercase tracking-[0.14em] backdrop-blur",
+                          pillForCategory(x.category),
+                        ].join(" ")}
+                      >
+                        {x.category}
+                      </span>
+
+                      {isAvailable ? (
+                        <span className="rounded-full border border-emerald-200/60 bg-emerald-50/70 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-emerald-700 backdrop-blur">
+                          Available now
+                        </span>
+                      ) : (
+                        <span className="rounded-full border border-black/10 bg-white/55 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60 backdrop-blur">
+                          Pre-order • {x.leadWeeks}+ weeks
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="muted">{x.note}</div>
+                  {/* content */}
+                  <div className="p-5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-base font-semibold">{x.name}</div>
+                        <div className="mt-1 text-sm text-black/60">
+                          {x.note}
+                        </div>
+                      </div>
+                    </div>
 
-                  <div className="thumbActions">
-                    <Link className="btn btnGhost" to="/contact">
-                      Request Quote
-                    </Link>
-                    <Link className="btn btnPrimary" to="/pricing">
-                      View Pricing
-                    </Link>
+                    {/* action row */}
+                    <div className="mt-5 flex flex-wrap gap-3">
+                      <Link
+                        className="inline-flex items-center justify-center rounded-full border border-black/15 bg-white/60 px-4 py-2.5 text-sm font-medium text-black shadow-sm transition hover:bg-white/80 active:bg-white/65"
+                        to="/contact"
+                      >
+                        Request Quote
+                      </Link>
+
+                      <Link
+                        className="inline-flex items-center justify-center rounded-full bg-[#caa374] px-4 py-2.5 text-sm font-semibold text-black shadow-sm transition hover:brightness-[0.98] active:brightness-[0.96]"
+                        to="/pricing"
+                      >
+                        View Pricing
+                      </Link>
+                    </div>
+
+                    {/* small fine print */}
+                    {!isAvailable && (
+                      <p className="mt-4 text-xs leading-relaxed text-black/50">
+                        Pre-order styles require advance notice and a deposit to
+                        secure inventory. We’ll confirm availability once we
+                        have your event date + venue.
+                      </p>
+                    )}
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
+          </div>
+
+          {/* Helpful bottom note */}
+          <div className="mt-10 rounded-2xl border border-black/10 bg-white/45 p-5 text-sm text-black/60">
+            <span className="font-medium text-black/70">Tip:</span> If your
+            event is under 6 weeks away, the{" "}
+            <span className="font-medium text-black/70">White Garden</span> wall
+            is the best guaranteed option. If you’re booking further out, we can
+            usually source additional styles.
           </div>
         </div>
       </section>

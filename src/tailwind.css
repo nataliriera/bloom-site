@@ -6,8 +6,21 @@
 
 /* ---------------- BASE ---------------- */
 @layer base {
+  html {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    @apply bg-[#FBF7F1] text-[#141212] font-sans;
+    @apply bg-[#fbf7f2] text-[#1b1b1b] font-sans;
+  }
+
+  /* nicer focus rings across the site */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(198, 162, 116, 0.35);
+    border-radius: 14px;
   }
 }
 
@@ -15,104 +28,59 @@
 @layer components {
   /* Layout */
   .container {
-    @apply mx-auto w-[min(1240px,calc(100%-64px))];
+    @apply mx-auto w-[min(1120px,calc(100%-40px))];
   }
 
-  /* Gallery extras */
-  .galleryGrid {
-    @apply gap-6;
-  }
-  .thumbMeta {
-    @apply p-5;
-  }
-  .thumbTop {
-    @apply flex items-center justify-between gap-3 mb-1;
-  }
-  .thumbPill {
-    @apply rounded-full border border-black/10 bg-white/70 px-3 py-1
-         text-[11px] uppercase tracking-[.08em] text-[#6E6460];
-  }
-  .thumbActions {
-    @apply mt-4 flex flex-wrap gap-2;
+  /* Global helpers */
+  .muted {
+    @apply text-black/60;
   }
 
-  .heroPhotoWrap {
-    @apply relative h-[360px];
-  }
-  .heroPhoto {
-    @apply h-full w-full object-cover;
-  }
-  .heroPhotoOverlay {
-    @apply absolute inset-0;
-    background: linear-gradient(
-      135deg,
-      rgba(242, 224, 204, 0.3),
-      rgba(255, 255, 255, 0.08)
-    );
-  }
-  .card,
-  .thumb,
-  .heroCard {
-    @apply transition duration-200 ease-out;
-  }
-
-  .card:hover,
-  .thumb:hover,
-  .heroCard:hover {
-    @apply -translate-y-0.5 shadow-xl;
-  }
-
-  .btn {
-    @apply transition duration-200 ease-out;
-  }
-
-  .btn:hover {
-    @apply -translate-y-0.5;
-  }
-
-  .navLink {
-    @apply transition;
-  }
-  .navLink:hover {
-    @apply text-[#141212];
-  }
-
-  /* NAVBAR */
+  /* ---------------- NAVBAR ---------------- */
   .nav {
-    @apply sticky top-0 z-50 border-b border-black/10
-           bg-[#FBF7F1]/80 backdrop-blur;
+    @apply sticky top-0 z-50 border-b border-black/10 bg-[#fbf7f2]/75 backdrop-blur;
   }
+
   .navRow {
-    @apply flex items-center justify-between py-3 gap-4;
+    @apply flex items-center justify-between gap-4 h-[72px];
   }
 
   .brand {
-    @apply flex flex-col leading-none;
+    @apply flex flex-col leading-none no-underline;
   }
+
   .brandMark {
-    @apply font-serif text-[28px];
+    @apply font-serif text-[28px] font-semibold tracking-[.02em];
   }
+
   .brandSub {
-    @apply mt-1 text-[12px] tracking-[0.12em] text-[#6E6460];
+    @apply mt-1 text-[11px] tracking-[0.22em] uppercase text-black/55;
   }
 
   .menuBtn {
-    @apply md:hidden flex flex-col gap-1.5 p-2;
+    @apply md:hidden flex flex-col gap-1.5 p-2 rounded-xl border border-black/10 bg-white/45 shadow-sm;
   }
+
+  .menuBtn:hover {
+    @apply bg-white/60;
+  }
+
   .menuBtn span {
-    @apply block h-[2px] w-5 bg-[#141212];
+    @apply block h-[2px] w-5 bg-[#1b1b1b];
   }
 
   .navLinks {
     @apply hidden md:flex items-center gap-5;
   }
+
   .navLinks.open {
-    @apply absolute left-6 right-6 top-[64px]
+    @apply absolute left-5 right-5 top-[72px]
            flex flex-col gap-4 rounded-2xl
-           border border-black/10 bg-[#FBF7F1]
+           border border-black/10 bg-[#fbf7f2]
            p-5 shadow-lg md:hidden;
     animation: menuPop 0.18s ease-out;
   }
+
   @keyframes menuPop {
     from {
       opacity: 0;
@@ -125,143 +93,317 @@
   }
 
   .navLink {
-    @apply text-sm text-[#6E6460];
-  }
-  .navLink.active {
-    @apply text-[#141212];
+    @apply text-sm text-black/60 px-2 py-2 rounded-xl transition;
   }
 
-  /* BUTTONS */
+  .navLink:hover {
+    @apply text-[#1b1b1b] bg-black/5;
+  }
+
+  .navLink.active {
+    @apply text-[#1b1b1b] bg-black/5;
+  }
+
+  .navCta {
+    @apply md:ml-2;
+  }
+
+  /* ---------------- BUTTONS ---------------- */
   .btn {
     @apply inline-flex items-center justify-center
            rounded-full border border-black/10
            px-4 py-3 text-sm font-semibold
-           transition hover:-translate-y-[1px];
-  }
-  .btnPrimary {
-    @apply bg-[#C6A274] border-[#C6A274]/50;
-  }
-  .btnGhost {
-    @apply bg-white/60;
+           transition duration-200 ease-out
+           hover:-translate-y-[1px] active:translate-y-0;
   }
 
-  /* HERO */
+  .btnPrimary {
+    @apply bg-[#caa374] border-[#caa374]/50 text-[#1b1b1b]
+           shadow-[0_14px_28px_-14px_rgba(0,0,0,0.25)]
+           hover:brightness-[0.98]
+           hover:shadow-[0_20px_40px_-18px_rgba(0,0,0,0.28)]
+           active:brightness-[0.96];
+  }
+
+  .btnGhost {
+    @apply bg-white/55 text-[#1b1b1b] hover:bg-white/75 active:bg-white/60;
+  }
+
+  /* optional dark CTA button (used in my Home.jsx) */
+  .btnDark {
+    @apply bg-[#1b1b1b] text-white border-transparent
+           shadow-[0_14px_28px_-14px_rgba(0,0,0,0.35)]
+           hover:opacity-90 active:opacity-85;
+  }
+
+  /* ---------------- HERO ---------------- */
   .hero {
-    @apply py-16;
+    @apply pt-14 pb-8;
   }
+
   .heroGrid {
-    @apply grid gap-10 items-center
-           md:grid-cols-[1.15fr_0.85fr];
+    @apply grid gap-10 items-start md:grid-cols-[1.15fr_0.85fr];
   }
+
   .pill {
     @apply inline-flex items-center gap-2
-           rounded-full border border-[#C6A274]/35
-           bg-[#F2E0CC]/60 px-3 py-2
-           text-xs uppercase tracking-[.08em];
+           rounded-full border border-black/10
+           bg-white/55 px-3 py-2
+           text-[11px] uppercase tracking-[.15em] text-black/55
+           shadow-sm backdrop-blur;
   }
 
   .h1 {
-    @apply font-serif text-[clamp(40px,4.2vw,58px)]
-           leading-[1.02] mt-3 mb-3;
+    @apply font-serif text-[clamp(44px,4.5vw,64px)]
+           leading-[1.02] mt-4 mb-3 tracking-[-0.02em];
   }
+
   .h2 {
     @apply font-serif text-[34px];
   }
+
   .accent {
-    @apply text-[#C6A274];
+    @apply text-[#b98955];
   }
+
   .lead {
-    @apply text-[#6E6460] text-base leading-7 max-w-[58ch];
+    @apply text-black/60 text-base leading-7 max-w-[54ch];
   }
 
   .row {
-    @apply mt-5 flex flex-wrap gap-3;
+    @apply mt-6 flex flex-wrap gap-3;
   }
 
   .chips {
-    @apply mt-4 flex flex-wrap gap-2;
+    @apply mt-7 flex flex-wrap gap-2;
   }
+
   .chips span {
     @apply rounded-full border border-black/10
-           bg-white/60 px-3 py-2 text-xs text-[#6E6460];
+           bg-white/45 px-3 py-1.5 text-xs text-black/60
+           shadow-sm transition hover:bg-white/65;
   }
 
-  /* HERO CARD */
+  /* “included” tiles (used on Home hero) */
+  .trustRow {
+    @apply mt-10 grid max-w-xl grid-cols-3 gap-3;
+  }
+
+  .trustTile {
+    @apply rounded-2xl border border-black/10 bg-white/50 p-4 shadow-sm;
+  }
+
+  .trustK {
+    @apply text-xs text-black/55;
+  }
+
+  .trustV {
+    @apply mt-1 text-sm font-medium;
+  }
+
+  /* ---------------- HERO CARD / PHOTO ---------------- */
   .heroCard {
-    @apply rounded-[22px] border border-black/10
-           bg-white/60 shadow-lg overflow-hidden;
-  }
-  .heroImg {
-    @apply h-[360px];
-    background: radial-gradient(
-        500px 280px at 30% 30%,
-        rgba(198, 162, 116, 0.2),
-        transparent 60%
-      ),
-      linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.6),
-        rgba(242, 224, 204, 0.9)
-      );
-  }
-  .heroCardCaption {
-    @apply px-4 py-3 text-sm text-[#6E6460];
+    @apply rounded-3xl border border-black/10
+           bg-white/55 shadow-[0_20px_70px_-30px_rgba(0,0,0,0.35)]
+           overflow-hidden transition duration-200 ease-out;
   }
 
-  /* SECTIONS */
+  .heroCard:hover {
+    @apply -translate-y-0.5;
+  }
+
+  .heroPhotoWrap {
+    @apply relative h-[360px];
+  }
+
+  .heroPhoto {
+    @apply h-full w-full object-cover;
+  }
+
+  .heroPhotoOverlay {
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(
+      to top right,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0),
+      rgba(255, 255, 255, 0.1)
+    );
+  }
+
+  .heroCardCaption {
+    @apply px-5 py-4 text-sm text-black/60 border-t border-black/10 bg-white/60 backdrop-blur;
+  }
+
+  /* ---------------- SECTIONS ---------------- */
   .section {
     @apply py-16;
   }
+
   .sectionHead {
     @apply mb-5;
   }
-  .muted {
-    @apply text-[#6E6460];
+
+  /* ---------------- GALLERY EXTRAS ---------------- */
+  .galleryGrid {
+    @apply gap-6;
   }
 
-  /* CARDS */
+  .thumbMeta {
+    @apply p-5;
+  }
+
+  .thumbTop {
+    @apply flex items-center justify-between gap-3 mb-1;
+  }
+
+  .thumbPill {
+    @apply rounded-full border border-black/10 bg-white/70 px-3 py-1
+           text-[11px] uppercase tracking-[.08em] text-black/55;
+  }
+
+  .thumbActions {
+    @apply mt-4 flex flex-wrap gap-2;
+  }
+
+  .thumb,
+  .card {
+    @apply transition duration-200 ease-out;
+  }
+
+  .thumb:hover,
+  .card:hover {
+    @apply -translate-y-0.5 shadow-xl;
+  }
+
+  /* ---------------- CARDS ---------------- */
   .cards3 {
     @apply grid gap-6 md:grid-cols-3;
   }
+
   .card {
-    @apply relative rounded-[22px]
-           border border-black/10 bg-white/65
+    @apply relative rounded-3xl
+           border border-black/10 bg-white/70
            p-6 shadow-md;
   }
+
   .featured {
-    @apply border-[#C6A274]/60;
+    @apply border-[#caa374]/60 bg-white;
   }
+
   .badge {
     @apply absolute top-3 right-3
-           rounded-full border border-[#C6A274]/30
-           bg-[#F2E0CC]/70 px-3 py-1.5
+           rounded-full border border-[#caa374]/30
+           bg-[#f2e0cc]/70 px-3 py-1.5
            text-[10px] uppercase tracking-[.08em];
   }
 
   .cardTop {
     @apply flex justify-between items-baseline mb-2;
   }
+
   .cardTitle {
     @apply font-bold;
   }
+
   .price {
     @apply font-serif text-[28px];
   }
 
   .list {
     @apply list-disc pl-5 mt-3 mb-5
-           text-[#6E6460] leading-7;
+           text-black/60 leading-7;
   }
 
-  /* CTA STRIP */
+  /* ---------------- CTA STRIP ---------------- */
   .ctaStrip {
     @apply border-y border-black/10
-           bg-[#F2E0CC]/35 py-10;
+           bg-[#f2e0cc]/35 py-10;
   }
+
   .ctaRow {
     @apply flex flex-wrap items-center justify-between gap-4;
   }
+
   .ctaTitle {
     @apply font-serif text-[22px];
+  }
+
+  /* ---------------- FOOTER (fix the run-on links) ---------------- */
+  /* ---------------- FOOTER (pretty + tight) ---------------- */
+  .footer {
+    @apply mt-16 border-t border-black/10 bg-[#fbf7f2];
+  }
+
+  .footerTop {
+    @apply grid gap-10 py-12;
+    /* tighter + more “designed” columns */
+    @apply md:grid-cols-[1.4fr_0.8fr_0.9fr] md:items-start;
+  }
+
+  .footerBrand {
+    @apply max-w-[52ch];
+  }
+
+  .footerTitle {
+    @apply font-serif text-[20px] tracking-tight;
+  }
+
+  .footerBlurb {
+    @apply mt-3 text-sm leading-relaxed text-black/60;
+  }
+
+  .footerCol {
+    @apply md:pl-2;
+  }
+
+  .footerHead {
+    @apply text-sm font-semibold text-black/70;
+  }
+
+  .footerLinks {
+    @apply mt-3 flex flex-col gap-2;
+  }
+
+  .footerLinks a {
+    @apply w-fit text-sm text-black/60 transition hover:text-black;
+  }
+
+  .footerLinks a:hover {
+    @apply underline decoration-black/20 underline-offset-4;
+  }
+
+  .footerContact {
+    @apply mt-3 flex flex-col gap-2;
+  }
+
+  .footerContact a {
+    @apply w-fit text-sm text-black/60 transition hover:text-black;
+  }
+
+  .footerContact a:hover {
+    @apply underline decoration-black/20 underline-offset-4;
+  }
+
+  /* bottom bar */
+  .footerBottom {
+    @apply flex flex-col gap-2 border-t border-black/10 py-6 text-xs text-black/50;
+    @apply md:flex-row md:items-center md:justify-between;
+  }
+
+  .footerLocation {
+    @apply text-black/45;
+  }
+
+  /* ---------------- RESPONSIVE ---------------- */
+  @screen md {
+    .heroPhotoWrap {
+      @apply h-[360px];
+    }
+  }
+
+  @media (max-width: 920px) {
+    .heroPhotoWrap {
+      height: 280px;
+    }
   }
 }
