@@ -32,9 +32,9 @@ export default function Footer() {
             <div className="footerHead">Contact</div>
             <div className="footerContact">
               <a href="mailto:hello@bloomwallrentals.com">
-                hello@bloomwallrentals.com
+                info@bloomflowerwallrentals.com
               </a>
-              <a href="tel:15551234567">(555) 123-4567</a>
+              <a href="tel:15551234567">(863) 335-5022</a>
               <a href="#" target="_blank" rel="noreferrer">
                 Instagram
               </a>

@@ -125,7 +125,7 @@ export default function Contact() {
                     className="block w-fit text-black/70 hover:text-black hover:underline decoration-black/20 underline-offset-4"
                     href="mailto:hello@bloomwallrentals.com"
                   >
-                    hello@bloomwallrentals.com
+                    info@bloomflowerwallrentals.com
                   </a>
                   <a
                     className="block w-fit text-black/70 hover:text-black hover:underline decoration-black/20 underline-offset-4"
@@ -391,7 +391,7 @@ export default function Contact() {
                             className="text-black/70 hover:text-black hover:underline decoration-black/20 underline-offset-4"
                             href="mailto:hello@bloomwallrentals.com"
                           >
-                            hello@bloomwallrentals.com
+                            info@bloomflowerwallrentals.com
                           </a>
                           .
                         </p>
