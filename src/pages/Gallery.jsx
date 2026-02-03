@@ -2,10 +2,12 @@ import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import SeoLite from "../components/SeoLite.jsx";
 
-// NOTE:
-// - Only "White Garden" is available now.
-// - Everything else is "Pre-order" with lead time.
-// Adjust leadWeeks if you want (I recommend 6+ weeks to be safe).
+// ✅ Add images here (create these files in /src/assets/walls/)
+// If you only have one image right now, that's totally fine.
+import whiteGardenImg from "../assets/walls/white-garden.jpg";
+// Example later:
+// import blushRomanceImg from "../assets/walls/blush-romance.jpg";
+
 const data = [
   {
     name: "White Garden",
@@ -13,6 +15,8 @@ const data = [
     note: "Bright & airy (available now)",
     status: "available",
     leadWeeks: 0,
+    image: whiteGardenImg,
+    alt: "White flower wall backdrop rental in Clermont, Florida",
   },
   {
     name: "Ivory Classic",
@@ -20,6 +24,8 @@ const data = [
     note: "Timeless (pre-order)",
     status: "preorder",
     leadWeeks: 6,
+    image: null,
+    alt: "",
   },
   {
     name: "Blush Romance",
@@ -27,6 +33,8 @@ const data = [
     note: "Wedding favorite (pre-order)",
     status: "preorder",
     leadWeeks: 6,
+    image: null,
+    alt: "",
   },
   {
     name: "Neutral Modern",
@@ -34,6 +42,8 @@ const data = [
     note: "Minimal luxe (pre-order)",
     status: "preorder",
     leadWeeks: 6,
+    image: null,
+    alt: "",
   },
   {
     name: "Soft Pink Ombré",
@@ -41,6 +51,8 @@ const data = [
     note: "Photographs beautifully (pre-order)",
     status: "preorder",
     leadWeeks: 6,
+    image: null,
+    alt: "",
   },
   {
     name: "Custom Palette",
@@ -48,14 +60,15 @@ const data = [
     note: "Made to match your theme (pre-order)",
     status: "preorder",
     leadWeeks: 8,
+    image: null,
+    alt: "",
   },
 ];
 
 const categories = ["All", "Blush", "Ivory", "White", "Neutral", "Custom"];
 
 function categoryStyle(category) {
-  // simple “fake photo” backgrounds so cards don’t look empty
-  // (swap these later with real images when you have them)
+  // soft “placeholder photo” gradients
   switch (category) {
     case "White":
       return "bg-gradient-to-br from-white via-[#f6f3ee] to-[#efe7dd]";
@@ -73,20 +86,7 @@ function categoryStyle(category) {
 }
 
 function pillForCategory(category) {
-  switch (category) {
-    case "White":
-      return "border-black/10 bg-white/60 text-black/60";
-    case "Ivory":
-      return "border-black/10 bg-white/45 text-black/60";
-    case "Blush":
-      return "border-black/10 bg-white/45 text-black/60";
-    case "Neutral":
-      return "border-black/10 bg-white/45 text-black/60";
-    case "Custom":
-      return "border-black/10 bg-white/45 text-black/60";
-    default:
-      return "border-black/10 bg-white/45 text-black/60";
-  }
+  return "border-black/10 bg-white/55 text-black/60";
 }
 
 export default function Gallery() {
@@ -115,35 +115,17 @@ export default function Gallery() {
               Choose a vibe, then request a quote for your date + city/venue.
             </p>
 
-            {/* Availability notice */}
-            <div className="mt-6 rounded-2xl border border-black/10 bg-white/55 p-4 shadow-sm">
-              <div className="text-sm font-semibold text-black/70">
-                Availability
-              </div>
-              <p className="mt-1 text-sm text-black/60 leading-relaxed">
-                <span className="font-medium text-black/75">
-                  White Garden is available now.
-                </span>{" "}
-                Other styles can be offered as a{" "}
-                <span className="font-medium text-black/75">pre-order</span>{" "}
-                with{" "}
-                <span className="font-medium text-black/75">6–8+ weeks</span>{" "}
-                notice (perfect for clients booking ahead).
-              </p>
-              <div className="mt-3 flex flex-wrap gap-3">
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:opacity-90 active:opacity-85"
-                >
-                  Request a Quote
-                </Link>
-                <Link
-                  to="/pricing"
-                  className="inline-flex items-center justify-center rounded-full border border-black/15 bg-white/60 px-5 py-2.5 text-sm font-medium text-black shadow-sm transition hover:bg-white/80 active:bg-white/65"
-                >
-                  View Pricing
-                </Link>
-              </div>
+            {/* Inventory notice */}
+            <div className="mt-4 rounded-2xl border border-black/10 bg-white/60 px-4 py-3 text-sm text-black/65">
+              <span className="font-semibold text-black/75">
+                Inventory arriving soon:
+              </span>{" "}
+              Our signature white flower wall is arriving in early March. We’re
+              now accepting bookings for events{" "}
+              <span className="font-semibold text-black/75">
+                March 15 and beyond
+              </span>
+              .
             </div>
           </div>
 
@@ -173,17 +155,46 @@ export default function Gallery() {
           <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {items.map((x) => {
               const isAvailable = x.status === "available";
+
               return (
                 <div
                   key={x.name}
                   className="group overflow-hidden rounded-3xl border border-black/10 bg-white/55 shadow-md transition hover:-translate-y-0.5 hover:shadow-xl"
                 >
-                  {/* “photo” area */}
-                  <div className={`relative h-44 ${categoryStyle(x.category)}`}>
-                    <div className="absolute inset-0 bg-gradient-to-tr from-black/10 via-transparent to-white/10" />
+                  {/* “photo” area (now supports real images) */}
+                  <div
+                    className={[
+                      "relative h-48",
+                      x.image ? "bg-black/5" : categoryStyle(x.category),
+                    ].join(" ")}
+                  >
+                    {/* If there is an image, show it */}
+                    {x.image ? (
+                      <>
+                        <img
+                          src={x.image}
+                          alt={x.alt || `${x.name} flower wall rental`}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/10" />
+                      </>
+                    ) : (
+                      <>
+                        {/* Otherwise show the nice placeholder */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-black/10 via-transparent to-white/10" />
+
+                        {/* Center hint (subtle) */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="rounded-full border border-black/10 bg-white/60 px-3 py-1.5 text-xs text-black/60 shadow-sm">
+                            Photo coming soon
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     {/* top pills */}
-                    <div className="absolute left-4 top-4 flex items-center gap-2">
+                    <div className="absolute left-4 top-4 flex flex-wrap items-center gap-2">
                       <span
                         className={[
                           "rounded-full border px-3 py-1 text-[11px] uppercase tracking-[0.14em] backdrop-blur",
@@ -195,7 +206,7 @@ export default function Gallery() {
 
                       {isAvailable ? (
                         <span className="rounded-full border border-emerald-200/60 bg-emerald-50/70 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-emerald-700 backdrop-blur">
-                          Available now
+                          Available after March 15th
                         </span>
                       ) : (
                         <span className="rounded-full border border-black/10 bg-white/55 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60 backdrop-blur">

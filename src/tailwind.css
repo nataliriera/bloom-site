@@ -10,6 +10,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -394,6 +395,17 @@
     @apply text-black/45;
   }
 
+  .footerInstagram {
+    display: inline-flex;
+    align-items: center;
+    color: #141212;
+    opacity: 0.65;
+    transition: opacity 0.2s ease;
+  }
+
+  .footerInstagram:hover {
+    opacity: 1;
+  }
   /* ---------------- RESPONSIVE ---------------- */
   @screen md {
     .heroPhotoWrap {
