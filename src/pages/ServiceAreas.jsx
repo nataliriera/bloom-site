@@ -36,7 +36,7 @@ export default function ServiceAreas() {
               </h1>
             </h1>
             <p className="muted">
-              Bloom Flower Wall Rentals provides{" "}
+              Bloom Flower Wall Rentals provides
               <strong>flower wall rentals in Clermont, FL</strong> and
               surrounding areas, including Minneola, Groveland, Winter Garden,
               and select Orlando venues, with delivery, professional setup, and
