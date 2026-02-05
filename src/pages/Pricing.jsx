@@ -4,34 +4,75 @@ import SeoLite from "../components/SeoLite.jsx";
 
 const extras = [
   {
+    title: "Custom signage",
+    note: "Names, phrases, or a welcome message. Installed on the wall.",
+    pill: "MOST POPULAR",
+    price: "$75–$125",
+  },
+  {
+    title: "Balloon garland",
+    note: "A big visual upgrade for birthdays + showers. Color-matched options.",
+    pill: "ADD-ON",
+    price: "$150–$250",
+  },
+  {
+    title: "Prop table + styling",
+    note: "Simple accent table for desserts, gifts, or a styled photo moment.",
+    pill: "ADD-ON",
+    price: "$75–$125",
+  },
+  {
+    title: "Extended rental time",
+    note: "Need a later breakdown time? Add extra hours as needed.",
+    pill: "ADD-ON",
+    price: "$75 / hour",
+  },
+  {
     title: "Neon sign",
-    note: "Custom name / phrase. Quote depends on size + design.",
+    note: "Custom name / phrase. Great for receptions and brand moments.",
     pill: "ADD-ON",
+    price: "Quoted",
   },
   {
-    title: "Wood welcome sign",
-    note: "A warm, timeless look. We can match your theme.",
-    pill: "ADD-ON",
-  },
-  {
-    title: "Custom wall color / vibe",
-    note: "If your event is 6–8+ weeks out, we can source a different style.",
+    title: "Custom wall style (pre-order)",
+    note: "If your event is 6–8+ weeks out, we can often source another style.",
     pill: "PRE-ORDER",
-  },
-  {
-    title: "Balloon garland (color matched)",
-    note: "Great for birthdays + showers. Quote depends on size.",
-    pill: "ADD-ON",
-  },
-  {
-    title: "Acrylic sign",
-    note: "Clean modern look. Names, dates, or welcome message.",
-    pill: "ADD-ON",
+    price: "Quoted",
   },
   {
     title: "Have an idea?",
     note: "Tell me what you’re imagining — I’ll help you make it happen.",
     pill: "CUSTOM",
+    price: "Quoted",
+  },
+];
+
+const bundles = [
+  {
+    title: "Signature Moment",
+    price: "$475–$525",
+    note: "Clean + elevated. Perfect for intimate events.",
+    items: ["$400 event rate", "Custom signage (small/medium)"],
+  },
+  {
+    title: "Celebration Upgrade",
+    price: "$550–$650",
+    note: "Most requested look for showers + birthdays.",
+    items: [
+      "$400 event rate",
+      "Balloon garland (partial)",
+      "Custom signage (small)",
+    ],
+  },
+  {
+    title: "Full Photo Moment",
+    price: "$625–$775",
+    note: "A complete backdrop with styling for guest photos.",
+    items: [
+      "$400 event rate",
+      "Balloon garland (full)",
+      "Prop table + styling",
+    ],
   },
 ];
 
@@ -51,8 +92,9 @@ export default function Pricing() {
               Pricing
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-black/60">
-              Simple, transparent pricing. Serving Clermont, FL and surrounding
-              areas with delivery, setup, and breakdown included.
+              Simple, transparent pricing for flower wall rentals in{" "}
+              <span className="font-medium text-black/70">Clermont, FL</span>{" "}
+              and surrounding areas — delivery, setup, and breakdown included.
             </p>
           </div>
 
@@ -105,7 +147,7 @@ export default function Pricing() {
                     <span className="font-medium text-black/70">
                       White Garden
                     </span>{" "}
-                    wall (available now)
+                    wall
                   </li>
                   <li>
                     • Perfect for weddings, showers, birthdays, and brand events
@@ -132,11 +174,11 @@ export default function Pricing() {
               <div className="border-t border-black/10 bg-white/50 px-6 py-4 text-xs text-black/50 sm:px-8">
                 Tip: For{" "}
                 <span className="font-medium text-black/60">
-                  custom wall styles
+                  pre-order walls
                 </span>
                 , book{" "}
                 <span className="font-medium text-black/60">6–8+ weeks</span>{" "}
-                ahead so I can source the look you want.
+                ahead so we can source the style you want.
               </div>
             </div>
 
@@ -146,23 +188,81 @@ export default function Pricing() {
                 What affects the final quote?
               </div>
               <ul className="mt-3 space-y-2 text-sm text-black/60 leading-relaxed">
-                <li>• Distance / travel outside the standard area</li>
+                <li>• Travel outside the standard delivery zone</li>
                 <li>
                   • Venue rules (stairs, tight load-in, required time windows)
                 </li>
-                <li>• Add-ons (signs, balloons, custom sourcing)</li>
+                <li>• Add-ons (signage, balloons, styling)</li>
                 <li>• Multi-day rentals or extended hours</li>
               </ul>
 
               <div className="mt-6 rounded-2xl border border-black/10 bg-white/55 p-4">
                 <div className="text-sm font-semibold text-black/70">
-                  Have a theme in mind?
+                  The fastest way to get a quote
                 </div>
                 <p className="mt-1 text-sm text-black/60 leading-relaxed">
-                  Send your Pinterest inspo + event date and I’ll recommend what
-                  looks best (and what’s realistic for your timeline).
+                  Send your event date, venue/city, and any inspo (Pinterest is
+                  perfect). I’ll confirm availability and recommend a setup that
+                  photographs beautifully.
                 </p>
               </div>
+
+              <div className="mt-5 text-xs text-black/50">
+                Add-ons are optional. We’ll always confirm pricing before you
+                book.
+              </div>
+            </div>
+          </div>
+
+          {/* Bundles */}
+          <div className="mt-14">
+            <div className="max-w-2xl">
+              <h2 className="font-serif text-3xl tracking-tight">
+                Popular bundles
+              </h2>
+              <p className="mt-2 text-sm text-black/60 leading-relaxed">
+                Want a quick, done-for-you look? These are common combinations
+                clients choose.
+              </p>
+            </div>
+
+            <div className="mt-6 grid gap-6 md:grid-cols-3">
+              {bundles.map((b) => (
+                <div
+                  key={b.title}
+                  className="rounded-3xl border border-black/10 bg-white/55 p-6 shadow-md"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-base font-semibold">{b.title}</div>
+                      <div className="mt-1 text-sm text-black/60">{b.note}</div>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <div className="font-serif text-2xl leading-none">
+                        {b.price}
+                      </div>
+                      <div className="mt-1 text-[11px] uppercase tracking-[0.14em] text-black/45">
+                        estimated
+                      </div>
+                    </div>
+                  </div>
+
+                  <ul className="mt-4 space-y-2 text-sm text-black/60">
+                    {b.items.map((it) => (
+                      <li key={it}>• {it}</li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-5">
+                    <Link
+                      to="/contact"
+                      className="inline-flex items-center justify-center rounded-full border border-black/15 bg-white/60 px-4 py-2.5 text-sm font-medium text-black shadow-sm transition hover:bg-white/80 active:bg-white/65"
+                    >
+                      Ask for this bundle
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -170,10 +270,12 @@ export default function Pricing() {
           <div className="mt-14">
             <div className="max-w-2xl">
               <h2 className="font-serif text-3xl tracking-tight">
-                Popular add-ons
+                Optional add-ons
               </h2>
               <p className="mt-2 text-sm text-black/60 leading-relaxed">
-                Make it feel custom without making it complicated.
+                Enhance your flower wall with custom details. Add-ons are
+                optional and confirmed based on your event timeline and setup
+                needs.
               </p>
             </div>
 
@@ -185,9 +287,12 @@ export default function Pricing() {
                 >
                   <div className="relative h-28 bg-gradient-to-br from-white via-[#f6f3ee] to-[#efe7dd]">
                     <div className="absolute inset-0 bg-gradient-to-tr from-black/10 via-transparent to-white/10" />
-                    <div className="absolute left-4 top-4">
+                    <div className="absolute left-4 top-4 flex items-center gap-2">
                       <span className="rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60 backdrop-blur">
                         {x.pill}
+                      </span>
+                      <span className="rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60 backdrop-blur">
+                        {x.price}
                       </span>
                     </div>
                   </div>
@@ -210,6 +315,14 @@ export default function Pricing() {
                 </div>
               ))}
             </div>
+
+            {/* Small fine print */}
+            <div className="mt-8 rounded-2xl border border-black/10 bg-white/45 p-5 text-sm text-black/60">
+              <span className="font-medium text-black/70">Notes:</span> Travel
+              fees (if any) depend on distance, venue access, and timing.
+              Pre-order styles require advance notice and a deposit to secure
+              inventory.
+            </div>
           </div>
 
           {/* CTA strip */}
@@ -222,7 +335,7 @@ export default function Pricing() {
                   </div>
                   <div className="mt-1 text-sm text-black/60 leading-relaxed">
                     Send your theme + venue and I’ll recommend options (and
-                    what’s possible for your timeline).
+                    what’s realistic for your timeline).
                   </div>
                 </div>
 
@@ -230,10 +343,16 @@ export default function Pricing() {
                   to="/contact"
                   className="inline-flex items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-medium text-white shadow-sm transition hover:opacity-90 active:opacity-85"
                 >
-                  Contact Me
+                  Request a Quote
                 </Link>
               </div>
             </div>
+          </div>
+
+          {/* Tiny CTA (no button vibe) */}
+          <div className="mt-8 text-center text-sm text-black/60">
+            <span className="font-medium text-black/70">Book your date:</span>{" "}
+            send your event date + venue and we’ll confirm availability.
           </div>
         </div>
       </section>
