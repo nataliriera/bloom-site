@@ -288,7 +288,7 @@ export default function Home() {
               </div>
               <div className="mt-4 flex items-end justify-between gap-6">
                 <div>
-                  <div className="font-serif text-4xl leading-none">$400</div>
+                  <div className="font-serif text-4xl leading-none">$350</div>
                   <div className="mt-1 text-xs text-black/50">per event</div>
                 </div>
                 <div className="text-sm text-black/60">
