@@ -50,26 +50,26 @@ const extras = [
 const bundles = [
   {
     title: "Signature Moment",
-    price: "$475–$525",
-    note: "Clean + elevated. Perfect for intimate events.",
-    items: ["$400 event rate", "Custom signage (small/medium)"],
+    price: "$425–$475",
+    note: "Clean, elevated, and effortless.",
+    items: ["$350 event rate", "Custom signage (small/medium)"],
   },
   {
     title: "Celebration Upgrade",
-    price: "$550–$650",
+    price: "$525–$600",
     note: "Most requested look for showers + birthdays.",
     items: [
-      "$400 event rate",
+      "$350 event rate",
       "Balloon garland (partial)",
       "Custom signage (small)",
     ],
   },
   {
     title: "Full Photo Moment",
-    price: "$625–$775",
-    note: "A complete backdrop with styling for guest photos.",
+    price: "$600–$700",
+    note: "A complete backdrop designed for guest photos.",
     items: [
-      "$400 event rate",
+      "$350 event rate",
       "Balloon garland (full)",
       "Prop table + styling",
     ],
@@ -81,7 +81,7 @@ export default function Pricing() {
     <div className="min-h-screen bg-[#fbf7f2] text-[#1b1b1b]">
       <SeoLite
         title="Flower Wall Rental Pricing in Clermont, FL | Bloom"
-        description="Simple, transparent flower wall rental pricing in Clermont, FL. $400 event rate with delivery, professional setup, and breakdown included."
+        description="Simple, transparent flower wall rental pricing in Clermont, FL. $350 introductory event rate with delivery, professional setup, and breakdown included."
       />
 
       <section className="py-14">
@@ -113,11 +113,17 @@ export default function Pricing() {
                     <p className="mt-2 text-sm text-black/60 leading-relaxed">
                       One clean, easy price for your event — no confusing tiers.
                     </p>
+
+                    {/* ✅ Founding-style framing (quiet, premium) */}
+                    <p className="mt-2 text-sm text-black/55 leading-relaxed">
+                      Introductory event rate for a limited number of early
+                      bookings in Clermont, FL.
+                    </p>
                   </div>
 
                   <div className="text-right">
                     <div className="font-serif text-[44px] leading-none">
-                      $400
+                      $350
                     </div>
                     <div className="mt-1 text-xs text-black/50">
                       per event (standard setup)
@@ -150,9 +156,9 @@ export default function Pricing() {
                     wall
                   </li>
                   <li>
-                    • Perfect for weddings, showers, birthdays, and brand events
+                    • Ideal for weddings, showers, birthdays, and brand events
                   </li>
-                  <li>• Venue coordination for load-in/load-out if needed</li>
+                  <li>• Venue coordination for smooth load-in and load-out</li>
                 </ul>
 
                 <div className="mt-7 flex flex-wrap gap-3">
@@ -171,8 +177,10 @@ export default function Pricing() {
                 </div>
               </div>
 
+              {/* ✅ Keep your existing card styling — only copy updated */}
               <div className="border-t border-black/10 bg-white/50 px-6 py-4 text-xs text-black/50 sm:px-8">
-                Tip: For{" "}
+                This introductory rate reflects early availability while we
+                build our local event portfolio in Clermont, FL. For{" "}
                 <span className="font-medium text-black/60">
                   pre-order walls
                 </span>
@@ -201,31 +209,27 @@ export default function Pricing() {
                   The fastest way to get a quote
                 </div>
                 <p className="mt-1 text-sm text-black/60 leading-relaxed">
-                  Send your event date, venue/city, and any inspo (Pinterest is
-                  perfect). I’ll confirm availability and recommend a setup that
-                  photographs beautifully.
+                  Send your event date, venue/city, and any inspiration. I’ll
+                  confirm availability and recommend a setup that photographs
+                  beautifully.
                 </p>
-              </div>
-
-              <div className="mt-5 text-xs text-black/50">
-                Add-ons are optional. We’ll always confirm pricing before you
-                book.
               </div>
             </div>
           </div>
 
-          {/* Bundles */}
+          {/* Popular bundles */}
           <div className="mt-14">
             <div className="max-w-2xl">
               <h2 className="font-serif text-3xl tracking-tight">
                 Popular bundles
               </h2>
               <p className="mt-2 text-sm text-black/60 leading-relaxed">
-                Want a quick, done-for-you look? These are common combinations
-                clients choose.
+                These are common combinations clients choose for an effortless,
+                styled look.
               </p>
             </div>
 
+            {/* ✅ Uses same card style system as your page (rounded-3xl, border, bg-white/55, shadow-md) */}
             <div className="mt-6 grid gap-6 md:grid-cols-3">
               {bundles.map((b) => (
                 <div
@@ -274,11 +278,11 @@ export default function Pricing() {
               </h2>
               <p className="mt-2 text-sm text-black/60 leading-relaxed">
                 Enhance your flower wall with custom details. Add-ons are
-                optional and confirmed based on your event timeline and setup
-                needs.
+                optional and confirmed before booking.
               </p>
             </div>
 
+            {/* ✅ Keeps your existing card css: image header strip + pill + button */}
             <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {extras.map((x) => (
                 <div
@@ -316,7 +320,6 @@ export default function Pricing() {
               ))}
             </div>
 
-            {/* Small fine print */}
             <div className="mt-8 rounded-2xl border border-black/10 bg-white/45 p-5 text-sm text-black/60">
               <span className="font-medium text-black/70">Notes:</span> Travel
               fees (if any) depend on distance, venue access, and timing.
@@ -349,7 +352,7 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* Tiny CTA (no button vibe) */}
+          {/* Tiny CTA */}
           <div className="mt-8 text-center text-sm text-black/60">
             <span className="font-medium text-black/70">Book your date:</span>{" "}
             send your event date + venue and we’ll confirm availability.
