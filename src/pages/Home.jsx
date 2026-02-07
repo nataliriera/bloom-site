@@ -57,7 +57,7 @@ export default function Home() {
               <h1 className="mt-6 font-serif text-[44px] leading-[1.02] tracking-tight sm:text-[56px] lg:text-[64px]">
                 Clermont{" "}
                 <span className="text-[#b98955]">flower wall rentals</span> for
-                airy, luxurious event photos.
+                corporate and private events.
               </h1>
 
               {/* ✅ Hero copy updated (supports SEO + reads premium) */}
