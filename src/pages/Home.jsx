@@ -28,10 +28,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#fbf7f2] text-[#1b1b1b]">
-      {/* ✅ SEO unchanged */}
+      {/* ✅ SEO updated for “Clermont flower wall rentals” */}
       <SeoLite
-        title="Flower Wall Rentals in Clermont, FL | Bloom Flower Wall Rentals"
-        description="Airy, luxurious flower wall rentals for weddings and events in Clermont, FL and surrounding areas. Delivery, setup, and breakdown included. Request a quote."
+        title="Clermont Flower Wall Rentals | Bloom Flower Wall Rentals"
+        description="Luxury flower wall rentals in Clermont, FL for weddings, showers, and events. Delivery, professional setup, and breakdown included."
       />
       <LocalBusinessSchema />
 
@@ -53,16 +53,19 @@ export default function Home() {
                 Clermont, FL • Flower Wall Rentals
               </div>
 
+              {/* ✅ H1 updated */}
               <h1 className="mt-6 font-serif text-[44px] leading-[1.02] tracking-tight sm:text-[56px] lg:text-[64px]">
-                Airy, luxurious{" "}
-                <span className="text-[#b98955]">flower wall rentals</span> in
-                Clermont, FL for unforgettable photos.
+                Clermont{" "}
+                <span className="text-[#b98955]">flower wall rentals</span> for
+                airy, luxurious event photos.
               </h1>
 
+              {/* ✅ Hero copy updated (supports SEO + reads premium) */}
               <p className="mt-6 max-w-prose text-[15px] leading-relaxed text-black/65">
-                Bloom Flower Wall Rentals delivers, installs, and styles premium
-                floral backdrops for weddings, showers, birthdays, and brand
-                events—serving Clermont and surrounding areas.
+                Bloom Flower Wall Rentals provides premium flower wall rentals
+                in Clermont, FL, designed for weddings, showers, birthdays, and
+                brand events. We handle delivery, professional setup, and
+                breakdown throughout Clermont and surrounding areas.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
