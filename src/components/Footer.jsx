@@ -6,18 +6,17 @@ import logo from "../assets/bloom-logo.png";
 export default function Footer() {
   return (
     <footer className="bg-[#fbf7f2] border-t border-black/10">
-      {/* Soft gold gradient line */}
       <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#caa374]/55 to-transparent" />
 
       <div className="mx-auto max-w-7xl px-5 py-12 sm:py-14">
-        {/* Top row */}
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
-          {/* Brand */}
           <div className="max-w-md">
             <img
               src={logo}
               alt="Bloom Flower Wall Rentals"
               className="h-12 sm:h-14 w-auto"
+              loading="lazy"
+              decoding="async"
             />
 
             <p className="mt-4 text-sm leading-relaxed text-black/60">
@@ -25,11 +24,10 @@ export default function Footer() {
               Clermont, Florida and surrounding areas.
             </p>
 
-            {/* Tiny CTA (no button) */}
             <div className="mt-5">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 text-sm font-medium text-black/70 hover:text-black transition"
+                className="group inline-flex items-center gap-2 text-sm font-medium text-black/70 hover:text-black transition"
               >
                 Book your date
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-black/10 bg-white/60 text-black/60 transition group-hover:bg-white">
@@ -42,16 +40,14 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
           <div className="flex flex-col gap-10 sm:flex-row sm:gap-16">
-            {/* Pages */}
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-black/70">
                 Pages
               </div>
               <nav className="mt-4 flex flex-col gap-2 text-sm text-black/60">
                 <Link to="/gallery" className="hover:text-black transition">
-                  Gallery
+                  Styles
                 </Link>
                 <Link to="/pricing" className="hover:text-black transition">
                   Pricing
@@ -71,7 +67,6 @@ export default function Footer() {
               </nav>
             </div>
 
-            {/* Contact */}
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-black/70">
                 Contact
@@ -90,7 +85,6 @@ export default function Footer() {
                   (863) 335-5022
                 </a>
 
-                {/* Instagram */}
                 <div className="mt-3">
                   <a
                     href="https://www.instagram.com/bloomflowerwallrentals/"
@@ -137,7 +131,17 @@ export default function Footer() {
             © {new Date().getFullYear()} Bloom Flower Wall Rentals. All rights
             reserved.
           </p>
-          <p>Clermont, FL</p>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <span>Clermont, FL</span>
+            <span className="text-black/25">•</span>
+            <Link to="/terms" className="hover:text-black transition">
+              Terms
+            </Link>
+            <Link to="/privacy" className="hover:text-black transition">
+              Privacy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

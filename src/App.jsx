@@ -10,6 +10,9 @@ import Faq from "./pages/Faq.jsx";
 import Contact from "./pages/Contact.jsx";
 import ServiceAreas from "./pages/ServiceAreas.jsx";
 
+import Terms from "./pages/Terms.jsx";
+import Privacy from "./pages/Privacy.jsx";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -23,6 +26,10 @@ export default function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/service-areas" element={<ServiceAreas />} />
+
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import SeoLite from "../components/SeoLite.jsx";
 
 export default function Contact() {
-  // ✅ Replace with your real Formspree endpoint
   const FORM_ENDPOINT = "https://formspree.io/f/xkozjrka";
+
+  const PRIMARY =
+    "inline-flex items-center justify-center rounded-full bg-[#caa374] px-6 py-3 text-sm font-semibold text-black shadow-sm transition hover:brightness-[0.98] active:brightness-[0.96]";
+  const SECONDARY =
+    "inline-flex items-center justify-center rounded-full border border-black/15 bg-white/60 px-5 py-2.5 text-sm font-medium text-black shadow-sm transition hover:bg-white/80 active:bg-white/65";
 
   const initial = useMemo(
     () => ({
@@ -14,7 +18,7 @@ export default function Contact() {
       eventType: "",
       eventDate: "",
       location: "",
-      packageInterest: "",
+      setupType: "",
       addOns: "",
       message: "",
     }),
@@ -22,7 +26,7 @@ export default function Contact() {
   );
 
   const [form, setForm] = useState(initial);
-  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [status, setStatus] = useState("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
   function updateField(e) {
@@ -44,6 +48,9 @@ export default function Contact() {
         },
         body: JSON.stringify({
           ...form,
+          rate: "$350 Event Rate (White Garden)",
+          availability_note:
+            "White 8×8 wall arrives late February — booking March dates and beyond.",
           _subject: "New quote request — Bloom Flower Wall Rentals",
           source: "Website form",
         }),
@@ -54,9 +61,7 @@ export default function Contact() {
         try {
           const data = await res.json();
           if (data?.errors?.[0]?.message) msg = data.errors[0].message;
-        } catch {
-          // ignore parse issues
-        }
+        } catch {}
         throw new Error(msg);
       }
 
@@ -77,7 +82,6 @@ export default function Contact() {
 
       <section className="py-14">
         <div className="container">
-          {/* Header */}
           <div className="max-w-2xl">
             <h1 className="font-serif text-[44px] leading-[1.05] tracking-tight">
               Request a Quote
@@ -87,25 +91,23 @@ export default function Contact() {
               setups for Clermont, FL and nearby areas.
             </p>
 
+            <div className="mt-5 rounded-2xl border border-black/10 bg-white/55 px-4 py-3 text-sm text-black/65">
+              <span className="font-semibold text-black/75">
+                Now booking March dates and beyond.
+              </span>
+            </div>
+
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                to="/pricing"
-                className="inline-flex items-center justify-center rounded-full border border-black/15 bg-white/60 px-5 py-2.5 text-sm font-medium text-black shadow-sm transition hover:bg-white/80 active:bg-white/65"
-              >
+              <Link to="/pricing" className={SECONDARY}>
                 See Pricing
               </Link>
-              <Link
-                to="/gallery"
-                className="inline-flex items-center justify-center rounded-full border border-black/15 bg-white/60 px-5 py-2.5 text-sm font-medium text-black shadow-sm transition hover:bg-white/80 active:bg-white/65"
-              >
-                View Gallery
+              <Link to="/faq" className={SECONDARY}>
+                Read FAQ
               </Link>
             </div>
           </div>
 
-          {/* Layout */}
           <div className="mt-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-            {/* LEFT: Info */}
             <div className="overflow-hidden rounded-3xl border border-black/10 bg-white/55 shadow-md">
               <div className="p-6 sm:p-8">
                 <div className="font-serif text-2xl tracking-tight">
@@ -123,7 +125,7 @@ export default function Contact() {
                 <div className="mt-6 space-y-3 text-sm">
                   <a
                     className="block w-fit text-black/70 hover:text-black hover:underline decoration-black/20 underline-offset-4"
-                    href="mailto:hello@bloomwallrentals.com"
+                    href="mailto:info@bloomflowerwallrentals.com"
                   >
                     info@bloomflowerwallrentals.com
                   </a>
@@ -143,12 +145,11 @@ export default function Contact() {
                   </a>
                 </div>
 
-                {/* Quick bullets */}
                 <div className="mt-7 grid gap-3 sm:grid-cols-3">
                   {[
                     { k: "Reply time", v: "Within 24 hours" },
                     { k: "Deposit", v: "50% to reserve" },
-                    { k: "Lead time", v: "6–8+ wks custom" },
+                    { k: "Event rate", v: "$350" },
                   ].map((x) => (
                     <div
                       key={x.k}
@@ -160,7 +161,6 @@ export default function Contact() {
                   ))}
                 </div>
 
-                {/* Deposit policy */}
                 <div className="mt-6 rounded-3xl border border-black/10 bg-white/55 p-5">
                   <div className="text-sm font-semibold text-black/70">
                     Deposit policy
@@ -168,10 +168,22 @@ export default function Contact() {
                   <p className="mt-2 text-sm text-black/60 leading-relaxed mb-0">
                     A{" "}
                     <span className="font-semibold text-black/70">
-                      50% non-refundable deposit
+                      50% deposit
                     </span>{" "}
-                    is required to reserve your date. Remaining balance is due
-                    before event setup.
+                    reserves your date and is applied to your total. Remaining
+                    balance is due before event setup. For pre-order/custom
+                    styles, deposits may be higher and can be non-refundable if
+                    inventory is purchased specifically for your event.
+                  </p>
+                </div>
+
+                <div className="mt-4 rounded-3xl border border-black/10 bg-white/55 p-5">
+                  <div className="text-sm font-semibold text-black/70">
+                    Add-ons
+                  </div>
+                  <p className="mt-2 text-sm text-black/60 leading-relaxed mb-0">
+                    Neon signs and custom signage are optional add-ons and are
+                    only included if listed on your quote.
                   </p>
                 </div>
 
@@ -188,7 +200,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* RIGHT: Form */}
             <div className="overflow-hidden rounded-3xl border border-black/10 bg-white/55 shadow-md">
               <div className="border-b border-black/10 bg-white/45 px-6 py-5">
                 <div className="text-sm font-semibold text-black/70">
@@ -228,7 +239,7 @@ export default function Contact() {
 
                     <button
                       type="button"
-                      className="mt-6 inline-flex items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-medium text-white shadow-sm transition hover:opacity-90 active:opacity-85"
+                      className={`${PRIMARY} mt-6`}
                       onClick={() => setStatus("idle")}
                     >
                       Send another request
@@ -236,7 +247,6 @@ export default function Contact() {
                   </div>
                 ) : (
                   <form onSubmit={onSubmit} className="space-y-4">
-                    {/* Row 1 */}
                     <div className="grid gap-4 md:grid-cols-2">
                       <label className="text-sm text-black/70">
                         Full name <span className="text-black/50">*</span>
@@ -264,7 +274,6 @@ export default function Contact() {
                       </label>
                     </div>
 
-                    {/* Row 2 */}
                     <div className="grid gap-4 md:grid-cols-2">
                       <label className="text-sm text-black/70">
                         Phone <span className="text-black/50">*</span>
@@ -301,7 +310,6 @@ export default function Contact() {
                       </label>
                     </div>
 
-                    {/* Row 3 */}
                     <div className="grid gap-4 md:grid-cols-2">
                       <label className="text-sm text-black/70">
                         Event date <span className="text-black/50">*</span>
@@ -328,20 +336,18 @@ export default function Contact() {
                       </label>
                     </div>
 
-                    {/* Row 4 */}
                     <div className="grid gap-4 md:grid-cols-2">
                       <label className="text-sm text-black/70">
-                        Package interest
+                        Indoor / Outdoor
                         <select
                           className="mt-2 w-full rounded-2xl border border-black/10 bg-white/60 px-4 py-3 text-sm text-black shadow-sm outline-none transition focus:border-black/20"
-                          name="packageInterest"
-                          value={form.packageInterest}
+                          name="setupType"
+                          value={form.setupType}
                           onChange={updateField}
                         >
                           <option value="">Select one…</option>
-                          <option value="$400 Event Rate">
-                            $400 Event Rate
-                          </option>
+                          <option value="Indoor">Indoor</option>
+                          <option value="Outdoor">Outdoor</option>
                           <option value="Not sure yet">Not sure yet</option>
                         </select>
                       </label>
@@ -351,14 +357,13 @@ export default function Contact() {
                         <input
                           className="mt-2 w-full rounded-2xl border border-black/10 bg-white/60 px-4 py-3 text-sm text-black shadow-sm outline-none transition focus:border-black/20"
                           name="addOns"
-                          placeholder="Neon sign, wood sign, balloon garland..."
+                          placeholder="Custom sign, neon, balloon garland..."
                           value={form.addOns}
                           onChange={updateField}
                         />
                       </label>
                     </div>
 
-                    {/* Message */}
                     <label className="text-sm text-black/70">
                       Tell us about your event{" "}
                       <span className="text-black/50">*</span>
@@ -367,16 +372,15 @@ export default function Contact() {
                         name="message"
                         rows={6}
                         required
-                        placeholder="Theme, colors, indoor/outdoor, venue notes, timeline, add-ons…"
+                        placeholder="Theme, colors, venue notes, setup window, timeline, add-ons…"
                         value={form.message}
                         onChange={updateField}
                       />
                     </label>
 
-                    {/* Submit */}
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <button
-                        className="inline-flex items-center justify-center rounded-full bg-[#caa374] px-6 py-3 text-sm font-semibold text-black shadow-sm transition hover:brightness-[0.98] active:brightness-[0.96]"
+                        className={PRIMARY}
                         type="submit"
                         disabled={status === "sending"}
                         aria-busy={status === "sending"}
@@ -389,7 +393,7 @@ export default function Contact() {
                           {errorMsg} If it keeps happening, email{" "}
                           <a
                             className="text-black/70 hover:text-black hover:underline decoration-black/20 underline-offset-4"
-                            href="mailto:hello@bloomwallrentals.com"
+                            href="mailto:info@bloomflowerwallrentals.com"
                           >
                             info@bloomflowerwallrentals.com
                           </a>
@@ -407,7 +411,6 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Soft CTA */}
           <div className="mt-10 overflow-hidden rounded-3xl border border-black/10 bg-[#f2e0cc]/35">
             <div className="p-7 sm:p-10">
               <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -421,14 +424,17 @@ export default function Contact() {
                   </div>
                 </div>
 
-                <Link
-                  to="/gallery"
-                  className="inline-flex items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-medium text-white shadow-sm transition hover:opacity-90 active:opacity-85"
-                >
-                  Browse styles
+                <Link to="/pricing" className={PRIMARY}>
+                  See add-ons
                 </Link>
               </div>
             </div>
+          </div>
+
+          <div className="mt-8 text-center text-sm text-black/60">
+            <span className="font-medium text-black/70">Tip:</span> If you have
+            a photo of your venue space, attach it in your reply email after you
+            submit — it helps us recommend the best placement.
           </div>
         </div>
       </section>
