@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: "What’s included in the $350 event rate?",
-    a: "Delivery, professional setup, and breakdown of our White Garden 8×8 flower wall in Clermont, FL and nearby areas. Add-ons (like signage or balloons) are optional and confirmed before booking.",
+    a: "Delivery, professional setup, and breakdown of our 8×8 flower walls in Clermont, FL and nearby areas. Add-ons (like signage or balloons) are optional and confirmed before booking.",
   },
   {
     q: "When is the white wall available?",

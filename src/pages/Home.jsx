@@ -23,13 +23,48 @@ export default function Home() {
   const SECONDARY =
     "inline-flex items-center justify-center rounded-full border border-black/15 bg-white/55 px-5 py-3 text-sm font-medium text-black shadow-sm transition hover:bg-white/75 active:bg-white/60";
 
-  // ✅ New: softer, more premium card style (less “boxy”)
+  // Premium card style kept for other sections (Perfect for, testimonials, etc.)
   const CARD =
     "relative overflow-hidden rounded-3xl border border-black/10 bg-white/45 p-6 shadow-[0_10px_30px_-18px_rgba(0,0,0,0.25)]";
   const CARD_ACCENT =
     "pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#caa374]/70 via-[#caa374]/30 to-transparent";
   const CARD_TITLE = "text-sm font-semibold text-black/75";
   const CARD_TEXT = "mt-2 text-sm text-black/60 leading-relaxed mb-0";
+
+  const whatsIncluded = [
+    {
+      title: "8x8 Flower Wall",
+      note: "Elegant, photo-friendly white florals. Arrives late February.",
+      pill: "INCLUDED",
+      right: "White Garden • 8×8",
+      ctaLabel: "Check availability",
+      ctaTo: "/contact",
+    },
+    {
+      title: "Delivery + setup",
+      note: "Professional installation with venue-friendly timing.",
+      pill: "INCLUDED",
+      right: "Coordination included",
+      ctaLabel: "Check availability",
+      ctaTo: "/contact",
+    },
+    {
+      title: "Breakdown included",
+      note: "We return after your event for smooth load-out.",
+      pill: "INCLUDED",
+      right: "Post-event pickup",
+      ctaLabel: "Check availability",
+      ctaTo: "/contact",
+    },
+    {
+      title: "Optional add-ons",
+      note: "Neon signs, custom signage, balloons, and more.",
+      pill: "OPTIONAL",
+      right: "Quoted by request",
+      ctaLabel: "View add-ons",
+      ctaTo: "/pricing",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#fbf7f2] text-[#1b1b1b]">
@@ -39,6 +74,17 @@ export default function Home() {
       />
       <LocalBusinessSchema />
 
+      {/* Effects (same as pricing add-ons) */}
+      <style>{`
+        @keyframes sparkle {
+          0% { opacity: 0; transform: translateY(6px) scale(0.96); }
+          25% { opacity: 0.9; }
+          55% { opacity: 0.55; transform: translateY(-2px) scale(1); }
+          100% { opacity: 0; transform: translateY(-10px) scale(1.02); }
+        }
+      `}</style>
+
+      {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-24 -top-28 h-[420px] w-[420px] rounded-full bg-[#e7d3b5] blur-3xl opacity-60" />
@@ -48,6 +94,7 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-7xl px-5 py-14 lg:py-20">
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            {/* LEFT */}
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/55 px-4 py-2 text-xs font-medium text-black/70 shadow-sm backdrop-blur">
                 <span className="inline-flex h-2 w-2 rounded-full bg-[#b98955]" />
@@ -71,55 +118,40 @@ export default function Home() {
                 <Link className={PRIMARY} to="/contact">
                   Request a Quote
                 </Link>
-
                 <Link className={SECONDARY} to="/pricing">
                   See pricing
                 </Link>
               </div>
 
-              <div className="mt-4 rounded-2xl border border-black/10 bg-white/60 px-4 py-3 text-sm text-black/65">
-                <span className="font-semibold text-black/75">
-                  Now booking March dates:
-                </span>{" "}
+              <div className="mt-5 max-w-xl rounded-2xl border border-black/10 bg-white/45 px-4 py-3 text-sm text-black/60 shadow-[0_10px_25px_-18px_rgba(0,0,0,0.18)]">
+                <span className="font-semibold text-black/70">
+                  Now booking March dates
+                </span>
+                <span className="text-black/35"> — </span>
                 our signature white 8×8 wall arrives late February.
               </div>
 
-              <div className="mt-7 flex flex-wrap gap-2">
-                {[
-                  "Clermont",
-                  "Minneola",
-                  "Groveland",
-                  "Montverde",
-                  "Winter Garden",
-                  "Orlando area",
-                ].map((c) => (
-                  <span
-                    key={c}
-                    className="rounded-full border border-black/10 bg-white/45 px-3 py-1.5 text-xs text-black/70 shadow-sm transition hover:bg-white/65"
-                  >
-                    {c}
+              <div className="mt-6 max-w-xl">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-black/55">
+                  <span className="inline-flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#caa374]/70" />
+                    Delivery included
                   </span>
-                ))}
-              </div>
-
-              {/* ✅ Kept as cards, but softer + premium + less “boxy” */}
-              <div className="mt-10 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
-                {[
-                  { k: "Delivery", v: "Included" },
-                  { k: "Setup", v: "Included" },
-                  { k: "Breakdown", v: "Included" },
-                ].map((x) => (
-                  <div
-                    key={x.k}
-                    className="rounded-2xl border border-black/10 bg-white/45 p-4 shadow-[0_10px_25px_-18px_rgba(0,0,0,0.25)]"
-                  >
-                    <div className="text-xs text-black/55">{x.k}</div>
-                    <div className="mt-1 text-sm font-medium">{x.v}</div>
-                  </div>
-                ))}
+                  <span className="hidden sm:inline text-black/25">•</span>
+                  <span className="inline-flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#caa374]/70" />
+                    Setup included
+                  </span>
+                  <span className="hidden sm:inline text-black/25">•</span>
+                  <span className="inline-flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#caa374]/70" />
+                    Breakdown included
+                  </span>
+                </div>
               </div>
             </div>
 
+            {/* RIGHT */}
             <div className="lg:pl-6">
               <div className="group relative overflow-hidden rounded-3xl border border-black/10 bg-white/55 shadow-[0_20px_70px_-30px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_-40px_rgba(0,0,0,0.45)]">
                 <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100">
@@ -159,13 +191,12 @@ export default function Home() {
                   <p className="text-sm text-black/65">
                     Serving{" "}
                     <span className="font-medium text-black">Clermont, FL</span>{" "}
-                    + surrounding areas — delivery, setup, and breakdown
-                    included.
+                    + surrounding areas.
                   </p>
 
                   <Link
                     to="/pricing"
-                    className="hidden sm:inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/80 px-4 py-2 text-sm font-semibold text-black shadow-sm transition hover:bg-white hover:shadow-md active:scale-[0.99]"
+                    className="inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/80 px-4 py-2 text-sm font-semibold text-black shadow-sm transition hover:bg-white hover:shadow-md active:scale-[0.99]"
                   >
                     See pricing{" "}
                     <span className="inline-block translate-y-[0.5px] transition group-hover:translate-x-0.5">
@@ -174,15 +205,9 @@ export default function Home() {
                   </Link>
                 </div>
               </div>
-
-              <div className="mt-4 rounded-2xl border border-black/10 bg-white/45 px-4 py-3 text-xs text-black/55 shadow-[0_10px_25px_-18px_rgba(0,0,0,0.25)]">
-                New inventory arriving late February — portfolio photos will be
-                added as we complete March events.
-              </div>
             </div>
           </div>
 
-          {/* ✅ Same content, improved “less-boxy” card */}
           <div className="mt-10">
             <div className={CARD}>
               <div className={CARD_ACCENT} />
@@ -197,7 +222,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* HOW IT WORKS (HORIZONTAL COLUMNS + VERTICAL GOLD DIVIDERS) */}
       <section className="py-14">
         <div className="mx-auto max-w-7xl px-5">
           <div className="max-w-2xl">
@@ -207,34 +232,68 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-6 grid gap-6 md:grid-cols-3">
-            {[
-              {
-                title: "Share your details",
-                text: "Send your event date, venue/city, and your vibe (or inspo).",
-              },
-              {
-                title: "We confirm everything",
-                text: "We confirm availability, timing, and venue notes—then send your quote.",
-              },
-              {
-                title: "We deliver & install",
-                text: "We handle delivery, professional setup, and return for breakdown.",
-              },
-            ].map((x) => (
-              <div key={x.title} className={CARD}>
-                <div className={CARD_ACCENT} />
-                <div className={CARD_TITLE}>{x.title}</div>
-                <p className={CARD_TEXT}>{x.text}</p>
-              </div>
-            ))}
+          <div className="mt-8 rounded-3xl border border-black/10 bg-white/40 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.30)]">
+            <div className="grid gap-0 md:grid-cols-3">
+              {[
+                {
+                  n: "01",
+                  title: "Share your details",
+                  text: "Send your event date, venue/city, and your vibe (or inspo).",
+                },
+                {
+                  n: "02",
+                  title: "We confirm everything",
+                  text: "We confirm availability, timing, and venue notes—then send your quote.",
+                },
+                {
+                  n: "03",
+                  title: "We deliver & install",
+                  text: "We handle delivery, professional setup, and return for breakdown.",
+                },
+              ].map((x, idx) => (
+                <div
+                  key={x.n}
+                  className={[
+                    "relative px-6 py-8 sm:px-8",
+                    idx !== 0 ? "md:border-l md:border-[#caa374]/40" : "",
+                    idx !== 0 ? "border-t border-black/10 md:border-t-0" : "",
+                  ].join(" ")}
+                >
+                  <div className="text-xs uppercase tracking-[0.24em] text-black/35">
+                    Step {x.n}
+                  </div>
+                  <div className="mt-3 text-sm font-semibold text-black/80">
+                    {x.title}
+                  </div>
+                  <p className="mt-2 text-sm text-black/60 leading-relaxed mb-0">
+                    {x.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link to="/contact" className={PRIMARY}>
+              Request a Quote
+            </Link>
+            <Link to="/pricing" className={SECONDARY}>
+              See pricing
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* WHAT'S INCLUDED */}
-      <section className="py-14">
-        <div className="mx-auto max-w-7xl px-5">
+      {/* WHAT'S INCLUDED (PRICING ADD-ONS STYLE + GOLD LINE HOVER) */}
+      <section className="relative overflow-hidden py-14">
+        {/* Background Glow (matches hero) */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-24 -top-28 h-[420px] w-[420px] rounded-full bg-[#e7d3b5] blur-3xl opacity-55" />
+          <div className="absolute -right-28 top-10 h-[520px] w-[520px] rounded-full bg-[#f0e8dd] blur-3xl opacity-65" />
+          <div className="absolute -bottom-44 left-[20%] h-[520px] w-[520px] rounded-full bg-[#ead9c1] blur-3xl opacity-55" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-5">
           <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
             <div>
               <h2 className="font-serif text-3xl tracking-tight">
@@ -245,71 +304,124 @@ export default function Home() {
                 photo-ready setup.
               </p>
 
-              <div className="mt-6 grid gap-6 md:grid-cols-2">
-                {[
-                  {
-                    title: "8x8 Flower Wall",
-                    text: "Elegant, photo-friendly white florals. Arrives late February.",
-                  },
-                  {
-                    title: "Delivery + setup",
-                    text: "Professional installation with venue-friendly timing.",
-                  },
-                  {
-                    title: "Breakdown included",
-                    text: "We return after your event for smooth load-out.",
-                  },
-                  {
-                    title: "Optional add-ons",
-                    text: "Neon signs, custom signage, balloons, and more.",
-                  },
-                ].map((x) => (
-                  <div key={x.title} className={CARD}>
-                    <div className={CARD_ACCENT} />
-                    <div className={CARD_TITLE}>{x.title}</div>
-                    <p className={CARD_TEXT}>{x.text}</p>
-                  </div>
-                ))}
+              <div className="mt-10 divide-y divide-black/10 border-t border-black/10">
+                {whatsIncluded.map((x) => {
+                  const isOptional = x.pill === "OPTIONAL";
+                  return (
+                    <div key={x.title} className="group relative py-8">
+                      {/* warm hover wash */}
+                      <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100 bg-gradient-to-r from-white/40 via-[#f6f3ee]/45 to-[#f2e0cc]/35" />
+
+                      {/* gold left-line */}
+                      <div className="pointer-events-none absolute left-0 top-8 h-8 w-px bg-transparent transition duration-300 group-hover:bg-[#caa374]/70" />
+
+                      <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        {/* Left */}
+                        <div className="pl-4 sm:pl-5">
+                          <div className="flex flex-wrap items-center gap-3">
+                            <h3 className="text-lg font-medium tracking-tight transition-all duration-300 group-hover:tracking-[0.02em]">
+                              {x.title}
+                            </h3>
+
+                            <span
+                              className={[
+                                "text-[11px] uppercase tracking-[0.18em]",
+                                isOptional ? "text-[#caa374]" : "text-black/40",
+                              ].join(" ")}
+                            >
+                              {x.pill}
+                            </span>
+                          </div>
+
+                          <p className="mt-2 max-w-xl text-sm text-black/60 leading-relaxed">
+                            {x.note}
+                          </p>
+                        </div>
+
+                        {/* Right */}
+                        <div className="sm:text-right">
+                          <div
+                            className={[
+                              "text-sm font-medium transition duration-300",
+                              isOptional ? "text-[#caa374]" : "text-black/70",
+                            ].join(" ")}
+                          >
+                            {x.right}
+                          </div>
+
+                          <Link
+                            to={x.ctaTo}
+                            className="mt-3 inline-flex items-center gap-2 text-sm text-black/55 underline-offset-4 transition duration-300 hover:underline group-hover:text-black/80"
+                          >
+                            {x.ctaLabel}
+                            <span
+                              className={[
+                                "text-black/30 transition duration-300 group-hover:translate-x-1",
+                                isOptional
+                                  ? "group-hover:text-[#caa374]"
+                                  : "group-hover:text-black/60",
+                              ].join(" ")}
+                            >
+                              →
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* tiny sparkle */}
+                      <span
+                        className="pointer-events-none absolute right-6 top-6 h-1 w-1 rounded-full bg-[#caa374] opacity-0 group-hover:opacity-100"
+                        style={{ animation: "sparkle 900ms ease-out both" }}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Price card: keep same info, soften visuals */}
-            <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-white/50 p-7 shadow-[0_18px_40px_-28px_rgba(0,0,0,0.35)]">
+            {/* $350 RATE */}
+            <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-white/50 shadow-[0_18px_40px_-28px_rgba(0,0,0,0.35)]">
               <div className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#caa374]/80 via-[#caa374]/30 to-transparent" />
 
-              <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60">
-                Event rate
-              </div>
+              <div className="p-7">
+                <div className="flex items-start justify-between gap-6">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60">
+                    Event rate
+                  </div>
 
-              <div className="mt-4 flex items-end justify-between gap-6">
-                <div>
-                  <div className="font-serif text-4xl leading-none">$350</div>
+                  <div className="text-xs text-black/50">
+                    Clermont, FL + nearby areas
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <div className="font-serif text-[52px] leading-none">
+                    $350
+                  </div>
                   <div className="mt-1 text-xs text-black/50">per event</div>
+
+                  <div className="mt-5 text-sm text-black/60">
+                    <span className="text-black/45">Includes:</span>{" "}
+                    <span className="text-black/70">delivery</span>,{" "}
+                    <span className="text-black/70">setup</span>,{" "}
+                    <span className="text-black/70">breakdown</span>
+                  </div>
                 </div>
-                <div className="text-sm text-black/60">
-                  Clermont, FL + nearby areas
+
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <Link to="/pricing" className={SECONDARY}>
+                    View Pricing
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className={PRIMARY.replace("px-5 py-3", "px-5 py-2.5")}
+                  >
+                    Check availability
+                  </Link>
                 </div>
               </div>
 
-              {/* <p className="mt-4 text-sm text-black/60 leading-relaxed">
-                Applies to{" "}
-                <span className="font-medium text-black/70">White Garden</span>.
-                Pre-order styles are quoted and can cost more.
-              </p> */}
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link to="/pricing" className={SECONDARY}>
-                  View Pricing
-                </Link>
-                <Link
-                  to="/contact"
-                  className={PRIMARY.replace("px-5 py-3", "px-5 py-2.5")}
-                >
-                  Check availability
-                </Link>
-              </div>
-
-              <div className="mt-6 rounded-2xl border border-black/10 bg-white/55 p-4 text-xs text-black/55">
+              <div className="border-t border-black/10 bg-white/45 p-5 text-xs text-black/55">
                 Booking ahead? If your event is{" "}
                 <span className="font-medium text-black/65">6–8+ weeks</span>{" "}
                 out, we can often source additional wall styles by request.
