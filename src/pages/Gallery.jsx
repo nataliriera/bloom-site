@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import SeoLite from "../components/SeoLite.jsx";
 
 import whiteGardenImg from "../assets/walls/white-garden.jpg";
 import blushOmbreImg from "../assets/walls/blush-ombre.jpg";
@@ -15,12 +14,12 @@ const data = [
   {
     name: "White Garden",
     category: "White",
-    note: "Signature white 8×8 (arrives late February)",
+    note: "Signature white 8×8",
     status: "owned",
     leadWeeks: 0,
     image: whiteGardenImg,
     alt: "White 8x8 flower wall backdrop rental in Clermont, Florida",
-    pricingNote: "$350 event rate",
+    pricingNote: "Starting at $350",
   },
   {
     name: "Blush Ombré",
@@ -98,231 +97,500 @@ const categories = [
   "Purple",
 ];
 
-function pillForCategory() {
-  return "border-black/10 bg-white/55 text-black/60";
+function WallCard({ x, isPreorder }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        background: "#111",
+        cursor: "pointer",
+      }}
+    >
+      <div
+        style={{ aspectRatio: "3/4", position: "relative", overflow: "hidden" }}
+      >
+        <img
+          src={x.image}
+          alt={x.alt || `${x.name} flower wall rental`}
+          loading="lazy"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: 0.78,
+            transition: "transform 1s cubic-bezier(0.16,1,0.3,1), opacity 0.4s",
+            transform: hovered ? "scale(1.07)" : "scale(1)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, transparent 30%, rgba(10,10,10,0.94) 100%)",
+          }}
+        />
+
+        {/* Tag */}
+        <div
+          style={{
+            position: "absolute",
+            top: 16,
+            left: 16,
+            display: "flex",
+            gap: 8,
+            flexWrap: "wrap",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 10,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              background: "rgba(12,12,12,0.55)",
+              border: "1px solid rgba(201,169,110,0.35)",
+              color: "#c9a96e",
+              padding: "5px 12px",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            {x.category}
+          </span>
+          {isPreorder && (
+            <span
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 10,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                background: "rgba(12,12,12,0.55)",
+                border: "1px solid rgba(245,240,232,0.12)",
+                color: "rgba(245,240,232,0.5)",
+                padding: "5px 12px",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              Pre-order · {x.leadWeeks}+ wks
+            </span>
+          )}
+          {!isPreorder && (
+            <span
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 10,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                background: "rgba(12,12,12,0.55)",
+                border: "1px solid rgba(245,240,232,0.12)",
+                color: "rgba(245,240,232,0.5)",
+                padding: "5px 12px",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              In Stock
+            </span>
+          )}
+        </div>
+
+        {/* Bottom info */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "24px 22px",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: "clamp(20px, 2.5vw, 26px)",
+              fontWeight: 400,
+              lineHeight: 1.05,
+              marginBottom: 5,
+            }}
+          >
+            {x.name}
+          </div>
+          <div
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 12,
+              color: "rgba(245,240,232,0.45)",
+              marginBottom: 16,
+            }}
+          >
+            {x.note}
+          </div>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <Link
+              to="/contact"
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 11,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "#0c0c0c",
+                background: "#c9a96e",
+                padding: "9px 20px",
+                textDecoration: "none",
+                transition: "background 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "#d4b280")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "#c9a96e")
+              }
+            >
+              Request Quote
+            </Link>
+            <Link
+              to="/pricing"
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 11,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "rgba(245,240,232,0.65)",
+                border: "1px solid rgba(245,240,232,0.2)",
+                padding: "9px 20px",
+                textDecoration: "none",
+                transition: "border-color 0.2s, color 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#c9a96e";
+                e.currentTarget.style.color = "#c9a96e";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(245,240,232,0.2)";
+                e.currentTarget.style.color = "rgba(245,240,232,0.65)";
+              }}
+            >
+              Pricing
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function Gallery() {
   const [filter, setFilter] = useState("All");
-
-  const PRIMARY =
-    "inline-flex items-center justify-center rounded-full bg-[#caa374] px-4 py-2.5 text-sm font-semibold text-black shadow-sm transition hover:brightness-[0.98] active:brightness-[0.96]";
-  const SECONDARY =
-    "inline-flex items-center justify-center rounded-full border border-black/15 bg-white/60 px-4 py-2.5 text-sm font-medium text-black shadow-sm transition hover:bg-white/80 active:bg-white/65";
-
   const owned = useMemo(() => data.filter((x) => x.status === "owned"), []);
   const preorderAll = useMemo(
     () => data.filter((x) => x.status === "preorder"),
     []
   );
+  const preorder = useMemo(
+    () =>
+      filter === "All"
+        ? preorderAll
+        : preorderAll.filter((x) => x.category === filter),
+    [filter, preorderAll]
+  );
 
-  const preorder = useMemo(() => {
-    if (filter === "All") return preorderAll;
-    return preorderAll.filter((x) => x.category === filter);
-  }, [filter, preorderAll]);
+  const eyebrow = (text) => (
+    <p
+      style={{
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: 11,
+        letterSpacing: "0.24em",
+        textTransform: "uppercase",
+        color: "#c9a96e",
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        marginBottom: 16,
+      }}
+    >
+      <span
+        style={{
+          display: "inline-block",
+          width: 28,
+          height: 1,
+          background: "#c9a96e",
+          flexShrink: 0,
+        }}
+      />
+      {text}
+    </p>
+  );
 
   return (
-    <div className="min-h-screen bg-[#fbf7f2] text-[#1b1b1b]">
-      <SeoLite
-        title="Flower Wall Styles | Clermont, FL Flower Wall Rentals | Bloom"
-        description="Browse flower wall styles including our signature white 8×8 and pre-order options for weddings and events in Clermont, FL."
-      />
+    <div
+      style={{
+        background: "#0c0c0c",
+        color: "#f5f0e8",
+        minHeight: "100vh",
+        fontFamily: "'DM Sans', sans-serif",
+      }}
+    >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025;
+          background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-size:150px; }
+        .filter-btn { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; padding:9px 20px; border:1px solid rgba(201,169,110,0.2); background:transparent; color:rgba(245,240,232,0.45); cursor:pointer; transition:all 0.2s ease; }
+        .filter-btn:hover { border-color:rgba(201,169,110,0.5); color:#c9a96e; }
+        .filter-btn.active { border-color:#c9a96e; background:rgba(201,169,110,0.08); color:#c9a96e; }
+        .gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+        .inner { max-width:1280px; margin:0 auto; padding:0 48px; }
+        .btn-gold { display:inline-flex; align-items:center; justify-content:center; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:15px 36px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
+        .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
+        @media (max-width:900px) {
+          .gallery-grid { grid-template-columns:repeat(2,1fr); }
+          .inner { padding:0 24px; }
+        }
+        @media (max-width:520px) {
+          .gallery-grid { grid-template-columns:1fr; }
+        }
+      `}</style>
+      <div className="noise" />
 
-      <section className="py-14">
-        <div className="container">
-          <div className="max-w-2xl">
-            <h1 className="font-serif text-[44px] leading-[1.05] tracking-tight">
-              Styles
-            </h1>
-            <p className="mt-3 text-sm leading-relaxed text-black/60">
-              Choose a vibe, then request a quote for your date + city/venue.
-            </p>
+      {/* ── Header ── */}
+      <section style={{ padding: "100px 0 72px" }}>
+        <div className="inner">
+          {eyebrow("Our Collection")}
+          <h1
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: "clamp(44px, 7vw, 88px)",
+              fontWeight: 300,
+              lineHeight: 0.92,
+              letterSpacing: "-0.02em",
+              marginBottom: 28,
+            }}
+          >
+            Wall
+            <br />
+            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>Styles</em>
+          </h1>
+          <p
+            style={{
+              fontSize: 15,
+              lineHeight: 1.75,
+              color: "rgba(245,240,232,0.45)",
+              fontWeight: 300,
+              maxWidth: 480,
+              marginBottom: 32,
+            }}
+          >
+            Choose a vibe, then request a quote for your date and venue.
+          </p>
 
-            <div className="mt-4 rounded-2xl border border-black/10 bg-white/60 px-4 py-3 text-sm text-black/65">
-              <div>
-                <span className="font-semibold text-black/75">
-                  Now booking March dates:
-                </span>{" "}
-                Our signature white 8×8 wall arrives late February.
-              </div>
-              <div className="mt-1 text-black/55">
-                <span className="font-medium text-black/70">Pre-order</span>{" "}
-                styles are quoted and can cost more.
-              </div>
-            </div>
-
-            <div className="mt-3 rounded-2xl border border-black/10 bg-white/45 px-4 py-3 text-xs text-black/55 leading-relaxed">
-              Pre-order images are supplier catalog photos for inspiration.
+          {/* Info notice */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              maxWidth: 560,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 13,
+                color: "rgba(245,240,232,0.42)",
+                lineHeight: 1.7,
+                fontWeight: 300,
+                border: "1px solid rgba(201,169,110,0.15)",
+                padding: "16px 20px",
+              }}
+            >
+              <strong
+                style={{ color: "rgba(245,240,232,0.7)", fontWeight: 500 }}
+              >
+                Packages start at $350.
+              </strong>{" "}
+              Delivery, professional setup, and breakdown are available for an
+              additional fee.{" "}
+              <span style={{ color: "rgba(245,240,232,0.32)" }}>
+                Pre-order images are supplier catalog photos for inspiration.
+              </span>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Owned inventory */}
-          <div className="mt-10">
-            <div className="max-w-2xl">
-              <h2 className="font-serif text-3xl tracking-tight">
-                Available soon
-              </h2>
-              <p className="mt-2 text-sm text-black/60 leading-relaxed">
-                Our owned inventory
+      {/* ── Owned inventory ── */}
+      <section style={{ paddingBottom: 100 }}>
+        <div className="inner" style={{ paddingBottom: 48 }}>
+          {eyebrow("Current Inventory")}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 16,
+              marginBottom: 0,
+            }}
+          >
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(32px, 4vw, 52px)",
+                fontWeight: 300,
+                lineHeight: 1,
+              }}
+            >
+              In stock —{" "}
+              <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                fastest availability
+              </em>
+            </h2>
+          </div>
+        </div>
+        <div className="inner" style={{ paddingBottom: 0 }}>
+          <div className="gallery-grid">
+            {owned.map((x) => (
+              <WallCard key={x.name} x={x} isPreorder={false} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Pre-order styles ── */}
+      <section style={{ background: "#090909", padding: "100px 0" }}>
+        <div className="inner" style={{ paddingBottom: 48 }}>
+          {eyebrow("Pre-Order Styles")}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 24,
+              marginBottom: 36,
+            }}
+          >
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(32px, 4vw, 52px)",
+                fontWeight: 300,
+                lineHeight: 1,
+              }}
+            >
+              Sourced by request —{" "}
+              <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                6–8+ weeks notice
+              </em>
+            </h2>
+          </div>
+
+          {/* Filter pills */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {categories.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setFilter(c)}
+                className={`filter-btn${filter === c ? " active" : ""}`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="inner" style={{ paddingBottom: 0 }}>
+          <div className="gallery-grid" style={{ marginTop: 0 }}>
+            {preorder.map((x) => (
+              <WallCard key={x.name} x={x} isPreorder />
+            ))}
+          </div>
+        </div>
+
+        {/* Tip */}
+        <div className="inner" style={{ paddingTop: 48 }}>
+          <div
+            style={{
+              border: "1px solid rgba(201,169,110,0.12)",
+              padding: "20px 24px",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 13,
+              color: "rgba(245,240,232,0.38)",
+              lineHeight: 1.7,
+              fontWeight: 300,
+            }}
+          >
+            <strong style={{ color: "#c9a96e", fontWeight: 500 }}>Tip:</strong>{" "}
+            If your event is under 6 weeks away, owned inventory is the best
+            guaranteed option.
+          </div>
+        </div>
+      </section>
+
+      {/* ── Bottom CTA ── */}
+      <section
+        style={{
+          padding: "80px 0",
+          borderTop: "1px solid rgba(201,169,110,0.1)",
+        }}
+      >
+        <div className="inner">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 32,
+              background: "linear-gradient(135deg, #18140c 0%, #1e1a0e 100%)",
+              border: "1px solid rgba(201,169,110,0.2)",
+              padding: "40px 48px",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "clamp(20px, 3vw, 30px)",
+                  fontWeight: 400,
+                  marginBottom: 6,
+                }}
+              >
+                Ready to check your date?
+              </div>
+              <p
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 13,
+                  color: "rgba(245,240,232,0.42)",
+                  fontWeight: 300,
+                }}
+              >
+                Send your event date + venue and we'll confirm availability and
+                recommend add-ons that photograph beautifully.
               </p>
             </div>
-
-            <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {owned.map((x) => (
-                <div
-                  key={x.name}
-                  className="group overflow-hidden rounded-3xl border border-black/10 bg-white/55 shadow-md transition hover:-translate-y-0.5 hover:shadow-xl"
-                >
-                  <div className="relative h-52 bg-black/5">
-                    <img
-                      src={x.image}
-                      alt={x.alt || `${x.name} flower wall rental`}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/10" />
-
-                    <div className="absolute left-4 top-4 flex flex-wrap items-center gap-2">
-                      <span
-                        className={[
-                          "rounded-full border px-3 py-1 text-[11px] uppercase tracking-[0.14em] backdrop-blur",
-                          pillForCategory(x.category),
-                        ].join(" ")}
-                      >
-                        {x.category}
-                      </span>
-
-                      <span className="rounded-full border border-emerald-200/60 bg-emerald-50/70 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-emerald-700 backdrop-blur">
-                        Arrives late Feb • Booking March
-                      </span>
-
-                      <span className="rounded-full border border-black/10 bg-white/55 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60 backdrop-blur">
-                        {x.pricingNote}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-5">
-                    <div className="text-base font-semibold">{x.name}</div>
-                    <div className="mt-1 text-sm text-black/60">{x.note}</div>
-
-                    <div className="mt-5 flex flex-wrap gap-3">
-                      <Link to="/contact" className={PRIMARY}>
-                        Request Quote
-                      </Link>
-                      <Link to="/pricing" className={SECONDARY}>
-                        View Pricing
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Link to="/contact" className="btn-gold">
+              Request a Quote
+            </Link>
           </div>
-
-          {/* Pre-order styles */}
-          <div className="mt-14">
-            <div className="max-w-2xl">
-              <h2 className="font-serif text-3xl tracking-tight">
-                Pre-order styles
-              </h2>
-              <p className="mt-2 text-sm text-black/60 leading-relaxed">
-                Sourced by request with{" "}
-                <span className="font-medium text-black/70">6–8+ weeks</span>{" "}
-                notice.
-              </p>
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-2">
-              {categories.map((c) => {
-                const active = filter === c;
-                return (
-                  <button
-                    key={c}
-                    onClick={() => setFilter(c)}
-                    className={[
-                      "rounded-full border px-4 py-2 text-sm transition shadow-sm",
-                      active
-                        ? "border-black/15 bg-black text-white"
-                        : "border-black/10 bg-white/55 text-black/65 hover:bg-white/75",
-                    ].join(" ")}
-                    type="button"
-                  >
-                    {c}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {preorder.map((x) => (
-                <div
-                  key={x.name}
-                  className="group overflow-hidden rounded-3xl border border-black/10 bg-white/55 shadow-md transition hover:-translate-y-0.5 hover:shadow-xl"
-                >
-                  <div className="relative h-52 bg-black/5">
-                    <img
-                      src={x.image}
-                      alt={x.alt || `${x.name} flower wall (pre-order)`}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/10" />
-
-                    <div className="absolute left-4 top-4 flex flex-wrap items-center gap-2">
-                      <span
-                        className={[
-                          "rounded-full border px-3 py-1 text-[11px] uppercase tracking-[0.14em] backdrop-blur",
-                          pillForCategory(x.category),
-                        ].join(" ")}
-                      >
-                        {x.category}
-                      </span>
-
-                      <span className="rounded-full border border-black/10 bg-white/55 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60 backdrop-blur">
-                        Pre-order • {x.leadWeeks}+ weeks
-                      </span>
-
-                      <span className="rounded-full border border-black/10 bg-white/55 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60 backdrop-blur">
-                        Quoted
-                      </span>
-                    </div>
-
-                    {/* <div className="absolute bottom-3 left-3 rounded-full border border-white/20 bg-white/55 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/65 backdrop-blur">
-                      Supplier catalog photo
-                    </div> */}
-                  </div>
-
-                  <div className="p-5">
-                    <div className="text-base font-semibold">{x.name}</div>
-                    <div className="mt-1 text-sm text-black/60">{x.note}</div>
-
-                    <div className="mt-5 flex flex-wrap gap-3">
-                      <Link to="/contact" className={PRIMARY}>
-                        Request Quote
-                      </Link>
-                      <Link to="/pricing" className={SECONDARY}>
-                        View Add-ons
-                      </Link>
-                    </div>
-
-                    <p className="mt-4 text-xs leading-relaxed text-black/50">
-                      Pre-order styles require advance notice and a deposit to
-                      secure inventory. We’ll confirm availability once we have
-                      your event date + venue.
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10 rounded-2xl border border-black/10 bg-white/45 p-5 text-sm text-black/60">
-              <span className="font-medium text-black/70">Tip:</span> If your
-              event is under 6 weeks away,{" "}
-              <span className="font-medium text-black/70">White Garden</span> is
-              the best guaranteed option.
-            </div>
-          </div>
+          <p
+            style={{
+              marginTop: 28,
+              textAlign: "center",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 12,
+              color: "rgba(245,240,232,0.25)",
+            }}
+          >
+            Delivery/setup/breakdown is available for an additional fee and
+            quoted based on venue location + logistics.
+          </p>
         </div>
       </section>
     </div>

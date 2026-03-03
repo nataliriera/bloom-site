@@ -1,520 +1,1640 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import SeoLite from "../components/SeoLite.jsx";
-import LocalBusinessSchema from "../components/LocalBusinessSchema.jsx";
 
-const wallImg = "/white-wall.png";
+const walls = [
+  {
+    name: "White Garden",
+    size: "8×8",
+    vibe: "Soft, photo-ready whites",
+    img: "/white-wall.png",
+    tag: "Most Popular",
+  },
+  {
+    name: "Blush Romance",
+    size: "8×8",
+    vibe: "Warm pinks for showers",
+    img: "/pink-wall.png",
+    tag: "New",
+  },
+  {
+    name: "Ivory Luxe",
+    size: "8×8",
+    vibe: "Creamy neutrals, timeless",
+    img: "/ivory-wall.png",
+    tag: "Elegant",
+  },
+  {
+    name: "Mixed Meadow",
+    size: "8×8",
+    vibe: "Colorful, playful florals",
+    img: "/mixed-wall.png",
+    tag: "Fun",
+  },
+];
 
-export default function Home() {
-  const testimonials = [];
+const recentSetups = [
+  "/setup-1.jpg",
+  "/setup-2.jpg",
+  "/setup-3.jpg",
+  "/setup-4.jpg",
+  "/setup-5.jpg",
+  "/setup-6.jpg",
+];
 
-  const perfectFor = [
-    {
-      title: "Weddings",
-      text: "Ceremony, reception, or sweetheart table moments.",
-    },
-    { title: "Showers", text: "Bridal or baby showers with a photo moment." },
-    { title: "Birthdays", text: "Milestones, dinners, and parties." },
-    { title: "Brand events", text: "Launches, pop-ups, and content moments." },
-  ];
+const faqs = [
+  {
+    q: "What areas do you serve?",
+    a: "We're based in Clermont, FL and serve surrounding areas. Travel is quoted based on venue location.",
+  },
+  {
+    q: "Is delivery and setup included?",
+    a: "Delivery, professional setup, and breakdown are available for an additional fee, quoted by venue location and logistics.",
+  },
+  {
+    q: "How long does setup take?",
+    a: "Most installs take about 30–60 minutes depending on venue access and chosen add-ons.",
+  },
+  {
+    q: "Can the wall be used outdoors?",
+    a: "Yes, with restrictions. Outdoor setups require stable, dry conditions and a suitable surface. We'll confirm during quoting.",
+  },
+  {
+    q: "Do you require a deposit?",
+    a: "Yes — your date is reserved with a retainer. Remaining balance is due before the event.",
+  },
+];
 
-  const PRIMARY =
-    "inline-flex items-center justify-center rounded-full bg-[#caa374] px-5 py-3 text-sm font-semibold text-black shadow-sm transition hover:brightness-[0.98] active:brightness-[0.96]";
-  const SECONDARY =
-    "inline-flex items-center justify-center rounded-full border border-black/15 bg-white/55 px-5 py-3 text-sm font-medium text-black shadow-sm transition hover:bg-white/75 active:bg-white/60";
+function useInView(threshold = 0.1) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, visible];
+}
 
-  // Premium card style kept for other sections (Perfect for, testimonials, etc.)
-  const CARD =
-    "relative overflow-hidden rounded-3xl border border-black/10 bg-white/45 p-6 shadow-[0_10px_30px_-18px_rgba(0,0,0,0.25)]";
-  const CARD_ACCENT =
-    "pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#caa374]/70 via-[#caa374]/30 to-transparent";
-  const CARD_TITLE = "text-sm font-semibold text-black/75";
-  const CARD_TEXT = "mt-2 text-sm text-black/60 leading-relaxed mb-0";
+function Reveal({ children, delay = 0, y = 36 }) {
+  const [ref, visible] = useInView();
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "none" : `translateY(${y}px)`,
+        transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
-  const whatsIncluded = [
-    {
-      title: "8x8 Flower Wall",
-      note: "Elegant, photo-friendly white florals. Arrives late February.",
-      pill: "INCLUDED",
-      right: "White Garden • 8×8",
-      ctaLabel: "Check availability",
-      ctaTo: "/contact",
-    },
-    {
-      title: "Delivery + setup",
-      note: "Professional installation with venue-friendly timing.",
-      pill: "INCLUDED",
-      right: "Coordination included",
-      ctaLabel: "Check availability",
-      ctaTo: "/contact",
-    },
-    {
-      title: "Breakdown included",
-      note: "We return after your event for smooth load-out.",
-      pill: "INCLUDED",
-      right: "Post-event pickup",
-      ctaLabel: "Check availability",
-      ctaTo: "/contact",
-    },
-    {
-      title: "Optional add-ons",
-      note: "Neon signs, custom signage, balloons, and more.",
-      pill: "OPTIONAL",
-      right: "Quoted by request",
-      ctaLabel: "View add-ons",
-      ctaTo: "/pricing",
-    },
-  ];
+function Marquee({ items, speed = 45 }) {
+  const doubled = [...items, ...items];
+  return (
+    <div style={{ overflow: "hidden", display: "flex", userSelect: "none" }}>
+      <div
+        style={{
+          display: "flex",
+          animation: `marquee ${speed}s linear infinite`,
+          whiteSpace: "nowrap",
+        }}
+      >
+        {doubled.map((item, i) => (
+          <span
+            key={i}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 20,
+              padding: "0 28px",
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: "clamp(14px, 2vw, 22px)",
+              fontStyle: "italic",
+              fontWeight: 300,
+              color: "rgba(245,240,232,0.45)",
+              letterSpacing: "0.02em",
+            }}
+          >
+            {item}
+            <span style={{ color: "#c9a96e", fontSize: "0.55em" }}>✦</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FAQItem({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      onClick={() => setOpen((o) => !o)}
+      style={{
+        borderBottom: "1px solid rgba(201,169,110,0.15)",
+        padding: "24px 0",
+        cursor: "pointer",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 20,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "clamp(17px, 2vw, 22px)",
+            fontWeight: 400,
+            lineHeight: 1.3,
+            color: "#f5f0e8",
+          }}
+        >
+          {q}
+        </span>
+        <span
+          style={{
+            color: "#c9a96e",
+            fontSize: 24,
+            fontWeight: 200,
+            flexShrink: 0,
+            display: "inline-block",
+            transition: "transform 0.35s ease",
+            transform: open ? "rotate(45deg)" : "none",
+          }}
+        >
+          +
+        </span>
+      </div>
+      <div
+        style={{
+          overflow: "hidden",
+          maxHeight: open ? 220 : 0,
+          transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
+        }}
+      >
+        <p
+          style={{
+            marginTop: 16,
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 15,
+            color: "rgba(245,240,232,0.5)",
+            lineHeight: 1.8,
+            fontWeight: 300,
+          }}
+        >
+          {a}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+const SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Bloom Flower Wall Rentals",
+  description:
+    "Luxury flower wall rentals for weddings, baby showers, birthdays, and events in Clermont, FL and surrounding areas. Delivery, setup, and breakdown available.",
+  url: "https://bloomflowerwallrentals.com",
+  telephone: "",
+  email: "info@bloomflowerwallrentals.com",
+  image: "https://bloomflowerwallrentals.com/white-wall.png",
+  priceRange: "$$",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Clermont",
+    addressRegion: "FL",
+    addressCountry: "US",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 28.5494,
+    longitude: -81.7729,
+  },
+  areaServed: [
+    { "@type": "City", name: "Clermont" },
+    { "@type": "City", name: "Minneola" },
+    { "@type": "City", name: "Groveland" },
+    { "@type": "City", name: "Winter Garden" },
+    { "@type": "City", name: "Windermere" },
+    { "@type": "City", name: "Kissimmee" },
+    { "@type": "City", name: "Orlando" },
+    { "@type": "City", name: "Davenport" },
+  ],
+  serviceType: [
+    "Flower Wall Rental",
+    "Wedding Backdrop Rental",
+    "Event Decor Rental",
+    "Photo Backdrop Rental",
+  ],
+  sameAs: ["https://www.instagram.com/bloomflowerwallrentals"],
+};
+
+function PageMeta() {
+  useEffect(() => {
+    document.title =
+      "Bloom Flower Wall Rentals | Clermont, FL — Luxury Backdrops for Weddings & Events";
+    const setMeta = (sel, attr, val) => {
+      let el = document.querySelector(sel);
+      if (!el) {
+        el = document.createElement("meta");
+        document.head.appendChild(el);
+      }
+      el.setAttribute(attr, val);
+    };
+    setMeta(
+      'meta[name="description"]',
+      "content",
+      "Bloom Flower Wall Rentals — luxurious flower wall backdrops for weddings, showers, and events in Clermont, FL and surrounding areas. White, blush, ivory & mixed styles. Delivery, setup & breakdown available."
+    );
+    setMeta(
+      'meta[property="og:title"]',
+      "content",
+      "Bloom Flower Wall Rentals | Clermont, FL"
+    );
+    setMeta(
+      'meta[property="og:description"]',
+      "content",
+      "Luxury flower wall rentals for weddings & events in Clermont, FL. White, blush, ivory, and mixed styles. Delivery + setup available."
+    );
+    setMeta(
+      'meta[property="og:url"]',
+      "content",
+      "https://bloomflowerwallrentals.com/"
+    );
+    setMeta(
+      'meta[property="og:image"]',
+      "content",
+      "https://bloomflowerwallrentals.com/white-wall.png"
+    );
+    setMeta(
+      'meta[property="og:image:alt"]',
+      "content",
+      "White garden flower wall by Bloom Flower Wall Rentals"
+    );
+    setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
+    setMeta(
+      'meta[name="twitter:title"]',
+      "content",
+      "Bloom Flower Wall Rentals | Clermont, FL"
+    );
+    setMeta(
+      'meta[name="twitter:description"]',
+      "content",
+      "Luxury flower wall backdrops for weddings & events. Serving Clermont, FL and surrounding areas."
+    );
+    setMeta(
+      'meta[name="twitter:image"]',
+      "content",
+      "https://bloomflowerwallrentals.com/white-wall.png"
+    );
+    // canonical
+    let canon = document.querySelector('link[rel="canonical"]');
+    if (!canon) {
+      canon = document.createElement("link");
+      canon.rel = "canonical";
+      document.head.appendChild(canon);
+    }
+    canon.href = "https://bloomflowerwallrentals.com/";
+    // JSON-LD
+    let ld = document.getElementById("ld-localbusiness");
+    if (!ld) {
+      ld = document.createElement("script");
+      ld.id = "ld-localbusiness";
+      ld.type = "application/ld+json";
+      document.head.appendChild(ld);
+    }
+    ld.textContent = JSON.stringify(SCHEMA);
+  }, []);
+  return null;
+}
+
+const POPUP_ENDPOINT = "https://formspree.io/f/xkozjrka"; // reuse same form, tagged with source
+const POPUP_KEY = "bloom_popup_dismissed";
+
+function EmailPopup({ onClose }) {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 60);
+    return () => clearTimeout(t);
+  }, []);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    setStatus("sending");
+    try {
+      const res = await fetch(POPUP_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          _subject: "10% Discount Signup — Bloom Flower Wall Rentals",
+          source: "Homepage exit-intent popup",
+          discount: "BLOOM10",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error();
+      setStatus("success");
+      localStorage.setItem(POPUP_KEY, "1");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  function dismiss() {
+    setVisible(false);
+    setTimeout(onClose, 400);
+  }
 
   return (
-    <div className="min-h-screen bg-[#fbf7f2] text-[#1b1b1b]">
-      <SeoLite
-        title="Clermont Flower Wall Rentals | Bloom Flower Wall Rentals"
-        description="Luxury flower wall rentals in Clermont, FL for weddings, showers, and events. Delivery, professional setup, and breakdown included."
-      />
-      <LocalBusinessSchema />
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) dismiss();
+      }}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 10000,
+        background: "rgba(0,0,0,0.72)",
+        backdropFilter: "blur(6px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24,
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.4s ease",
+      }}
+    >
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: 520,
+          background: "#0e0e0e",
+          border: "1px solid rgba(201,169,110,0.25)",
+          boxShadow: "0 32px 80px rgba(0,0,0,0.7)",
+          transform: visible ? "translateY(0)" : "translateY(24px)",
+          transition: "transform 0.45s cubic-bezier(0.16,1,0.3,1)",
+          overflow: "hidden",
+        }}
+      >
+        {/* Gold top bar */}
+        <div
+          style={{
+            height: 3,
+            background: "linear-gradient(90deg, #c9a96e, #e8d5a8, #c9a96e)",
+          }}
+        />
 
-      {/* Effects (same as pricing add-ons) */}
+        {/* Close button */}
+        <button
+          onClick={dismiss}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: 16,
+            right: 16,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "rgba(245,240,232,0.35)",
+            fontSize: 20,
+            lineHeight: 1,
+            padding: 4,
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={(e) => (e.target.style.color = "#c9a96e")}
+          onMouseLeave={(e) =>
+            (e.target.style.color = "rgba(245,240,232,0.35)")
+          }
+        >
+          ✕
+        </button>
+
+        <div style={{ padding: "44px 44px 40px" }}>
+          {status === "success" ? (
+            <div style={{ textAlign: "center", padding: "16px 0 8px" }}>
+              <div
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: 48,
+                  color: "#c9a96e",
+                  marginBottom: 16,
+                }}
+              >
+                ✦
+              </div>
+              <h2
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "clamp(26px, 4vw, 36px)",
+                  fontWeight: 300,
+                  marginBottom: 12,
+                }}
+              >
+                You're in!
+              </h2>
+              <p
+                style={{
+                  fontSize: 14,
+                  color: "rgba(245,240,232,0.55)",
+                  lineHeight: 1.75,
+                  fontWeight: 300,
+                  marginBottom: 20,
+                }}
+              >
+                We'll email your discount code shortly. Use it when requesting a
+                quote.
+              </p>
+              <div
+                style={{
+                  background: "#131313",
+                  border: "1px solid rgba(201,169,110,0.2)",
+                  padding: "18px 24px",
+                  marginBottom: 28,
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 10,
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "rgba(245,240,232,0.4)",
+                    marginBottom: 10,
+                  }}
+                >
+                  Your discount code
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: 32,
+                    fontWeight: 400,
+                    color: "#c9a96e",
+                    letterSpacing: "0.12em",
+                  }}
+                >
+                  BLOOM10
+                </div>
+              </div>
+              <button
+                onClick={dismiss}
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 11,
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: "rgba(245,240,232,0.4)",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Close
+              </button>
+            </div>
+          ) : (
+            <>
+              {/* Eyebrow */}
+              <p
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 10,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "#c9a96e",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  marginBottom: 18,
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: 18,
+                    height: 1,
+                    background: "#c9a96e",
+                  }}
+                />
+                Limited Time
+              </p>
+
+              <h2
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "clamp(28px, 5vw, 42px)",
+                  fontWeight: 300,
+                  lineHeight: 1.0,
+                  letterSpacing: "-0.01em",
+                  marginBottom: 14,
+                }}
+              >
+                10% off your
+                <br />
+                <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                  first rental
+                </em>
+              </h2>
+
+              <p
+                style={{
+                  fontSize: 13,
+                  color: "rgba(245,240,232,0.5)",
+                  lineHeight: 1.75,
+                  fontWeight: 300,
+                  marginBottom: 28,
+                }}
+              >
+                Drop your email and we'll send your discount code — plus
+                priority availability updates when new wall styles arrive.
+              </p>
+
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                style={{ display: "flex", flexDirection: "column", gap: 12 }}
+              >
+                <div style={{ display: "flex", gap: 0 }}>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    required
+                    aria-label="Email address"
+                    inputMode="email"
+                    autoComplete="email"
+                    style={{
+                      flex: 1,
+                      background: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(201,169,110,0.25)",
+                      borderRight: "none",
+                      color: "#f5f0e8",
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 14,
+                      padding: "13px 16px",
+                      outline: "none",
+                      minWidth: 0,
+                    }}
+                    onFocus={(e) =>
+                      (e.target.style.borderColor = "rgba(201,169,110,0.6)")
+                    }
+                    onBlur={(e) =>
+                      (e.target.style.borderColor = "rgba(201,169,110,0.25)")
+                    }
+                  />
+                  <button
+                    type="submit"
+                    disabled={status === "sending"}
+                    style={{
+                      background: "#c9a96e",
+                      color: "#0c0c0c",
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 11,
+                      fontWeight: 500,
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                      padding: "13px 22px",
+                      border: "none",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      transition: "background 0.2s",
+                      opacity: status === "sending" ? 0.7 : 1,
+                    }}
+                  >
+                    {status === "sending" ? "…" : "Get 10% Off"}
+                  </button>
+                </div>
+
+                {status === "error" && (
+                  <p
+                    role="alert"
+                    style={{ fontSize: 11, color: "rgba(220,100,100,0.85)" }}
+                  >
+                    Something went wrong. Try emailing us directly.
+                  </p>
+                )}
+              </form>
+
+              <p
+                style={{
+                  marginTop: 16,
+                  fontSize: 11,
+                  color: "rgba(245,240,232,0.22)",
+                  lineHeight: 1.6,
+                }}
+              >
+                No spam. Unsubscribe anytime. Code applies to your first
+                booking.
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Home() {
+  const [heroIn, setHeroIn] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setHeroIn(true), 80);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Exit-intent detection
+  useEffect(() => {
+    if (localStorage.getItem(POPUP_KEY)) return;
+    let triggered = false;
+    function onMouseOut(e) {
+      if (triggered) return;
+      if (e.clientY <= 8 && e.relatedTarget === null) {
+        triggered = true;
+        setShowPopup(true);
+      }
+    }
+    // Mobile fallback: show after 45s if not dismissed
+    const fallback = setTimeout(() => {
+      if (!triggered && !localStorage.getItem(POPUP_KEY)) {
+        triggered = true;
+        setShowPopup(true);
+      }
+    }, 45000);
+    document.addEventListener("mouseout", onMouseOut);
+    return () => {
+      document.removeEventListener("mouseout", onMouseOut);
+      clearTimeout(fallback);
+    };
+  }, []);
+
+  const eyebrow = (text) => (
+    <p
+      style={{
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: 11,
+        letterSpacing: "0.24em",
+        textTransform: "uppercase",
+        color: "#c9a96e",
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        marginBottom: 18,
+      }}
+    >
+      <span
+        style={{
+          display: "inline-block",
+          width: 28,
+          height: 1,
+          background: "#c9a96e",
+          flexShrink: 0,
+        }}
+      />
+      {text}
+    </p>
+  );
+
+  return (
+    <div
+      style={{
+        background: "#0c0c0c",
+        color: "#f5f0e8",
+        overflowX: "hidden",
+        minHeight: "100vh",
+      }}
+    >
+      <PageMeta />
+      {showPopup && <EmailPopup onClose={() => setShowPopup(false)} />}
+
       <style>{`
-        @keyframes sparkle {
-          0% { opacity: 0; transform: translateY(6px) scale(0.96); }
-          25% { opacity: 0.9; }
-          55% { opacity: 0.55; transform: translateY(-2px) scale(1); }
-          100% { opacity: 0; transform: translateY(-10px) scale(1.02); }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap');
+        :root { --gold: #c9a96e; --cream: #f5f0e8; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes slowpan { 0% { transform: scale(1.0); } 100% { transform: scale(1.08) translateX(-1.5%); } }
+        @keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.25; } }
+
+        .wall-card .wall-img { transition: transform 1s cubic-bezier(0.16,1,0.3,1); }
+        .wall-card:hover .wall-img { transform: scale(1.07); }
+
+        .btn-gold {
+          display: inline-flex; align-items: center; gap: 10px;
+          background: var(--gold); color: #0c0c0c;
+          font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+          letter-spacing: 0.14em; text-transform: uppercase;
+          padding: 15px 36px; border: none; cursor: pointer;
+          text-decoration: none; transition: all 0.25s ease;
+          white-space: nowrap;
+        }
+        .btn-gold:hover { background: #d4b280; letter-spacing: 0.18em; }
+
+        .btn-outline {
+          display: inline-flex; align-items: center; gap: 10px;
+          background: transparent; color: var(--cream);
+          font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 400;
+          letter-spacing: 0.14em; text-transform: uppercase;
+          padding: 14px 36px; border: 1px solid rgba(245,240,232,0.2);
+          cursor: pointer; text-decoration: none; transition: all 0.25s ease;
+          white-space: nowrap;
+        }
+        .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+        .noise {
+          position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-size: 150px;
+        }
+
+        .photo-img { transition: transform 0.9s ease, opacity 0.3s; width: 100%; height: 100%; object-fit: cover; opacity: 0.82; }
+        .photo-img:hover { transform: scale(1.04); opacity: 1; }
+        .addon-row { transition: background 0.2s; }
+        .addon-row:hover { background: rgba(201,169,110,0.03); }
+
+        /* ── Responsive ── */
+        .hero-content { padding: 0 48px 80px; }
+        .section-pad { padding: 100px 48px; }
+        .section-pad-tb { padding-top: 100px; padding-bottom: 100px; }
+        .inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+        .inner-narrow { max-width: 860px; margin: 0 auto; padding: 0 48px; }
+
+        .walls-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+        .photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+        .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(201,169,110,0.08); }
+        .addons-header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; margin-bottom: 68px; }
+        .section-header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+
+        .addon-inner { display: flex; align-items: center; gap: 32px; flex: 1; min-width: 240px; }
+
+        @media (max-width: 900px) {
+          .walls-grid { grid-template-columns: repeat(2, 1fr); }
+          .steps-grid { grid-template-columns: 1fr; }
+          .photos-grid { grid-template-columns: repeat(2, 1fr); }
+          .hero-content { padding: 0 24px 60px; }
+          .inner { padding: 0 24px; }
+          .inner-narrow { padding: 0 24px; }
+          .section-pad { padding: 80px 24px; }
+          .addon-inner { flex-wrap: wrap; gap: 12px; }
+          .addons-header-row { flex-direction: column; align-items: flex-start; }
+          .section-header-row { flex-direction: column; align-items: flex-start; }
+        }
+
+        @media (max-width: 580px) {
+          .walls-grid { grid-template-columns: 1fr; }
+          .photos-grid { grid-template-columns: 1fr; }
+          .hero-btns { flex-direction: column; align-items: flex-start; }
+          .btn-gold, .btn-outline { width: 100%; justify-content: center; }
+          .addon-row { flex-direction: column; align-items: flex-start; gap: 16px; }
         }
       `}</style>
 
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-24 -top-28 h-[420px] w-[420px] rounded-full bg-[#e7d3b5] blur-3xl opacity-60" />
-          <div className="absolute -right-28 top-10 h-[520px] w-[520px] rounded-full bg-[#f0e8dd] blur-3xl opacity-70" />
-          <div className="absolute -bottom-44 left-[20%] h-[520px] w-[520px] rounded-full bg-[#ead9c1] blur-3xl opacity-60" />
+      <div className="noise" />
+
+      {/* ══════════ 1. HERO ══════════ */}
+      <section
+        style={{
+          position: "relative",
+          height: "100vh",
+          minHeight: 580,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ position: "absolute", inset: 0 }}>
+          <img
+            src="/white-wall.png"
+            alt=""
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: "brightness(0.2) saturate(0.45)",
+              animation: "slowpan 20s ease-in-out infinite alternate",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(to top, rgba(12,12,12,1) 0%, rgba(12,12,12,0.55) 45%, rgba(12,12,12,0.15) 100%)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "radial-gradient(ellipse 70% 60% at 65% 25%, rgba(201,169,110,0.08) 0%, transparent 70%)",
+            }}
+          />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-5 py-14 lg:py-20">
-          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-            {/* LEFT */}
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/55 px-4 py-2 text-xs font-medium text-black/70 shadow-sm backdrop-blur">
-                <span className="inline-flex h-2 w-2 rounded-full bg-[#b98955]" />
-                Clermont, FL • Flower Wall Rentals
-              </div>
+        {/* Now booking */}
+        <div
+          style={{
+            position: "absolute",
+            top: 24,
+            right: 24,
+            display: "flex",
+            alignItems: "center",
+            gap: 9,
+            opacity: heroIn ? 1 : 0,
+            transition: "opacity 1s ease 1.3s",
+          }}
+        >
+          <span
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: "50%",
+              background: "#c9a96e",
+              display: "block",
+              animation: "pulse-dot 2.2s ease infinite",
+            }}
+          />
+          <span
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 11,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "rgba(245,240,232,0.45)",
+            }}
+          >
+            Now Booking
+          </span>
+        </div>
 
-              <h1 className="mt-6 font-serif text-[44px] leading-[1.02] tracking-tight sm:text-[56px] lg:text-[64px]">
-                Clermont{" "}
-                <span className="text-[#b98955]">flower wall rentals</span> for
-                weddings & events.
-              </h1>
-
-              <p className="mt-6 max-w-prose text-[15px] leading-relaxed text-black/65">
-                Bloom Flower Wall Rentals provides premium flower wall rentals
-                in Clermont, FL for weddings, showers, birthdays, and brand
-                events. We handle delivery, professional setup, and breakdown in
-                Clermont and surrounding areas.
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link className={PRIMARY} to="/contact">
-                  Request a Quote
-                </Link>
-                <Link className={SECONDARY} to="/pricing">
-                  See pricing
-                </Link>
-              </div>
-
-              <div className="mt-5 max-w-xl rounded-2xl border border-black/10 bg-white/45 px-4 py-3 text-sm text-black/60 shadow-[0_10px_25px_-18px_rgba(0,0,0,0.18)]">
-                <span className="font-semibold text-black/70">
-                  Now booking March dates
-                </span>
-                <span className="text-black/35"> — </span>
-                our signature white 8×8 wall arrives late February.
-              </div>
-
-              <div className="mt-6 max-w-xl">
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-black/55">
-                  <span className="inline-flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#caa374]/70" />
-                    Delivery included
-                  </span>
-                  <span className="hidden sm:inline text-black/25">•</span>
-                  <span className="inline-flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#caa374]/70" />
-                    Setup included
-                  </span>
-                  <span className="hidden sm:inline text-black/25">•</span>
-                  <span className="inline-flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#caa374]/70" />
-                    Breakdown included
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT */}
-            <div className="lg:pl-6">
-              <div className="group relative overflow-hidden rounded-3xl border border-black/10 bg-white/55 shadow-[0_20px_70px_-30px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_-40px_rgba(0,0,0,0.45)]">
-                <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100">
-                  <div className="absolute -left-32 -top-32 h-72 w-72 rounded-full bg-white/40 blur-2xl" />
-                  <div className="absolute -right-24 top-10 h-80 w-80 rounded-full bg-[#e7d3b5]/35 blur-3xl" />
-                </div>
-
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f6f3ee]">
-                  <img
-                    src={wallImg}
-                    alt="White 8x8 flower wall backdrop rental in Clermont, FL"
-                    className="h-full w-full object-cover"
-                    loading="eager"
-                    decoding="async"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
-
-                  <div className="absolute left-4 top-4 rounded-full border border-white/20 bg-white/60 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/70 backdrop-blur">
-                    White Garden • 8×8
-                  </div>
-
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <div className="text-sm font-medium">
-                      Photo-ready, soft white florals
-                    </div>
-                    <div className="mt-1 text-xs text-white/85">
-                      Neon signs shown in photos are optional add-ons.
-                    </div>
-                  </div>
-
-                  <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100">
-                    <div className="absolute -left-1/2 top-0 h-full w-[180%] -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                  </div>
-                </div>
-
-                <div className="relative flex items-center justify-between gap-4 border-t border-black/10 bg-white/60 px-5 py-4 backdrop-blur">
-                  <p className="text-sm text-black/65">
-                    Serving{" "}
-                    <span className="font-medium text-black">Clermont, FL</span>{" "}
-                    + surrounding areas.
-                  </p>
-
-                  <Link
-                    to="/pricing"
-                    className="inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/80 px-4 py-2 text-sm font-semibold text-black shadow-sm transition hover:bg-white hover:shadow-md active:scale-[0.99]"
-                  >
-                    See pricing{" "}
-                    <span className="inline-block translate-y-[0.5px] transition group-hover:translate-x-0.5">
-                      →
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            </div>
+        <div
+          className="hero-content"
+          style={{
+            position: "relative",
+            maxWidth: 1280,
+            width: "100%",
+            margin: "0 auto",
+          }}
+        >
+          <div
+            style={{
+              opacity: heroIn ? 1 : 0,
+              transform: heroIn ? "none" : "translateY(14px)",
+              transition: "opacity 0.9s ease 0.1s, transform 0.9s ease 0.1s",
+            }}
+          >
+            {eyebrow("Clermont, FL · Luxury Flower Wall Rentals")}
           </div>
 
-          <div className="mt-10">
-            <div className={CARD}>
-              <div className={CARD_ACCENT} />
-              <div className={CARD_TITLE}>Founding Events Availability</div>
-              <p className={CARD_TEXT}>
-                Bloom Flower Wall Rentals is now booking a limited number of
-                early events in Clermont, FL. Introductory pricing is available
-                while we build our local portfolio.
-              </p>
-            </div>
+          <h1
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: "clamp(52px, 10vw, 136px)",
+              fontWeight: 300,
+              lineHeight: 0.92,
+              letterSpacing: "-0.02em",
+              marginBottom: 40,
+              opacity: heroIn ? 1 : 0,
+              transform: heroIn ? "none" : "translateY(32px)",
+              transition: "opacity 1.1s ease 0.22s, transform 1.1s ease 0.22s",
+            }}
+          >
+            Your event,
+            <br />
+            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+              unforgettable.
+            </em>
+          </h1>
+
+          <div
+            className="hero-btns"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 14,
+              alignItems: "center",
+              opacity: heroIn ? 1 : 0,
+              transform: heroIn ? "none" : "translateY(18px)",
+              transition: "opacity 1s ease 0.42s, transform 1s ease 0.42s",
+            }}
+          >
+            <Link to="/contact" className="btn-gold">
+              Check Availability
+            </Link>
+            <a href="#walls" className="btn-outline">
+              View Walls
+            </a>
+            <span
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 13,
+                color: "rgba(245,240,232,0.38)",
+                fontWeight: 300,
+              }}
+            >
+              From{" "}
+              <strong style={{ color: "#c9a96e", fontWeight: 500 }}>
+                $350
+              </strong>
+            </span>
           </div>
+        </div>
+
+        {/* Scroll line */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 24,
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 10,
+            opacity: heroIn ? 0.4 : 0,
+            transition: "opacity 1s ease 1.6s",
+          }}
+        >
+          <div
+            style={{
+              width: 1,
+              height: 48,
+              background: "linear-gradient(180deg, #c9a96e, transparent)",
+            }}
+          />
+          <span
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 9,
+              letterSpacing: "0.28em",
+              textTransform: "uppercase",
+              color: "#c9a96e",
+            }}
+          >
+            Scroll
+          </span>
         </div>
       </section>
 
-      {/* HOW IT WORKS (HORIZONTAL COLUMNS + VERTICAL GOLD DIVIDERS) */}
-      <section className="py-14">
-        <div className="mx-auto max-w-7xl px-5">
-          <div className="max-w-2xl">
-            <h2 className="font-serif text-3xl tracking-tight">How it works</h2>
-            <p className="mt-2 text-sm text-black/60 leading-relaxed">
-              Simple, stress-free flower wall rentals from start to finish.
-            </p>
-          </div>
+      {/* ══════════ 2. MARQUEE ══════════ */}
+      <div
+        style={{
+          borderTop: "1px solid rgba(201,169,110,0.12)",
+          borderBottom: "1px solid rgba(201,169,110,0.12)",
+          padding: "18px 0",
+          background: "#0e0e0e",
+        }}
+      >
+        <Marquee
+          items={[
+            "Flower Wall Rentals",
+            "Weddings",
+            "Baby Showers",
+            "Birthday Events",
+            "Brand Activations",
+            "Neon Signs",
+            "Custom Signage",
+            "Balloon Installs",
+            "Clermont FL",
+          ]}
+        />
+      </div>
 
-          <div className="mt-8 rounded-3xl border border-black/10 bg-white/40 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.30)]">
-            <div className="grid gap-0 md:grid-cols-3">
-              {[
-                {
-                  n: "01",
-                  title: "Share your details",
-                  text: "Send your event date, venue/city, and your vibe (or inspo).",
-                },
-                {
-                  n: "02",
-                  title: "We confirm everything",
-                  text: "We confirm availability, timing, and venue notes—then send your quote.",
-                },
-                {
-                  n: "03",
-                  title: "We deliver & install",
-                  text: "We handle delivery, professional setup, and return for breakdown.",
-                },
-              ].map((x, idx) => (
-                <div
-                  key={x.n}
-                  className={[
-                    "relative px-6 py-8 sm:px-8",
-                    idx !== 0 ? "md:border-l md:border-[#caa374]/40" : "",
-                    idx !== 0 ? "border-t border-black/10 md:border-t-0" : "",
-                  ].join(" ")}
+      {/* ══════════ 3. WALL GALLERY ══════════ */}
+      <section id="walls" style={{ paddingTop: 100 }}>
+        <div className="inner" style={{ paddingBottom: 52 }}>
+          <Reveal>
+            <div className="section-header-row">
+              <div>
+                {eyebrow("Our Collection")}
+                <h2
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: "clamp(38px, 6vw, 78px)",
+                    fontWeight: 300,
+                    lineHeight: 0.95,
+                    letterSpacing: "-0.01em",
+                  }}
                 >
-                  <div className="text-xs uppercase tracking-[0.24em] text-black/35">
-                    Step {x.n}
-                  </div>
-                  <div className="mt-3 text-sm font-semibold text-black/80">
-                    {x.title}
-                  </div>
-                  <p className="mt-2 text-sm text-black/60 leading-relaxed mb-0">
-                    {x.text}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/contact" className={PRIMARY}>
-              Request a Quote
-            </Link>
-            <Link to="/pricing" className={SECONDARY}>
-              See pricing
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* WHAT'S INCLUDED (PRICING ADD-ONS STYLE + GOLD LINE HOVER) */}
-      <section className="relative overflow-hidden py-14">
-        {/* Background Glow (matches hero) */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-24 -top-28 h-[420px] w-[420px] rounded-full bg-[#e7d3b5] blur-3xl opacity-55" />
-          <div className="absolute -right-28 top-10 h-[520px] w-[520px] rounded-full bg-[#f0e8dd] blur-3xl opacity-65" />
-          <div className="absolute -bottom-44 left-[20%] h-[520px] w-[520px] rounded-full bg-[#ead9c1] blur-3xl opacity-55" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-5">
-          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-            <div>
-              <h2 className="font-serif text-3xl tracking-tight">
-                What’s included
-              </h2>
-              <p className="mt-2 text-sm text-black/60 leading-relaxed max-w-prose">
-                Transparent pricing with everything you need for a polished,
-                photo-ready setup.
-              </p>
-
-              <div className="mt-10 divide-y divide-black/10 border-t border-black/10">
-                {whatsIncluded.map((x) => {
-                  const isOptional = x.pill === "OPTIONAL";
-                  return (
-                    <div key={x.title} className="group relative py-8">
-                      {/* warm hover wash */}
-                      <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100 bg-gradient-to-r from-white/40 via-[#f6f3ee]/45 to-[#f2e0cc]/35" />
-
-                      {/* gold left-line */}
-                      <div className="pointer-events-none absolute left-0 top-8 h-8 w-px bg-transparent transition duration-300 group-hover:bg-[#caa374]/70" />
-
-                      <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                        {/* Left */}
-                        <div className="pl-4 sm:pl-5">
-                          <div className="flex flex-wrap items-center gap-3">
-                            <h3 className="text-lg font-medium tracking-tight transition-all duration-300 group-hover:tracking-[0.02em]">
-                              {x.title}
-                            </h3>
-
-                            <span
-                              className={[
-                                "text-[11px] uppercase tracking-[0.18em]",
-                                isOptional ? "text-[#caa374]" : "text-black/40",
-                              ].join(" ")}
-                            >
-                              {x.pill}
-                            </span>
-                          </div>
-
-                          <p className="mt-2 max-w-xl text-sm text-black/60 leading-relaxed">
-                            {x.note}
-                          </p>
-                        </div>
-
-                        {/* Right */}
-                        <div className="sm:text-right">
-                          <div
-                            className={[
-                              "text-sm font-medium transition duration-300",
-                              isOptional ? "text-[#caa374]" : "text-black/70",
-                            ].join(" ")}
-                          >
-                            {x.right}
-                          </div>
-
-                          <Link
-                            to={x.ctaTo}
-                            className="mt-3 inline-flex items-center gap-2 text-sm text-black/55 underline-offset-4 transition duration-300 hover:underline group-hover:text-black/80"
-                          >
-                            {x.ctaLabel}
-                            <span
-                              className={[
-                                "text-black/30 transition duration-300 group-hover:translate-x-1",
-                                isOptional
-                                  ? "group-hover:text-[#caa374]"
-                                  : "group-hover:text-black/60",
-                              ].join(" ")}
-                            >
-                              →
-                            </span>
-                          </Link>
-                        </div>
-                      </div>
-
-                      {/* tiny sparkle */}
-                      <span
-                        className="pointer-events-none absolute right-6 top-6 h-1 w-1 rounded-full bg-[#caa374] opacity-0 group-hover:opacity-100"
-                        style={{ animation: "sparkle 900ms ease-out both" }}
-                      />
-                    </div>
-                  );
-                })}
+                  Choose your
+                  <br />
+                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                    flower wall
+                  </em>
+                </h2>
               </div>
+              <Link to="/gallery" className="btn-outline">
+                Full Gallery →
+              </Link>
             </div>
+          </Reveal>
+        </div>
 
-            {/* $350 RATE */}
-            <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-white/50 shadow-[0_18px_40px_-28px_rgba(0,0,0,0.35)]">
-              <div className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#caa374]/80 via-[#caa374]/30 to-transparent" />
-
-              <div className="p-7">
-                <div className="flex items-start justify-between gap-6">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60">
-                    Event rate
-                  </div>
-
-                  <div className="text-xs text-black/50">
-                    Clermont, FL + nearby areas
-                  </div>
+        <div className="walls-grid">
+          {walls.map((w, i) => (
+            <Reveal key={w.name} delay={i * 0.08}>
+              <div
+                className="wall-card"
+                style={{
+                  position: "relative",
+                  overflow: "hidden",
+                  aspectRatio: "3/4",
+                  background: "#111",
+                  cursor: "pointer",
+                }}
+              >
+                <img
+                  className="wall-img"
+                  src={w.img}
+                  alt={`${w.name} flower wall`}
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    opacity: 0.72,
+                  }}
+                  loading="lazy"
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(180deg, transparent 28%, rgba(12,12,12,0.92) 100%)",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 16,
+                    left: 16,
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 10,
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    background: "rgba(12,12,12,0.5)",
+                    border: "1px solid rgba(201,169,110,0.35)",
+                    color: "#c9a96e",
+                    padding: "5px 12px",
+                    backdropFilter: "blur(8px)",
+                  }}
+                >
+                  {w.tag}
                 </div>
-
-                <div className="mt-6">
-                  <div className="font-serif text-[52px] leading-none">
-                    $350
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: 24,
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: "clamp(22px, 3vw, 30px)",
+                      fontWeight: 400,
+                      lineHeight: 1.05,
+                      marginBottom: 6,
+                    }}
+                  >
+                    {w.name}
                   </div>
-                  <div className="mt-1 text-xs text-black/50">per event</div>
-
-                  <div className="mt-5 text-sm text-black/60">
-                    <span className="text-black/45">Includes:</span>{" "}
-                    <span className="text-black/70">delivery</span>,{" "}
-                    <span className="text-black/70">setup</span>,{" "}
-                    <span className="text-black/70">breakdown</span>
+                  <div
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 11,
+                      color: "rgba(245,240,232,0.48)",
+                      letterSpacing: "0.06em",
+                      marginBottom: 16,
+                    }}
+                  >
+                    {w.size} · {w.vibe}
                   </div>
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <Link to="/pricing" className={SECONDARY}>
-                    View Pricing
-                  </Link>
                   <Link
                     to="/contact"
-                    className={PRIMARY.replace("px-5 py-3", "px-5 py-2.5")}
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 11,
+                      color: "#c9a96e",
+                      textDecoration: "none",
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                    }}
                   >
-                    Check availability
+                    Check Date →
                   </Link>
                 </div>
               </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
-              <div className="border-t border-black/10 bg-white/45 p-5 text-xs text-black/55">
-                Booking ahead? If your event is{" "}
-                <span className="font-medium text-black/65">6–8+ weeks</span>{" "}
-                out, we can often source additional wall styles by request.
+      {/* ══════════ 4. PHOTO STRIP ══════════ */}
+      <section style={{ padding: "100px 0" }}>
+        <div className="inner" style={{ paddingBottom: 48 }}>
+          <Reveal>
+            <div className="section-header-row">
+              <div>
+                {eyebrow("Real Moments")}
+                <h2
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: "clamp(34px, 5vw, 68px)",
+                    fontWeight: 300,
+                    lineHeight: 1,
+                  }}
+                >
+                  Recent{" "}
+                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                    setups
+                  </em>
+                </h2>
               </div>
+              <Link to="/gallery" className="btn-outline">
+                See More →
+              </Link>
             </div>
+          </Reveal>
+        </div>
+
+        <div className="inner">
+          <div className="photos-grid">
+            {recentSetups.map((src, i) => (
+              <Reveal key={src} delay={i * 0.06}>
+                <div
+                  style={{
+                    position: "relative",
+                    overflow: "hidden",
+                    aspectRatio: i % 3 === 1 ? "1/1.25" : "1/1",
+                    background: "#161616",
+                  }}
+                >
+                  <img
+                    className="photo-img"
+                    src={src}
+                    alt={
+                      [
+                        "White flower wall at Clermont wedding",
+                        "Blush backdrop at baby shower in Winter Garden",
+                        "Flower wall setup at quinceañera in Kissimmee",
+                        "Ivory flower wall at birthday party in Orlando",
+                        "Mixed floral backdrop at bridal shower",
+                        "Bloom flower wall at outdoor event in Clermont",
+                      ][i]
+                    }
+                    loading="lazy"
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(180deg, transparent 55%, rgba(12,12,12,0.4) 100%)",
+                      pointerEvents: "none",
+                    }}
+                  />
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* PERFECT FOR */}
-      <section className="py-14">
-        <div className="mx-auto max-w-7xl px-5">
-          <div className="max-w-2xl">
-            <h2 className="font-serif text-3xl tracking-tight">Perfect for</h2>
-            <p className="mt-2 text-sm text-black/60 leading-relaxed">
-              Designed to elevate events of all kinds.
+      {/* ══════════ 5. QUOTE BREAK ══════════ */}
+      <section
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          padding: "110px 24px",
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(ellipse 90% 70% at 50% 50%, rgba(201,169,110,0.065) 0%, transparent 100%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 1,
+            background:
+              "linear-gradient(90deg, transparent, rgba(201,169,110,0.18) 50%, transparent)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 1,
+            background:
+              "linear-gradient(90deg, transparent, rgba(201,169,110,0.18) 50%, transparent)",
+          }}
+        />
+        <Reveal y={20}>
+          <div style={{ maxWidth: 900, margin: "0 auto" }}>
+            <span
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(16px, 2.5vw, 26px)",
+                color: "#c9a96e",
+                opacity: 0.5,
+                display: "block",
+                marginBottom: 24,
+                letterSpacing: "0.12em",
+              }}
+            >
+              ✦ ✦ ✦
+            </span>
+            <p
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(30px, 5.5vw, 76px)",
+                fontWeight: 300,
+                lineHeight: 1.05,
+                letterSpacing: "-0.015em",
+                color: "#f5f0e8",
+              }}
+            >
+              "Weekends fill fast —<br />
+              <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                secure your date early.
+              </em>
+              "
             </p>
+            <div style={{ marginTop: 44 }}>
+              <Link
+                to="/contact"
+                className="btn-gold"
+                style={{ fontSize: 13, padding: "16px 48px" }}
+              >
+                Check Availability
+              </Link>
+            </div>
           </div>
+        </Reveal>
+      </section>
 
-          <div className="mt-6 hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
-            {perfectFor.map((x) => (
-              <div key={x.title} className={CARD}>
-                <div className={CARD_ACCENT} />
-                <div className={CARD_TITLE}>{x.title}</div>
-                <p className={CARD_TEXT}>{x.text}</p>
-              </div>
+      {/* ══════════ 6. HOW IT WORKS ══════════ */}
+      <section style={{ padding: "100px 0", background: "#090909" }}>
+        <div className="inner">
+          <Reveal>
+            {eyebrow("The Process")}
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(36px, 5vw, 72px)",
+                fontWeight: 300,
+                lineHeight: 0.95,
+                letterSpacing: "-0.01em",
+                marginBottom: 64,
+              }}
+            >
+              Simple from first call
+              <br />
+              <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                to final setup
+              </em>
+            </h2>
+          </Reveal>
+
+          <div className="steps-grid">
+            {[
+              {
+                n: "01",
+                title: "Tell us your date & vibe",
+                body: "Share your event date, venue, and the style you're imagining. More detail means a better quote.",
+              },
+              {
+                n: "02",
+                title: "Receive your custom quote",
+                body: "We confirm availability and send full pricing with optional delivery, setup, and breakdown.",
+              },
+              {
+                n: "03",
+                title: "You're on the calendar",
+                body: "Reserve your date with a retainer. Add-ons like neon and signage can be layered in anytime.",
+              },
+            ].map((step, i) => (
+              <Reveal key={step.n} delay={i * 0.1}>
+                <div
+                  style={{
+                    background: "#090909",
+                    padding: "44px 36px",
+                    height: "100%",
+                    minHeight: 240,
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 24,
+                      right: 28,
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: 80,
+                      fontWeight: 300,
+                      color: "rgba(201,169,110,0.06)",
+                      lineHeight: 1,
+                      userSelect: "none",
+                    }}
+                  >
+                    {step.n}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 10,
+                      letterSpacing: "0.24em",
+                      textTransform: "uppercase",
+                      color: "#c9a96e",
+                      opacity: 0.6,
+                      marginBottom: 18,
+                    }}
+                  >
+                    Step {step.n}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: "clamp(20px, 2vw, 26px)",
+                      fontWeight: 400,
+                      marginBottom: 14,
+                      lineHeight: 1.15,
+                    }}
+                  >
+                    {step.title}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 14,
+                      color: "rgba(245,240,232,0.42)",
+                      lineHeight: 1.8,
+                      fontWeight: 300,
+                    }}
+                  >
+                    {step.body}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
 
-          <div className="mt-6 md:hidden">
-            <div className="flex gap-4 overflow-x-auto pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
-              {perfectFor.map((x) => (
-                <div key={x.title} className={`min-w-[78%] snap-start ${CARD}`}>
-                  <div className={CARD_ACCENT} />
-                  <div className={CARD_TITLE}>{x.title}</div>
-                  <p className={CARD_TEXT}>{x.text}</p>
-                </div>
-              ))}
+          <Reveal delay={0.25}>
+            <div
+              style={{
+                display: "flex",
+                gap: 14,
+                marginTop: 44,
+                flexWrap: "wrap",
+              }}
+            >
+              <Link to="/contact" className="btn-gold">
+                Check Availability
+              </Link>
+              <Link to="/pricing" className="btn-outline">
+                View Pricing
+              </Link>
             </div>
-            <p className="mt-2 text-xs text-black/45">Swipe to see more →</p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══════════ 7. ADD-ONS ══════════ */}
+      <section style={{ background: "#080808", padding: "100px 0" }}>
+        <div className="inner">
+          <Reveal>
+            <div className="addons-header-row">
+              <div>
+                {eyebrow("Elevate It")}
+                <h2
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: "clamp(34px, 5vw, 68px)",
+                    fontWeight: 300,
+                    lineHeight: 0.95,
+                  }}
+                >
+                  Make it
+                  <br />
+                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                    completely yours
+                  </em>
+                </h2>
+              </div>
+            </div>
+          </Reveal>
+
+          <div style={{ borderTop: "1px solid rgba(201,169,110,0.12)" }}>
+            {[
+              {
+                n: "01",
+                title: "Neon Signs",
+                text: "Statement glow — beloved at weddings and showers.",
+              },
+              {
+                n: "02",
+                title: "Custom Signage",
+                text: "Names, dates, or branded moments, beautifully lettered.",
+              },
+              {
+                n: "03",
+                title: "Balloon Installs",
+                text: "Organic garlands paired perfectly with your wall.",
+              },
+              {
+                n: "04",
+                title: "Extra Florals",
+                text: "Added volume and accent blooms for a richer look.",
+              },
+            ].map((a, i) => (
+              <Reveal key={a.title} delay={i * 0.07}>
+                <div
+                  className="addon-row"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 24,
+                    padding: "28px 8px",
+                    borderBottom: "1px solid rgba(201,169,110,0.1)",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div className="addon-inner">
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: 11,
+                        color: "rgba(201,169,110,0.35)",
+                        letterSpacing: "0.08em",
+                        minWidth: 22,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {a.n}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "'Cormorant Garamond', serif",
+                        fontSize: "clamp(20px, 2.2vw, 30px)",
+                        fontWeight: 400,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {a.title}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: 14,
+                        color: "rgba(245,240,232,0.38)",
+                        fontWeight: 300,
+                      }}
+                    >
+                      {a.text}
+                    </span>
+                  </div>
+                  <Link
+                    to="/contact"
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 11,
+                      color: "#c9a96e",
+                      textDecoration: "none",
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                      flexShrink: 0,
+                    }}
+                  >
+                    Request Quote →
+                  </Link>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials remain unchanged */}
-      {testimonials.length > 0 && (
-        <section className="py-14">
-          <div className="mx-auto max-w-7xl px-5">
-            <div className="max-w-2xl">
-              <h2 className="font-serif text-3xl tracking-tight">
-                Kind words from our clients
-              </h2>
-              <p className="mt-2 text-sm text-black/60 leading-relaxed">
-                A few notes from recent events in Clermont, FL and nearby areas.
-              </p>
-            </div>
-
-            <div className="mt-6 grid gap-6 md:grid-cols-3">
-              {testimonials.map((t, i) => (
-                <div key={i} className={CARD}>
-                  <div className={CARD_ACCENT} />
-                  <p className="text-sm text-black/60 leading-relaxed mb-0">
-                    “{t.quote}”
-                  </p>
-                  <p className="mt-3 text-xs text-black/55">— {t.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* FINAL CTA */}
-      <section className="border-t border-black/10 bg-[#f2e0cc]/35 py-12">
-        <div className="mx-auto max-w-7xl px-5">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <div className="font-serif text-[22px] tracking-tight">
-                Ready to reserve your date?
-              </div>
-              <div className="mt-1 text-sm text-black/60 leading-relaxed">
-                Flower wall rentals in Clermont, FL with delivery and setup
-                included.
-              </div>
-            </div>
-            <Link
-              to="/contact"
-              className={PRIMARY.replace("px-5 py-3", "px-6 py-3")}
+      {/* ══════════ 8. FAQ ══════════ */}
+      <section style={{ padding: "100px 0" }}>
+        <div className="inner-narrow">
+          <Reveal>
+            {eyebrow("Common Questions")}
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(34px, 5vw, 64px)",
+                fontWeight: 300,
+                lineHeight: 1,
+                marginBottom: 56,
+              }}
             >
-              Request a Quote
+              Before you{" "}
+              <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                reach out
+              </em>
+            </h2>
+          </Reveal>
+          {faqs.map((f, i) => (
+            <Reveal key={f.q} delay={i * 0.05}>
+              <FAQItem q={f.q} a={f.a} />
+            </Reveal>
+          ))}
+          <Reveal delay={0.28}>
+            <Link
+              to="/faq"
+              style={{
+                display: "inline-block",
+                marginTop: 44,
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 12,
+                color: "#c9a96e",
+                textDecoration: "none",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+              }}
+            >
+              View Full FAQ →
             </Link>
-          </div>
+          </Reveal>
         </div>
+      </section>
+
+      {/* ══════════ 9. FOOTER CTA ══════════ */}
+      <section
+        style={{
+          padding: "80px 24px",
+          borderTop: "1px solid rgba(201,169,110,0.1)",
+          textAlign: "center",
+        }}
+      >
+        <Reveal>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: 16,
+            }}
+          >
+            {eyebrow("Get in Touch")}
+          </div>
+          <h2
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: "clamp(28px, 4vw, 52px)",
+              fontWeight: 300,
+              marginBottom: 32,
+            }}
+          >
+            Want a full quote with add-ons?
+          </h2>
+          <Link to="/contact" className="btn-gold">
+            Request a Quote
+          </Link>
+        </Reveal>
       </section>
     </div>
   );

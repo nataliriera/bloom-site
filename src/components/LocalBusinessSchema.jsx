@@ -6,10 +6,10 @@ export default function LocalBusinessSchema() {
     "@type": "LocalBusiness",
     name: "Bloom Flower Wall Rentals",
     description:
-      "Airy, luxurious flower wall rentals with delivery, professional setup, and breakdown in Clermont, Florida and surrounding areas.",
+      "Luxury flower wall rentals for weddings and events in Clermont, Florida and surrounding areas. Packages start at $350. Delivery, professional setup, and breakdown are available for an additional fee.",
     url: "https://bloomflowerwallrentals.com",
     telephone: "+1-863-335-5022",
-    email: "hello@bloomwallrentals.com",
+    email: "info@bloomflowerwallrentals.com",
     areaServed: [
       "Clermont, FL",
       "Minneola, FL",
@@ -28,10 +28,8 @@ export default function LocalBusinessSchema() {
       addressRegion: "FL",
       addressCountry: "US",
     },
-    sameAs: [
-      "https://www.instagram.com/bloomflowerwallrentals/",
-      "https://bloomfloralwallrentals.com",
-    ],
+    sameAs: ["https://www.instagram.com/bloomflowerwallrentals/"],
+    priceRange: "$$$",
   };
 
   return <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>;

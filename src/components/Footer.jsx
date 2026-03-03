@@ -3,147 +3,337 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/bloom-logo.png";
 
+const navLinks = [
+  { to: "/gallery", label: "Styles" },
+  { to: "/pricing", label: "Pricing" },
+  { to: "/faq", label: "FAQ" },
+  { to: "/service-areas", label: "Service Areas" },
+  { to: "/contact", label: "Contact" },
+];
+
+const goldLink = {
+  fontSize: 14,
+  color: "rgba(245,240,232,0.45)",
+  textDecoration: "none",
+  padding: "10px 0",
+  borderBottom: "1px solid rgba(201,169,110,0.08)",
+  fontWeight: 300,
+  letterSpacing: "0.04em",
+  display: "block",
+  transition: "color 0.2s ease",
+};
+
+const ColLabel = ({ text }) => (
+  <div
+    style={{
+      fontSize: 10,
+      fontWeight: 500,
+      letterSpacing: "0.22em",
+      textTransform: "uppercase",
+      color: "#c9a96e",
+      marginBottom: 24,
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+    }}
+  >
+    <span
+      style={{
+        display: "inline-block",
+        width: 20,
+        height: 1,
+        background: "#c9a96e",
+      }}
+    />
+    {text}
+  </div>
+);
+
 export default function Footer() {
   return (
-    <footer className="bg-[#fbf7f2] border-t border-black/10">
-      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#caa374]/55 to-transparent" />
+    <>
+      <style>{`
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 1.4fr 1fr 1fr;
+          gap: 60px;
+          margin-bottom: 72px;
+        }
+        .footer-inner {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 80px 48px 48px;
+        }
+        .footer-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+        @media (max-width: 860px) {
+          .footer-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 52px;
+          }
+          .footer-brand-col {
+            grid-column: 1 / -1;
+          }
+          .footer-inner {
+            padding: 60px 24px 40px;
+          }
+        }
+        @media (max-width: 520px) {
+          .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 36px;
+          }
+          .footer-brand-col {
+            grid-column: auto;
+          }
+          .footer-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+        }
+      `}</style>
 
-      <div className="mx-auto max-w-7xl px-5 py-12 sm:py-14">
-        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-md">
-            <img
-              src={logo}
-              alt="Bloom Flower Wall Rentals"
-              className="h-12 sm:h-14 w-auto"
-              loading="lazy"
-              decoding="async"
-            />
+      <footer
+        style={{
+          background: "#080808",
+          borderTop: "1px solid rgba(201,169,110,0.12)",
+          fontFamily: "'DM Sans', sans-serif",
+        }}
+      >
+        {/* Gold gradient line */}
+        <div
+          style={{
+            height: 1,
+            background:
+              "linear-gradient(90deg, transparent, rgba(201,169,110,0.35) 50%, transparent)",
+          }}
+        />
 
-            <p className="mt-4 text-sm leading-relaxed text-black/60">
-              Airy, luxurious flower wall rentals for weddings and events in
-              Clermont, Florida and surrounding areas.
-            </p>
-
-            <div className="mt-5">
+        <div className="footer-inner">
+          <div className="footer-grid">
+            {/* ── Brand col ── */}
+            <div className="footer-brand-col">
+              <img
+                src={logo}
+                alt="Bloom Flower Wall Rentals"
+                loading="lazy"
+                decoding="async"
+                style={{
+                  height: 52,
+                  width: "auto",
+                  marginBottom: 20,
+                  filter: "brightness(1.05)",
+                }}
+              />
+              <p
+                style={{
+                  fontSize: 14,
+                  lineHeight: 1.8,
+                  color: "rgba(245,240,232,0.42)",
+                  fontWeight: 300,
+                  maxWidth: 340,
+                  marginBottom: 28,
+                }}
+              >
+                Luxury flower wall rentals for weddings and events in Clermont,
+                Florida and surrounding areas.
+              </p>
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-2 text-sm font-medium text-black/70 hover:text-black transition"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                  background: "#c9a96e",
+                  color: "#0c0c0c",
+                  fontSize: 11,
+                  fontWeight: 500,
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  padding: "13px 28px",
+                  textDecoration: "none",
+                  transition: "background 0.2s ease",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "#d4b280")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "#c9a96e")
+                }
               >
-                Book your date
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-black/10 bg-white/60 text-black/60 transition group-hover:bg-white">
-                  →
-                </span>
+                Book Your Date →
               </Link>
-              <div className="mt-1 text-xs text-black/45">
-                Quick reply — usually within 24 hours.
-              </div>
+              <p
+                style={{
+                  marginTop: 12,
+                  fontSize: 11,
+                  color: "rgba(245,240,232,0.25)",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                Usually replied to within 24 hours.
+              </p>
             </div>
-          </div>
 
-          <div className="flex flex-col gap-10 sm:flex-row sm:gap-16">
+            {/* ── Pages col ── */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-black/70">
-                Pages
-              </div>
-              <nav className="mt-4 flex flex-col gap-2 text-sm text-black/60">
-                <Link to="/gallery" className="hover:text-black transition">
-                  Styles
-                </Link>
-                <Link to="/pricing" className="hover:text-black transition">
-                  Pricing
-                </Link>
-                <Link to="/faq" className="hover:text-black transition">
-                  FAQ
-                </Link>
-                <Link
-                  to="/service-areas"
-                  className="hover:text-black transition"
-                >
-                  Service Areas
-                </Link>
-                <Link to="/contact" className="hover:text-black transition">
-                  Contact
-                </Link>
+              <ColLabel text="Pages" />
+              <nav style={{ display: "flex", flexDirection: "column" }}>
+                {navLinks.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    style={goldLink}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "#c9a96e")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = "rgba(245,240,232,0.45)")
+                    }
+                  >
+                    {item.label}
+                  </Link>
+                ))}
               </nav>
             </div>
 
+            {/* ── Contact col ── */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-black/70">
-                Contact
-              </div>
-              <div className="mt-4 flex flex-col gap-2 text-sm text-black/60">
-                <a
-                  href="mailto:info@bloomflowerwallrentals.com"
-                  className="hover:text-black transition"
-                >
-                  info@bloomflowerwallrentals.com
-                </a>
-                <a
-                  href="tel:+18633355022"
-                  className="hover:text-black transition"
-                >
-                  (863) 335-5022
-                </a>
-
-                <div className="mt-3">
+              <ColLabel text="Contact" />
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {[
+                  {
+                    href: "mailto:info@bloomflowerwallrentals.com",
+                    label: "info@bloomflowerwallrentals.com",
+                  },
+                  { href: "tel:+18633355022", label: "(863) 335-5022" },
+                ].map((item) => (
                   <a
-                    href="https://www.instagram.com/bloomflowerwallrentals/"
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Bloom Flower Wall Rentals on Instagram"
-                    className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-white/55 px-4 py-2 text-sm text-black/60 hover:bg-white/80 hover:text-black transition"
+                    key={item.href}
+                    href={item.href}
+                    style={{ ...goldLink, wordBreak: "break-all" }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "#c9a96e")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = "rgba(245,240,232,0.45)")
+                    }
                   >
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-white/70">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        width="18"
-                        height="18"
-                      >
-                        <rect
-                          x="2"
-                          y="2"
-                          width="20"
-                          height="20"
-                          rx="5"
-                          ry="5"
-                        />
-                        <path d="M16 11.37a4 4 0 1 1-7.75 1.25 4 4 0 0 1 7.75-1.25z" />
-                        <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
-                      </svg>
-                    </span>
-                    <span>@bloomflowerwallrentals</span>
+                    {item.label}
                   </a>
-                </div>
+                ))}
+
+                {/* Instagram */}
+                <a
+                  href="https://www.instagram.com/bloomflowerwallrentals/"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Bloom on Instagram"
+                  style={{
+                    marginTop: 24,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 12,
+                    border: "1px solid rgba(201,169,110,0.2)",
+                    padding: "12px 16px",
+                    textDecoration: "none",
+                    color: "rgba(245,240,232,0.5)",
+                    fontSize: 13,
+                    fontWeight: 300,
+                    transition: "border-color 0.2s ease, color 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(201,169,110,0.5)";
+                    e.currentTarget.style.color = "#c9a96e";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(201,169,110,0.2)";
+                    e.currentTarget.style.color = "rgba(245,240,232,0.5)";
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    width="16"
+                    height="16"
+                    style={{ color: "#c9a96e", flexShrink: 0 }}
+                  >
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37a4 4 0 1 1-7.75 1.25 4 4 0 0 1 7.75-1.25z" />
+                    <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
+                  </svg>
+                  @bloomflowerwallrentals
+                </a>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 flex flex-col gap-4 border-t border-black/10 pt-6 text-xs text-black/50 md:flex-row md:items-center md:justify-between">
-          <p>
-            © {new Date().getFullYear()} Bloom Flower Wall Rentals. All rights
-            reserved.
-          </p>
+          {/* Divider */}
+          <div
+            style={{
+              height: 1,
+              background:
+                "linear-gradient(90deg, transparent, rgba(201,169,110,0.12) 50%, transparent)",
+              marginBottom: 28,
+            }}
+          />
 
-          <div className="flex flex-wrap items-center gap-4">
-            <span>Clermont, FL</span>
-            <span className="text-black/25">•</span>
-            <Link to="/terms" className="hover:text-black transition">
-              Terms
-            </Link>
-            <Link to="/privacy" className="hover:text-black transition">
-              Privacy
-            </Link>
+          {/* Bottom bar */}
+          <div className="footer-bottom">
+            <p
+              style={{
+                fontSize: 12,
+                color: "rgba(245,240,232,0.22)",
+                fontWeight: 300,
+                letterSpacing: "0.04em",
+              }}
+            >
+              © {new Date().getFullYear()} Bloom Flower Wall Rentals · Clermont,
+              FL
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+              {[
+                { to: "/terms", label: "Terms" },
+                { to: "/privacy", label: "Privacy" },
+              ].map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  style={{
+                    fontSize: 12,
+                    color: "rgba(245,240,232,0.22)",
+                    textDecoration: "none",
+                    fontWeight: 300,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    transition: "color 0.2s",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "#c9a96e")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "rgba(245,240,232,0.22)")
+                  }
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }

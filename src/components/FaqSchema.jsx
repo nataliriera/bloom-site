@@ -1,15 +1,17 @@
 import React from "react";
 
 export default function FaqSchema({ faqs }) {
+  if (!Array.isArray(faqs) || faqs.length === 0) return null;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: faqs.map((item) => ({
       "@type": "Question",
-      name: item.q,
+      name: String(item.q),
       acceptedAnswer: {
         "@type": "Answer",
-        text: item.a,
+        text: String(item.a),
       },
     })),
   };

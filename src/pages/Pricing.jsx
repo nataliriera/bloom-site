@@ -1,8 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SeoLite from "../components/SeoLite.jsx";
 
 const extras = [
+  {
+    title: "Delivery + setup + breakdown",
+    note: "Optional professional delivery, installation, and post-event pickup. Quoted based on venue location + logistics.",
+    pill: "OPTIONAL",
+    price: "Custom quote",
+  },
   {
     title: "Custom signage",
     note: "Names, phrases, or a welcome message. Installed on the wall.",
@@ -23,7 +28,7 @@ const extras = [
   },
   {
     title: "Extended rental time",
-    note: "Need a later breakdown time? Add extra hours as needed.",
+    note: "Need a later pickup time? Add extra hours as needed.",
     pill: "ADD-ON",
     price: "$75 / hour",
   },
@@ -41,317 +46,720 @@ const extras = [
   },
   {
     title: "Have an idea?",
-    note: "Tell me what you’re imagining — I’ll help you make it happen.",
+    note: "Tell me what you're imagining — I'll help you make it happen.",
     pill: "CUSTOM",
     price: "Custom quote",
   },
 ];
 
 export default function Pricing() {
-  const PRIMARY =
-    "inline-flex items-center justify-center rounded-full bg-[#caa374] px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition hover:brightness-[0.98] active:brightness-[0.96]";
-  const SECONDARY =
-    "inline-flex items-center justify-center rounded-full border border-black/15 bg-white/60 px-5 py-2.5 text-sm font-medium text-black shadow-sm transition hover:bg-white/80 active:bg-white/65";
+  const eyebrow = (text) => (
+    <p
+      style={{
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: 11,
+        letterSpacing: "0.24em",
+        textTransform: "uppercase",
+        color: "#c9a96e",
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        marginBottom: 16,
+      }}
+    >
+      <span
+        style={{
+          display: "inline-block",
+          width: 28,
+          height: 1,
+          background: "#c9a96e",
+          flexShrink: 0,
+        }}
+      />
+      {text}
+    </p>
+  );
+
+  const colLabel = (text) => (
+    <div
+      style={{
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: 10,
+        fontWeight: 500,
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: "#c9a96e",
+        marginBottom: 20,
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+      }}
+    >
+      <span
+        style={{
+          display: "inline-block",
+          width: 18,
+          height: 1,
+          background: "#c9a96e",
+        }}
+      />
+      {text}
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-[#fbf7f2] text-[#1b1b1b]">
-      <SeoLite
-        title="Flower Wall Rental Pricing in Clermont, FL | Bloom"
-        description="Transparent flower wall rental pricing in Clermont, FL. $350 introductory event rate for our signature white 8×8 wall with delivery, professional setup, and breakdown included."
-      />
-
-      {/* Animations */}
+    <div
+      style={{
+        background: "#0c0c0c",
+        color: "#f5f0e8",
+        minHeight: "100vh",
+        fontFamily: "'DM Sans', sans-serif",
+      }}
+    >
       <style>{`
-        @keyframes sparkle {
-          0% { opacity: 0; transform: translateY(6px) scale(0.96); }
-          25% { opacity: 0.9; }
-          55% { opacity: 0.55; transform: translateY(-2px) scale(1); }
-          100% { opacity: 0; transform: translateY(-10px) scale(1.02); }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025;
+          background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-size:150px; }
+        .pricing-grid { display:grid; grid-template-columns:1.3fr 1fr; gap:2px; background:rgba(201,169,110,0.07); margin-top:64px; }
+        .pricing-main { background:#0a0a0a; padding:52px 44px; }
+        .pricing-aside { background:#0e0e0e; padding:52px 36px; display:flex; flex-direction:column; gap:2px; }
+        .aside-card { background:#0a0a0a; padding:28px; }
+        .inner { max-width:1280px; margin:0 auto; padding:0 48px; }
+        .btn-gold { display:inline-flex; align-items:center; justify-content:center; gap:10px; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:14px 32px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
+        .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
+        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:13px 28px; border:1px solid rgba(245,240,232,0.2); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
+        .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
+        .addon-row { border-bottom:1px solid rgba(201,169,110,0.1); padding:28px 8px; transition:background 0.2s; cursor:default; }
+        .addon-row:hover { background:rgba(201,169,110,0.03); }
+        .stat-row { display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid rgba(201,169,110,0.1); }
+        @media (max-width:860px) {
+          .pricing-grid { grid-template-columns:1fr; }
+          .inner { padding:0 24px; }
+          .pricing-main { padding:40px 28px; }
+          .pricing-aside { padding:40px 28px; }
         }
-
-        @keyframes goldLineIn {
-          0% { transform: scaleY(0); opacity: 0; }
-          100% { transform: scaleY(1); opacity: 1; }
+        @media (max-width:600px) {
+          .addon-inner { flex-wrap:wrap; }
         }
       `}</style>
+      <div className="noise" />
 
-      <section className="py-14">
-        <div className="container">
-          <div className="max-w-2xl">
-            <h1 className="font-serif text-[44px] leading-[1.05] tracking-tight">
-              Pricing
-            </h1>
-            <p className="mt-3 text-sm leading-relaxed text-black/60">
-              Simple, transparent pricing for flower wall rentals in{" "}
-              <span className="font-medium text-black/70">Clermont, FL</span>{" "}
-              and surrounding areas — delivery, setup, and breakdown included.
-            </p>
-
-            <div className="mt-5 rounded-2xl border border-black/10 bg-white/55 px-4 py-3 text-sm text-black/65">
-              <span className="font-semibold text-black/75">
-                Now booking March dates:
-              </span>{" "}
-              our signature white 8×8 wall arrives late February.
-            </div>
+      {/* Header */}
+      <section style={{ padding: "100px 0 0" }}>
+        <div className="inner">
+          {eyebrow("Transparent Pricing")}
+          <h1
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: "clamp(44px, 7vw, 88px)",
+              fontWeight: 300,
+              lineHeight: 0.92,
+              letterSpacing: "-0.02em",
+              marginBottom: 28,
+            }}
+          >
+            Clear pricing,
+            <br />
+            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+              luxurious results
+            </em>
+          </h1>
+          <p
+            style={{
+              fontSize: 15,
+              lineHeight: 1.75,
+              color: "rgba(245,240,232,0.45)",
+              fontWeight: 300,
+              maxWidth: 500,
+              marginBottom: 28,
+            }}
+          >
+            Flower wall rentals in Clermont, FL and surrounding areas. Packages
+            start at{" "}
+            <strong style={{ color: "#c9a96e", fontWeight: 500 }}>$350</strong>.
+            Delivery, professional setup, and breakdown available for an
+            additional fee.
+          </p>
+          <div
+            style={{
+              border: "1px solid rgba(201,169,110,0.15)",
+              padding: "16px 20px",
+              maxWidth: 480,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 13,
+              color: "rgba(245,240,232,0.42)",
+              lineHeight: 1.7,
+              fontWeight: 300,
+            }}
+          >
+            <strong style={{ color: "#c9a96e", fontWeight: 500 }}>Tip:</strong>{" "}
+            Weekend dates book fast — send your date early to lock in
+            availability.
           </div>
+        </div>
+      </section>
 
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-            <div className="overflow-hidden rounded-3xl border border-black/10 bg-white/55 shadow-md">
-              <div className="p-6 sm:p-8">
-                <div className="flex items-start justify-between gap-6">
-                  <div>
-                    <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-black/60">
-                      Flower wall rental
-                    </div>
-                    <h2 className="mt-4 font-serif text-3xl tracking-tight">
-                      Event Rate
-                    </h2>
-                    <p className="mt-2 text-sm text-black/60 leading-relaxed">
-                      One clean, easy price for your event — no confusing tiers.
-                    </p>
-                    <p className="mt-2 text-sm text-black/55 leading-relaxed">
-                      Introductory event rate for a limited number of early
-                      bookings in Clermont, FL.
-                    </p>
+      {/* Main pricing section */}
+      <section style={{ padding: "0 0 100px" }}>
+        <div className="inner">
+          <div className="pricing-grid">
+            {/* Main card */}
+            <div className="pricing-main">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                  gap: 24,
+                  marginBottom: 40,
+                  flexWrap: "wrap",
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 10,
+                      letterSpacing: "0.2em",
+                      textTransform: "uppercase",
+                      border: "1px solid rgba(201,169,110,0.2)",
+                      color: "#c9a96e",
+                      padding: "5px 14px",
+                      display: "inline-block",
+                      marginBottom: 20,
+                    }}
+                  >
+                    Flower wall rental
                   </div>
-
-                  <div className="text-right">
-                    <div className="font-serif text-[44px] leading-none">
-                      $350
-                    </div>
-                    <div className="mt-1 text-xs text-black/50">per event</div>
+                  <div
+                    style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: "clamp(24px, 3vw, 34px)",
+                      fontWeight: 400,
+                      marginBottom: 12,
+                    }}
+                  >
+                    Starting pricing
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 14,
+                      color: "rgba(245,240,232,0.42)",
+                      lineHeight: 1.75,
+                      fontWeight: 300,
+                      maxWidth: 360,
+                    }}
+                  >
+                    Your final quote depends on date, wall style, rental length,
+                    add-ons, and (if needed) delivery/setup logistics.
+                  </p>
+                </div>
+                <div style={{ textAlign: "right", flexShrink: 0 }}>
+                  <div
+                    style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: "clamp(48px, 5vw, 72px)",
+                      fontWeight: 300,
+                      color: "#c9a96e",
+                      lineHeight: 1,
+                    }}
+                  >
+                    $350+
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 11,
+                      color: "rgba(245,240,232,0.28)",
+                      letterSpacing: "0.1em",
+                      marginTop: 4,
+                    }}
+                  >
+                    starting
                   </div>
                 </div>
+              </div>
 
-                <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                  {[
-                    { k: "Delivery", v: "Included" },
-                    { k: "Setup", v: "Included" },
-                    { k: "Breakdown", v: "Included" },
-                  ].map((x) => (
-                    <div
-                      key={x.k}
-                      className="rounded-2xl border border-black/10 bg-white/50 p-4 shadow-sm"
+              {/* Stat rows */}
+              <div
+                style={{
+                  borderTop: "1px solid rgba(201,169,110,0.1)",
+                  marginBottom: 36,
+                }}
+              >
+                {[
+                  { k: "Rental", v: "Included" },
+                  { k: "Delivery / Setup", v: "Optional fee" },
+                  { k: "Breakdown / Pickup", v: "Optional fee" },
+                ].map((row) => (
+                  <div key={row.k} className="stat-row">
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: 11,
+                        letterSpacing: "0.1em",
+                        textTransform: "uppercase",
+                        color: "rgba(245,240,232,0.3)",
+                      }}
                     >
-                      <div className="text-xs text-black/55">{x.k}</div>
-                      <div className="mt-1 text-sm font-medium">{x.v}</div>
+                      {row.k}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: 13,
+                        color: "#f5f0e8",
+                        fontWeight: 400,
+                      }}
+                    >
+                      {row.v}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bullet points */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                  marginBottom: 36,
+                }}
+              >
+                {[
+                  {
+                    bold: "Packages start at $350",
+                    rest: " (varies by wall + rental length)",
+                  },
+                  {
+                    bold: null,
+                    rest: "Ideal for weddings, showers, birthdays, and brand events",
+                  },
+                  {
+                    bold: null,
+                    rest: "Add-ons like signage, balloons, and neon available",
+                  },
+                  {
+                    bold: null,
+                    rest: "Delivery/setup/breakdown pricing quoted based on venue access + location",
+                  },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 12,
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 14,
+                      color: "rgba(245,240,232,0.42)",
+                      lineHeight: 1.6,
+                      fontWeight: 300,
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "#c9a96e",
+                        fontSize: 10,
+                        paddingTop: 4,
+                        flexShrink: 0,
+                      }}
+                    >
+                      ✦
+                    </span>
+                    <span>
+                      {item.bold ? (
+                        <strong
+                          style={{
+                            color: "rgba(245,240,232,0.7)",
+                            fontWeight: 500,
+                          }}
+                        >
+                          {item.bold}
+                        </strong>
+                      ) : null}
+                      {item.rest}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div
+                style={{
+                  border: "1px solid rgba(201,169,110,0.12)",
+                  padding: "18px 20px",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 13,
+                  color: "rgba(245,240,232,0.38)",
+                  lineHeight: 1.7,
+                  marginBottom: 36,
+                  fontWeight: 300,
+                }}
+              >
+                <strong
+                  style={{ color: "rgba(245,240,232,0.6)", fontWeight: 500 }}
+                >
+                  Want a specific wall style?
+                </strong>{" "}
+                Browse available styles or request a custom/pre-order wall if
+                your event is 6–8+ weeks out.
+              </div>
+
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <Link to="/contact" className="btn-gold">
+                  Request a Quote
+                </Link>
+                <Link to="/gallery" className="btn-outline">
+                  Browse Styles
+                </Link>
+              </div>
+
+              <p
+                style={{
+                  marginTop: 24,
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 12,
+                  color: "rgba(245,240,232,0.22)",
+                  lineHeight: 1.6,
+                }}
+              >
+                Final pricing may vary based on date, rental length, add-ons,
+                and venue logistics. Your quote is confirmed before booking.
+              </p>
+            </div>
+
+            {/* Sidebar */}
+            <div className="pricing-aside">
+              <div className="aside-card">
+                {colLabel("What affects the final quote")}
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 0 }}
+                >
+                  {[
+                    "Delivery/setup/breakdown (optional) based on venue location",
+                    "Venue rules (stairs, tight load-in, required time windows)",
+                    "Add-ons (signage, balloons, neon, styling)",
+                    "Multi-day rentals or extended hours",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: 13,
+                        color: "rgba(245,240,232,0.42)",
+                        fontWeight: 300,
+                        padding: "11px 0",
+                        borderBottom: "1px solid rgba(201,169,110,0.08)",
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 12,
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: "#c9a96e",
+                          fontSize: 10,
+                          paddingTop: 4,
+                          flexShrink: 0,
+                        }}
+                      >
+                        ✦
+                      </span>
+                      {item}
                     </div>
                   ))}
                 </div>
-
-                <ul className="mt-6 grid gap-2 text-sm text-black/60">
-                  <li>
-                    •{" "}
-                    <span className="font-medium text-black/70">
-                      $350 Flower Wall (8x8)
-                    </span>{" "}
-                    <span className="text-black/50">
-                      (arrives late February)
-                    </span>
-                  </li>
-                  <li>
-                    • Ideal for weddings, showers, birthdays, and brand events
-                  </li>
-                  <li>• Venue coordination for smooth load-in and load-out</li>
-                  <li className="text-black/55">
-                    • Signs, balloons, and neon are{" "}
-                    <span className="font-medium text-black/70">
-                      optional add-ons
-                    </span>
-                  </li>
-                </ul>
-
-                <div className="mt-6 rounded-2xl border border-black/10 bg-white/60 px-4 py-3 text-sm text-black/60 leading-relaxed">
-                  <span className="font-medium text-black/70">
-                    Interested in a different style wall?
-                  </span>{" "}
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <Link to="/contact" className={PRIMARY}>
-                    Request a Quote
-                  </Link>
-                  <Link to="/gallery" className={SECONDARY}>
-                    Browse Styles
-                  </Link>
-                </div>
               </div>
 
-              <div className="border-t border-black/10 bg-white/50 px-6 py-4 text-xs text-black/50 sm:px-8">
-                This introductory rate reflects early availability while we
-                build our local event portfolio in Clermont, FL.
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-black/10 bg-white/45 p-6 shadow-sm">
-              <div className="text-sm font-semibold text-black/70">
-                What affects the final quote?
-              </div>
-              <ul className="mt-3 space-y-2 text-sm text-black/60 leading-relaxed">
-                <li>• Travel outside the standard delivery zone</li>
-                <li>
-                  • Venue rules (stairs, tight load-in, required time windows)
-                </li>
-                <li>• Add-ons (signage, balloons, styling)</li>
-                <li>• Multi-day rentals or extended hours</li>
-              </ul>
-
-              <div className="mt-6 rounded-2xl border border-black/10 bg-white/55 p-4">
-                <div className="text-sm font-semibold text-black/70">
-                  The fastest way to get a quote
-                </div>
-                <p className="mt-1 text-sm text-black/60 leading-relaxed">
-                  Send your event date, venue/city, and any inspiration. I’ll
+              <div className="aside-card">
+                {colLabel("Fastest way to get a quote")}
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 13,
+                    color: "rgba(245,240,232,0.42)",
+                    lineHeight: 1.8,
+                    fontWeight: 300,
+                  }}
+                >
+                  Send your event date, venue/city, and any inspiration. I'll
                   confirm availability and recommend a setup that photographs
                   beautifully.
                 </p>
               </div>
-            </div>
-          </div>
 
-          {/* ===========================
-              OPTIONAL ADD-ONS (EDITED)
-          ============================ */}
-          <div className="mt-14">
-            <div className="max-w-2xl">
-              <h2 className="font-serif text-3xl tracking-tight">
-                Optional add-ons
-              </h2>
-              <p className="mt-2 text-sm text-black/60 leading-relaxed">
-                Enhance your flower wall with custom details. Add-ons are
-                optional and confirmed before booking.
-              </p>
-            </div>
-
-            <div className="mt-10 space-y-5 sm:space-y-0 sm:border-t sm:border-black/10">
-              {extras.map((x, i) => (
-                <div
-                  key={x.title}
-                  className={[
-                    // Mobile: panel with border + shadow (keeps content from "floating")
-                    "group relative overflow-hidden rounded-2xl border border-black/10 bg-white/35 shadow-md",
-                    "transition",
-                    "hover:shadow-lg",
-                    // Desktop: editorial rows (no card look)
-                    "sm:rounded-none sm:border-0 sm:bg-transparent sm:shadow-none sm:hover:shadow-none",
-                    "sm:border-b sm:border-black/10",
-                  ].join(" ")}
+              <div className="aside-card">
+                {colLabel("Delivery & setup option")}
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 13,
+                    color: "rgba(245,240,232,0.42)",
+                    lineHeight: 1.8,
+                    fontWeight: 300,
+                  }}
                 >
-                  {/* Desktop-only lighter + shorter divider (editorial) */}
-                  {i !== 0 && (
-                    <div className="pointer-events-none absolute top-0 left-0 hidden w-full justify-center sm:flex">
-                      <div className="h-px w-[92%] bg-black/6" />
-                    </div>
-                  )}
-
-                  {/* Soft hover wash */}
-                  <div className="pointer-events-none absolute inset-0 bg-white/0 transition duration-300 group-hover:bg-white/20" />
-
-                  <div className="relative p-6 sm:p-0 sm:py-9">
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_190px] sm:gap-8">
-                      {/* LEFT */}
-                      <div className="relative pl-6">
-                        <div className="relative inline-block">
-                          {/* Gold line: title-height only, animates in, stays while hovering */}
-                          <span
-                            className="pointer-events-none absolute -left-4 top-1 h-[1.4em] w-px origin-top scale-y-0 opacity-0 group-hover:opacity-100"
-                            style={{
-                              background: "rgba(202,163,116,0.85)",
-                              animation: "goldLineIn 250ms ease-out forwards",
-                            }}
-                          />
-
-                          <div className="flex flex-wrap items-center gap-3">
-                            <h3 className="text-[18px] font-semibold tracking-tight transition-all duration-300 group-hover:tracking-[0.02em]">
-                              {x.title}
-                            </h3>
-
-                            <span
-                              className={`text-[11px] uppercase tracking-[0.22em] ${
-                                x.pill === "MOST POPULAR"
-                                  ? "text-[#caa374]"
-                                  : "text-black/40"
-                              }`}
-                            >
-                              {x.pill}
-                            </span>
-                          </div>
-                        </div>
-
-                        <p className="mt-3 max-w-xl text-sm text-black/60 leading-relaxed">
-                          {x.note}
-                        </p>
-                      </div>
-
-                      {/* RIGHT */}
-                      <div className="relative sm:text-right">
-                        {/* Lighter + shorter vertical divider (editorial) */}
-                        <div className="absolute left-0 top-2 hidden h-[70%] w-px bg-black/6 sm:block" />
-
-                        {/* Mobile: price + CTA in one row so it doesn't float */}
-                        <div className="flex items-end justify-between gap-4 sm:block">
-                          <div className="font-serif text-[19px] text-black/75 transition duration-300 group-hover:text-[#caa374]">
-                            {x.price}
-                          </div>
-
-                          <Link
-                            to="/contact"
-                            className="inline-flex items-center gap-2 text-sm text-black/55 underline-offset-4 transition duration-300 hover:underline group-hover:text-black/80 sm:mt-3 sm:justify-end"
-                          >
-                            Ask about this
-                            <span className="text-black/30 transition duration-300 group-hover:translate-x-1 group-hover:text-[#caa374]">
-                              →
-                            </span>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Tiny sparkle */}
-                    <span
-                      className="pointer-events-none absolute right-6 top-6 h-1 w-1 rounded-full bg-[#caa374] opacity-0 group-hover:opacity-100 sm:top-10"
-                      style={{ animation: "sparkle 900ms ease-out both" }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-8 rounded-2xl border border-black/10 bg-white/45 p-5 text-sm text-black/60">
-            <span className="font-medium text-black/70">Notes:</span> Travel
-            fees (if any) depend on distance, venue access, and timing.
-            Pre-order walls require advance notice and a deposit to secure
-            inventory. Add-ons are confirmed before booking.
-          </div>
-
-          <div className="mt-10 overflow-hidden rounded-3xl border border-black/10 bg-[#f2e0cc]/35">
-            <div className="p-7 sm:p-10">
-              <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <div className="font-serif text-[22px] tracking-tight">
-                    Ready to reserve your date?
-                  </div>
-                  <div className="mt-1 text-sm text-black/60 leading-relaxed">
-                    Send your event date + venue and I’ll confirm availability
-                    and recommend add-ons that photograph beautifully.
-                  </div>
-                </div>
-
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center justify-center rounded-full bg-[#caa374] px-6 py-3 text-sm font-semibold text-black shadow-sm transition hover:brightness-[0.98] active:brightness-[0.96]"
-                >
-                  Request a Quote
-                </Link>
+                  If you'd like us to handle delivery, professional setup, and
+                  breakdown, include your venue details and we'll quote it.
+                </p>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-8 text-center text-sm text-black/60">
-            <span className="font-medium text-black/70">Book your date:</span>{" "}
-            send your event date + venue and we’ll confirm availability.
+      {/* ── Add-ons ── */}
+      <section style={{ background: "#090909", padding: "100px 0" }}>
+        <div className="inner">
+          {eyebrow("Elevate It")}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 20,
+              marginBottom: 60,
+            }}
+          >
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(34px, 5vw, 60px)",
+                fontWeight: 300,
+                lineHeight: 0.95,
+              }}
+            >
+              Optional
+              <br />
+              <em style={{ fontStyle: "italic", color: "#c9a96e" }}>add-ons</em>
+            </h2>
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 14,
+                color: "rgba(245,240,232,0.38)",
+                fontWeight: 300,
+                maxWidth: 360,
+              }}
+            >
+              Enhance your flower wall with custom details. Add-ons are optional
+              and confirmed before booking.
+            </p>
           </div>
+
+          <div style={{ borderTop: "1px solid rgba(201,169,110,0.12)" }}>
+            {extras.map((x, i) => (
+              <div key={x.title} className="addon-row">
+                <div
+                  className="addon-inner"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 24,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 28,
+                      flex: 1,
+                      minWidth: 260,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: 11,
+                        color: "rgba(201,169,110,0.3)",
+                        letterSpacing: "0.08em",
+                        minWidth: 20,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 14,
+                          flexWrap: "wrap",
+                          marginBottom: 6,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: "'Cormorant Garamond', serif",
+                            fontSize: "clamp(18px, 2vw, 24px)",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {x.title}
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            fontSize: 10,
+                            letterSpacing: "0.2em",
+                            textTransform: "uppercase",
+                            color:
+                              x.pill === "MOST POPULAR"
+                                ? "#c9a96e"
+                                : "rgba(245,240,232,0.28)",
+                          }}
+                        >
+                          {x.pill}
+                        </span>
+                      </div>
+                      <p
+                        style={{
+                          fontFamily: "'DM Sans', sans-serif",
+                          fontSize: 13,
+                          color: "rgba(245,240,232,0.38)",
+                          lineHeight: 1.6,
+                          fontWeight: 300,
+                        }}
+                      >
+                        {x.note}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 28,
+                      flexShrink: 0,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'Cormorant Garamond', serif",
+                        fontSize: "clamp(18px, 2vw, 22px)",
+                        color: "#c9a96e",
+                        fontWeight: 300,
+                      }}
+                    >
+                      {x.price}
+                    </span>
+                    <Link
+                      to="/contact"
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: 11,
+                        color: "rgba(245,240,232,0.4)",
+                        textDecoration: "none",
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                        transition: "color 0.2s",
+                        whiteSpace: "nowrap",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = "#c9a96e")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "rgba(245,240,232,0.4)")
+                      }
+                    >
+                      Ask about this →
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div
+            style={{
+              marginTop: 48,
+              border: "1px solid rgba(201,169,110,0.12)",
+              padding: "20px 24px",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 13,
+              color: "rgba(245,240,232,0.35)",
+              lineHeight: 1.7,
+              fontWeight: 300,
+            }}
+          >
+            <strong style={{ color: "#c9a96e", fontWeight: 500 }}>
+              Notes:
+            </strong>{" "}
+            Delivery/setup/breakdown (if selected) depends on distance, venue
+            access, and timing. Pre-order walls require advance notice and a
+            deposit to secure inventory. Add-ons are confirmed before booking.
+          </div>
+        </div>
+      </section>
+
+      {/* Bottom CTA */}
+      <section
+        style={{
+          padding: "80px 0",
+          borderTop: "1px solid rgba(201,169,110,0.1)",
+        }}
+      >
+        <div className="inner">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 32,
+              background: "linear-gradient(135deg, #18140c 0%, #1e1a0e 100%)",
+              border: "1px solid rgba(201,169,110,0.2)",
+              padding: "40px 48px",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "clamp(20px, 3vw, 30px)",
+                  fontWeight: 400,
+                  marginBottom: 6,
+                }}
+              >
+                Ready to reserve your date?
+              </div>
+              <p
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 13,
+                  color: "rgba(245,240,232,0.42)",
+                  fontWeight: 300,
+                }}
+              >
+                Send your event date + venue and I'll confirm availability and
+                recommend a setup that photographs beautifully.
+              </p>
+            </div>
+            <Link to="/contact" className="btn-gold">
+              Request a Quote
+            </Link>
+          </div>
+          <p
+            style={{
+              marginTop: 28,
+              textAlign: "center",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 12,
+              color: "rgba(245,240,232,0.25)",
+            }}
+          >
+            Book your date: send your event date + venue and we'll confirm
+            availability.
+          </p>
         </div>
       </section>
     </div>
