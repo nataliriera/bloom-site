@@ -1161,7 +1161,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════ 4. PHOTO STRIP ══════════ */}
+      {/* ══════════ 4. PHOTO STRIP ══════════
       <section style={{ padding: "100px 0" }}>
         <div className="inner" style={{ paddingBottom: 48 }}>
           <Reveal>
@@ -1230,7 +1230,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ══════════ 5. QUOTE BREAK ══════════ */}
       <section
