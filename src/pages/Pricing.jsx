@@ -3,12 +3,6 @@ import { Link } from "react-router-dom";
 
 const extras = [
   {
-    title: "Delivery + setup + breakdown",
-    note: "Optional professional delivery, installation, and post-event pickup. Quoted based on venue location + logistics.",
-    pill: "OPTIONAL",
-    price: "Custom quote",
-  },
-  {
     title: "Custom signage",
     note: "Names, phrases, or a welcome message. Installed on the wall.",
     pill: "MOST POPULAR",
@@ -254,7 +248,7 @@ export default function Pricing() {
                     }}
                   >
                     Your final quote depends on date, wall style, rental length,
-                    add-ons, and (if needed) delivery/setup logistics.
+                    add-ons, and delivery/setup logistics.
                   </p>
                 </div>
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
@@ -284,7 +278,7 @@ export default function Pricing() {
               </div>
 
               {/* Stat rows */}
-              <div
+              {/* <div
                 style={{
                   borderTop: "1px solid rgba(201,169,110,0.1)",
                   marginBottom: 36,
@@ -292,8 +286,8 @@ export default function Pricing() {
               >
                 {[
                   { k: "Rental", v: "Included" },
-                  { k: "Delivery / Setup", v: "Optional fee" },
-                  { k: "Breakdown / Pickup", v: "Optional fee" },
+                  { k: "Delivery / Pick Up", v: "Additional fee" },
+                  { k: "Setup / Breakdown", v: "Included" },
                 ].map((row) => (
                   <div key={row.k} className="stat-row">
                     <span
@@ -319,7 +313,7 @@ export default function Pricing() {
                     </span>
                   </div>
                 ))}
-              </div>
+              </div> */}
 
               {/* Bullet points */}
               <div
@@ -440,7 +434,7 @@ export default function Pricing() {
                   style={{ display: "flex", flexDirection: "column", gap: 0 }}
                 >
                   {[
-                    "Delivery/setup/breakdown (optional) based on venue location",
+                    "Delivery/setup/breakdown based on venue location",
                     "Venue rules (stairs, tight load-in, required time windows)",
                     "Add-ons (signage, balloons, neon, styling)",
                     "Multi-day rentals or extended hours",
@@ -490,22 +484,6 @@ export default function Pricing() {
                   Send your event date, venue/city, and any inspiration. I'll
                   confirm availability and recommend a setup that photographs
                   beautifully.
-                </p>
-              </div>
-
-              <div className="aside-card">
-                {colLabel("Delivery & setup option")}
-                <p
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 13,
-                    color: "rgba(245,240,232,0.42)",
-                    lineHeight: 1.8,
-                    fontWeight: 300,
-                  }}
-                >
-                  If you'd like us to handle delivery, professional setup, and
-                  breakdown, include your venue details and we'll quote it.
                 </p>
               </div>
             </div>
@@ -694,9 +672,9 @@ export default function Pricing() {
             <strong style={{ color: "#c9a96e", fontWeight: 500 }}>
               Notes:
             </strong>{" "}
-            Delivery/setup/breakdown (if selected) depends on distance, venue
-            access, and timing. Pre-order walls require advance notice and a
-            deposit to secure inventory. Add-ons are confirmed before booking.
+            Delivery/setup/breakdown depends on distance, venue access, and
+            timing. Pre-order walls require advance notice and a deposit to
+            secure inventory. Add-ons are confirmed before booking.
           </div>
         </div>
       </section>

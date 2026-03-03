@@ -13,21 +13,21 @@ const walls = [
     name: "Blush Romance",
     size: "8×8",
     vibe: "Warm pinks for showers",
-    img: "/pink-wall.png",
+    img: "/src/assets/walls/blush-ombre.jpg",
     tag: "New",
   },
   {
-    name: "Ivory Luxe",
+    name: "Luxe",
     size: "8×8",
-    vibe: "Creamy neutrals, timeless",
-    img: "/ivory-wall.png",
+    vibe: "Timeless Romance",
+    img: "/src/assets/walls/red-rose.jpg",
     tag: "Elegant",
   },
   {
     name: "Mixed Meadow",
     size: "8×8",
     vibe: "Colorful, playful florals",
-    img: "/mixed-wall.png",
+    img: "/src/assets/walls/pink-mix.jpg",
     tag: "Fun",
   },
 ];
@@ -325,7 +325,7 @@ function PageMeta() {
   return null;
 }
 
-const POPUP_ENDPOINT = "https://formspree.io/f/xkozjrka"; // reuse same form, tagged with source
+const POPUP_ENDPOINT = "https://formspree.io/f/xjgeqaqq"; // reuse same form, tagged with source
 const POPUP_KEY = "bloom_popup_dismissed";
 
 function EmailPopup({ onClose }) {
@@ -1348,7 +1348,7 @@ export default function Home() {
               {
                 n: "02",
                 title: "Receive your custom quote",
-                body: "We confirm availability and send full pricing with optional delivery, setup, and breakdown.",
+                body: "We confirm availability and send full pricing.",
               },
               {
                 n: "03",

@@ -414,9 +414,6 @@ export default function Gallery() {
               </strong>{" "}
               Delivery, professional setup, and breakdown are available for an
               additional fee.{" "}
-              <span style={{ color: "rgba(245,240,232,0.32)" }}>
-                Pre-order images are supplier catalog photos for inspiration.
-              </span>
             </div>
           </div>
         </div>

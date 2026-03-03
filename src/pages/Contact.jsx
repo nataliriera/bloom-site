@@ -569,10 +569,6 @@ export default function Contact() {
                   title: "Add-ons",
                   body: "Neon signs, custom signage, balloons, and styling are optional and only included if listed on your quote.",
                 },
-                {
-                  title: "Delivery & setup",
-                  body: "Select the delivery/setup/breakdown option in the form so we can include it in your quote.",
-                },
               ].map((card) => (
                 <div
                   key={card.title}
@@ -882,7 +878,7 @@ export default function Contact() {
                         <option>Not sure yet</option>
                       </Select>
                     </FormField>
-                    <FormField
+                    {/* <FormField
                       label="Delivery / Setup / Breakdown?"
                       required
                       id="f-serviceOption"
@@ -906,7 +902,7 @@ export default function Contact() {
                         </option>
                         <option value="Not sure yet">Not sure yet</option>
                       </Select>
-                    </FormField>
+                    </FormField> */}
                   </div>
 
                   <FormField label="Add-ons (optional)" id="f-addOns">

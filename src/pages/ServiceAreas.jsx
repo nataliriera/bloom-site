@@ -192,11 +192,11 @@ export default function ServiceAreas() {
           {[
             {
               zone: "Standard Area",
-              desc: "Clermont and nearby Lake County areas. Delivery/setup fees (if selected) are typically lowest here.",
+              desc: "Clermont and nearby Lake County areas. Delivery/setup fees are typically lowest here.",
             },
             {
               zone: "Extended Area",
-              desc: "Surrounding Orlando-area cities. Delivery/setup fees (if selected) may be higher depending on distance and venue access.",
+              desc: "Surrounding Orlando-area cities. Delivery/setup fees may be higher depending on distance and venue access.",
             },
           ].map((z, i) => (
             <div

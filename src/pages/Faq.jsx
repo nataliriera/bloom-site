@@ -8,11 +8,11 @@ const faqs = [
   },
   {
     q: "What's the starting price?",
-    a: "Packages start at $350. Your final quote depends on your date, wall style, rental length, add-ons, and (if selected) delivery/setup/breakdown logistics.",
+    a: "Packages start at $350. Your final quote depends on your date, wall style, rental length, add-ons, and delivery/setup/breakdown logistics.",
   },
   {
     q: "Is delivery, setup, and breakdown included?",
-    a: "Delivery, professional setup, and breakdown are available for an additional fee and quoted based on venue location + logistics. If you prefer, you can also arrange pickup/return (if offered for your rental type).",
+    a: "Delivery, professional setup, and breakdown are available for an additional fee and quoted based on venue location + logistics.",
   },
   {
     q: "Do you deliver to my venue?",
@@ -40,7 +40,7 @@ const faqs = [
   },
   {
     q: "Do you have a delivery zone or travel fee?",
-    a: "We're based in Clermont and serve nearby areas. Delivery/setup fees (if selected) are quoted based on distance and venue access. Share your venue/city for an exact quote.",
+    a: "We're based in Clermont and serve nearby areas. Delivery/setup fees are quoted based on distance and venue access. Share your venue/city for an exact quote.",
   },
   {
     q: "What is your weather policy for outdoor events?",
@@ -56,7 +56,7 @@ const faqs = [
   },
   {
     q: "How do I book?",
-    a: "Send your event date, venue/city, and your vibe (or inspo). We'll confirm availability, share your quote (including any optional delivery/setup fees), and lock it in once the deposit is paid.",
+    a: "Send your event date, venue/city, and your vibe (or inspo). We'll confirm availability, share your quote, and lock it in once the deposit is paid.",
   },
 ];
 
