@@ -67,9 +67,11 @@ const faqs = [
 function useInView(threshold = 0.1) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
     const obs = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -79,14 +81,17 @@ function useInView(threshold = 0.1) {
       },
       { threshold }
     );
+
     obs.observe(el);
     return () => obs.disconnect();
   }, [threshold]);
+
   return [ref, visible];
 }
 
 function Reveal({ children, delay = 0, y = 36 }) {
   const [ref, visible] = useInView();
+
   return (
     <div
       ref={ref}
@@ -103,6 +108,7 @@ function Reveal({ children, delay = 0, y = 36 }) {
 
 function Marquee({ items, speed = 45 }) {
   const doubled = [...items, ...items];
+
   return (
     <div style={{ overflow: "hidden", display: "flex", userSelect: "none" }}>
       <div
@@ -139,6 +145,7 @@ function Marquee({ items, speed = 45 }) {
 
 function FAQItem({ q, a }) {
   const [open, setOpen] = useState(false);
+
   return (
     <div
       onClick={() => setOpen((o) => !o)}
@@ -181,6 +188,7 @@ function FAQItem({ q, a }) {
           +
         </span>
       </div>
+
       <div
         style={{
           overflow: "hidden",
@@ -250,6 +258,7 @@ function PageMeta() {
   useEffect(() => {
     document.title =
       "Bloom Flower Wall Rentals | Clermont, FL — Luxury Backdrops for Weddings & Events";
+
     const setMeta = (sel, attr, val) => {
       let el = document.querySelector(sel);
       if (!el) {
@@ -258,6 +267,7 @@ function PageMeta() {
       }
       el.setAttribute(attr, val);
     };
+
     setMeta(
       'meta[name="description"]',
       "content",
@@ -304,7 +314,7 @@ function PageMeta() {
       "content",
       "https://bloomflowerwallrentals.com/white-wall.png"
     );
-    // canonical
+
     let canon = document.querySelector('link[rel="canonical"]');
     if (!canon) {
       canon = document.createElement("link");
@@ -312,7 +322,7 @@ function PageMeta() {
       document.head.appendChild(canon);
     }
     canon.href = "https://bloomflowerwallrentals.com/";
-    // JSON-LD
+
     let ld = document.getElementById("ld-localbusiness");
     if (!ld) {
       ld = document.createElement("script");
@@ -322,15 +332,16 @@ function PageMeta() {
     }
     ld.textContent = JSON.stringify(SCHEMA);
   }, []);
+
   return null;
 }
 
-const POPUP_ENDPOINT = "https://formspree.io/f/xjgeqaqq"; // reuse same form, tagged with source
+const POPUP_ENDPOINT = "https://formspree.io/f/xjgeqaqq";
 const POPUP_KEY = "bloom_popup_dismissed";
 
 function EmailPopup({ onClose }) {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [status, setStatus] = useState("idle");
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -341,7 +352,9 @@ function EmailPopup({ onClose }) {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+
     setStatus("sending");
+
     try {
       const res = await fetch(POPUP_ENDPOINT, {
         method: "POST",
@@ -356,8 +369,10 @@ function EmailPopup({ onClose }) {
           discount: "BLOOM10",
         }),
       });
+
       const data = await res.json();
       if (!res.ok || data.error) throw new Error();
+
       setStatus("success");
       localStorage.setItem(POPUP_KEY, "1");
     } catch {
@@ -402,7 +417,6 @@ function EmailPopup({ onClose }) {
           overflow: "hidden",
         }}
       >
-        {/* Gold top bar */}
         <div
           style={{
             height: 3,
@@ -410,7 +424,6 @@ function EmailPopup({ onClose }) {
           }}
         />
 
-        {/* Close button */}
         <button
           onClick={dismiss}
           aria-label="Close"
@@ -448,6 +461,7 @@ function EmailPopup({ onClose }) {
               >
                 ✦
               </div>
+
               <h2
                 style={{
                   fontFamily: "'Cormorant Garamond', serif",
@@ -458,6 +472,7 @@ function EmailPopup({ onClose }) {
               >
                 You're in!
               </h2>
+
               <p
                 style={{
                   fontSize: 14,
@@ -470,6 +485,7 @@ function EmailPopup({ onClose }) {
                 We'll email your discount code shortly. Use it when requesting a
                 quote.
               </p>
+
               <div
                 style={{
                   background: "#131313",
@@ -502,6 +518,7 @@ function EmailPopup({ onClose }) {
                   BLOOM10
                 </div>
               </div>
+
               <button
                 onClick={dismiss}
                 style={{
@@ -520,7 +537,6 @@ function EmailPopup({ onClose }) {
             </div>
           ) : (
             <>
-              {/* Eyebrow */}
               <p
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
@@ -664,15 +680,17 @@ function EmailPopup({ onClose }) {
 export default function Home() {
   const [heroIn, setHeroIn] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+
   useEffect(() => {
     const t = setTimeout(() => setHeroIn(true), 80);
     return () => clearTimeout(t);
   }, []);
 
-  // Exit-intent detection
   useEffect(() => {
     if (localStorage.getItem(POPUP_KEY)) return;
+
     let triggered = false;
+
     function onMouseOut(e) {
       if (triggered) return;
       if (e.clientY <= 8 && e.relatedTarget === null) {
@@ -680,18 +698,34 @@ export default function Home() {
         setShowPopup(true);
       }
     }
-    // Mobile fallback: show after 45s if not dismissed
+
     const fallback = setTimeout(() => {
       if (!triggered && !localStorage.getItem(POPUP_KEY)) {
         triggered = true;
         setShowPopup(true);
       }
     }, 45000);
+
     document.addEventListener("mouseout", onMouseOut);
+
     return () => {
       document.removeEventListener("mouseout", onMouseOut);
       clearTimeout(fallback);
     };
+  }, []);
+
+  // Load Behold widget script once
+  useEffect(() => {
+    const existingScript = document.querySelector(
+      'script[src="https://w.behold.so/widget.js"]'
+    );
+
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.type = "module";
+      script.src = "https://w.behold.so/widget.js";
+      document.head.appendChild(script);
+    }
   }, []);
 
   const eyebrow = (text) => (
@@ -766,6 +800,10 @@ export default function Home() {
         }
         .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
 
+        .ig-follow { transition: opacity 0.2s; }
+        .ig-follow:hover { opacity: 1 !important; }
+        .ig-follow:hover span { color: #c9a96e !important; }
+
         .noise {
           position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -777,7 +815,11 @@ export default function Home() {
         .addon-row { transition: background 0.2s; }
         .addon-row:hover { background: rgba(201,169,110,0.03); }
 
-        /* ── Responsive ── */
+        .ig-cell:hover img { transform: scale(1.06); opacity: 1; }
+        .ig-cell:hover .ig-overlay { opacity: 1 !important; }
+        @media (max-width: 900px) { .ig-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+        @media (max-width: 580px) { .ig-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+
         .hero-content { padding: 0 48px 80px; }
         .section-pad { padding: 100px 48px; }
         .section-pad-tb { padding-top: 100px; padding-bottom: 100px; }
@@ -789,7 +831,6 @@ export default function Home() {
         .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(201,169,110,0.08); }
         .addons-header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; margin-bottom: 68px; }
         .section-header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
-
         .addon-inner { display: flex; align-items: center; gap: 32px; flex: 1; min-width: 240px; }
 
         @media (max-width: 900px) {
@@ -858,7 +899,6 @@ export default function Home() {
           />
         </div>
 
-        {/* Now booking */}
         <div
           style={{
             position: "absolute",
@@ -965,9 +1005,49 @@ export default function Home() {
               </strong>
             </span>
           </div>
+
+          <a
+            href="https://instagram.com/bloomflowerwallrentals"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ig-follow"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              marginTop: 24,
+              textDecoration: "none",
+              opacity: heroIn ? 0.55 : 0,
+              transition: "opacity 1s ease 0.65s",
+            }}
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#c9a96e"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1" fill="#c9a96e" stroke="none" />
+            </svg>
+            <span
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 12,
+                color: "rgba(245,240,232,0.55)",
+                letterSpacing: "0.1em",
+              }}
+            >
+              Follow us @bloomflowerwallrentals
+            </span>
+          </a>
         </div>
 
-        {/* Scroll line */}
         <div
           style={{
             position: "absolute",
@@ -1160,77 +1240,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* ══════════ 4. PHOTO STRIP ══════════
-      <section style={{ padding: "100px 0" }}>
-        <div className="inner" style={{ paddingBottom: 48 }}>
-          <Reveal>
-            <div className="section-header-row">
-              <div>
-                {eyebrow("Real Moments")}
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "clamp(34px, 5vw, 68px)",
-                    fontWeight: 300,
-                    lineHeight: 1,
-                  }}
-                >
-                  Recent{" "}
-                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                    setups
-                  </em>
-                </h2>
-              </div>
-              <Link to="/gallery" className="btn-outline">
-                See More →
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-
-        <div className="inner">
-          <div className="photos-grid">
-            {recentSetups.map((src, i) => (
-              <Reveal key={src} delay={i * 0.06}>
-                <div
-                  style={{
-                    position: "relative",
-                    overflow: "hidden",
-                    aspectRatio: i % 3 === 1 ? "1/1.25" : "1/1",
-                    background: "#161616",
-                  }}
-                >
-                  <img
-                    className="photo-img"
-                    src={src}
-                    alt={
-                      [
-                        "White flower wall at Clermont wedding",
-                        "Blush backdrop at baby shower in Winter Garden",
-                        "Flower wall setup at quinceañera in Kissimmee",
-                        "Ivory flower wall at birthday party in Orlando",
-                        "Mixed floral backdrop at bridal shower",
-                        "Bloom flower wall at outdoor event in Clermont",
-                      ][i]
-                    }
-                    loading="lazy"
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background:
-                        "linear-gradient(180deg, transparent 55%, rgba(12,12,12,0.4) 100%)",
-                      pointerEvents: "none",
-                    }}
-                  />
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* ══════════ 5. QUOTE BREAK ══════════ */}
       <section
@@ -1603,7 +1612,73 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════ 9. FOOTER CTA ══════════ */}
+      {/* ══════════ 9. INSTAGRAM GRID ══════════ */}
+      <section style={{ padding: "100px 0", background: "#0a0a0a" }}>
+        <div className="inner" style={{ paddingBottom: 52 }}>
+          <Reveal>
+            <div className="section-header-row">
+              <div>
+                {eyebrow("Follow Along")}
+                <h2
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: "clamp(34px, 5vw, 68px)",
+                    fontWeight: 300,
+                    lineHeight: 0.95,
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  See us on
+                  <br />
+                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                    Instagram
+                  </em>
+                </h2>
+              </div>
+              <a
+                href="https://instagram.com/bloomflowerwallrentals"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+              >
+                @bloomflowerwallrentals →
+              </a>
+            </div>
+          </Reveal>
+        </div>
+
+        <div
+          style={{
+            padding: "0 24px 36px",
+            maxWidth: 1200,
+            margin: "0 auto",
+          }}
+        >
+          <div data-behold-id="qDJTl17ooRzEHgeQ0dBq"></div>
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: 36 }}>
+          <Reveal>
+            <a
+              href="https://instagram.com/bloomflowerwallrentals"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 12,
+                color: "#c9a96e",
+                textDecoration: "none",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+              }}
+            >
+              View all posts on Instagram →
+            </a>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══════════ 10. FOOTER CTA ══════════ */}
       <section
         style={{
           padding: "80px 24px",
