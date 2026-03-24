@@ -9,6 +9,7 @@ import blueRoseImg from "../assets/walls/blue-rose.jpg";
 import greeneryWallImg from "../assets/walls/greenery-wall.jpg";
 import boxwoodCascadeImg from "../assets/walls/boxwood-cascade.jpg";
 import purpleGardenImg from "../assets/walls/purple-garden.jpg";
+import enchantedGardenImg from "../assets/walls/enchanted-garden.jpg";
 
 const data = [
   {
@@ -19,6 +20,16 @@ const data = [
     leadWeeks: 0,
     image: whiteGardenImg,
     alt: "White 8x8 flower wall backdrop rental in Clermont, Florida",
+    pricingNote: "Starting at $350",
+  },
+  {
+    name: "The Enchanted Garden",
+    category: "Colorful",
+    note: "Colorful 8×8",
+    status: "owned",
+    leadWeeks: 0,
+    image: enchantedGardenImg,
+    alt: "Colorful 8x8 flower wall backdrop rental in Clermont, Florida",
     pricingNote: "Starting at $350",
   },
   {
