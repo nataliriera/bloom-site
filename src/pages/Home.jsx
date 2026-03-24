@@ -10,6 +10,13 @@ const walls = [
     tag: "Most Popular",
   },
   {
+    name: "Enchanted Garden",
+    size: "8×8",
+    vibe: "Colorful, playful florals",
+    img: "/enchanted-garden.jpg",
+    tag: "Most Popular",
+  },
+  {
     name: "Blush Romance",
     size: "8×8",
     vibe: "Warm pinks for showers",
