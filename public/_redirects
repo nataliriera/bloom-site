@@ -4,3 +4,4 @@ http://bloomfloralwallrentals.com/_ https://bloomflowerwallrentals.com/:splat 30
 http://www.bloomfloralwallrentals.com/_ https://bloomflowerwallrentals.com/:splat 301!
 https://bloomfloralwallrentals.com/* https://bloomflowerwallrentals.com/:splat 301!
 /\* /index.html 200
+/*    /index.html   200
