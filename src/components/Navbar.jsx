@@ -65,7 +65,7 @@ export default function Navbar() {
           font-weight: 400;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: rgba(245,240,232,0.55);
+          color: rgba(245,240,232,0.85);
           text-decoration: none;
           padding: 8px 14px;
           transition: color 0.2s ease;
@@ -89,7 +89,7 @@ export default function Navbar() {
           font-size: clamp(34px, 9vw, 56px);
           font-weight: 300;
           font-style: italic;
-          color: rgba(245,240,232,0.65);
+          color: rgba(245,240,232,0.88);
           text-decoration: none;
           display: block;
           padding: 14px 0;
@@ -395,7 +395,7 @@ export default function Navbar() {
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: 13,
-                color: "rgba(245,240,232,0.3)",
+                color: "rgba(245,240,232,0.62)",
                 textDecoration: "none",
                 letterSpacing: "0.06em",
               }}
@@ -407,7 +407,7 @@ export default function Navbar() {
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: 13,
-                color: "rgba(245,240,232,0.3)",
+                color: "rgba(245,240,232,0.62)",
                 textDecoration: "none",
                 letterSpacing: "0.04em",
               }}

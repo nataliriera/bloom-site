@@ -52,7 +52,7 @@ const sections = [
       <p
         style={{
           fontSize: 14,
-          color: "rgba(245,240,232,0.48)",
+          color: "rgba(245,240,232,0.80)",
           lineHeight: 1.8,
           fontWeight: 300,
         }}
@@ -89,7 +89,7 @@ export default function Privacy() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         .btn-gold { display:inline-flex; align-items:center; gap:10px; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:15px 36px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
-        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 28px; border:1px solid rgba(245,240,232,0.2); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
+        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 28px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
         .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:150px; }
         .legal-inner { max-width: 860px; margin: 0 auto; padding: 100px 48px 120px; }
@@ -147,7 +147,7 @@ export default function Privacy() {
           style={{
             fontSize: 15,
             lineHeight: 1.75,
-            color: "rgba(245,240,232,0.42)",
+            color: "rgba(245,240,232,0.75)",
             fontWeight: 300,
             maxWidth: 520,
             marginBottom: 40,
@@ -183,7 +183,7 @@ export default function Privacy() {
                 <p
                   style={{
                     fontSize: 14,
-                    color: "rgba(245,240,232,0.48)",
+                    color: "rgba(245,240,232,0.80)",
                     lineHeight: 1.8,
                     fontWeight: 300,
                   }}
@@ -199,7 +199,7 @@ export default function Privacy() {
           style={{
             marginTop: 36,
             fontSize: 12,
-            color: "rgba(245,240,232,0.2)",
+            color: "rgba(245,240,232,0.52)",
             letterSpacing: "0.04em",
           }}
         >

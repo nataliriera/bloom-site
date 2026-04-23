@@ -13,7 +13,7 @@ const navLinks = [
 
 const goldLink = {
   fontSize: 14,
-  color: "rgba(245,240,232,0.45)",
+  color: "rgba(245,240,232,0.78)",
   textDecoration: "none",
   padding: "10px 0",
   borderBottom: "1px solid rgba(201,169,110,0.08)",
@@ -136,7 +136,7 @@ export default function Footer() {
                 style={{
                   fontSize: 14,
                   lineHeight: 1.8,
-                  color: "rgba(245,240,232,0.42)",
+                  color: "rgba(245,240,232,0.75)",
                   fontWeight: 300,
                   maxWidth: 340,
                   marginBottom: 28,
@@ -174,7 +174,7 @@ export default function Footer() {
                 style={{
                   marginTop: 12,
                   fontSize: 11,
-                  color: "rgba(245,240,232,0.25)",
+                  color: "rgba(245,240,232,0.58)",
                   letterSpacing: "0.04em",
                 }}
               >
@@ -195,7 +195,7 @@ export default function Footer() {
                       (e.currentTarget.style.color = "#c9a96e")
                     }
                     onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "rgba(245,240,232,0.45)")
+                      (e.currentTarget.style.color = "rgba(245,240,232,0.78)")
                     }
                   >
                     {item.label}
@@ -223,7 +223,7 @@ export default function Footer() {
                       (e.currentTarget.style.color = "#c9a96e")
                     }
                     onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "rgba(245,240,232,0.45)")
+                      (e.currentTarget.style.color = "rgba(245,240,232,0.78)")
                     }
                   >
                     {item.label}
@@ -244,7 +244,7 @@ export default function Footer() {
                     border: "1px solid rgba(201,169,110,0.2)",
                     padding: "12px 16px",
                     textDecoration: "none",
-                    color: "rgba(245,240,232,0.5)",
+                    color: "rgba(245,240,232,0.82)",
                     fontSize: 13,
                     fontWeight: 300,
                     transition: "border-color 0.2s ease, color 0.2s ease",
@@ -255,7 +255,7 @@ export default function Footer() {
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = "rgba(201,169,110,0.2)";
-                    e.currentTarget.style.color = "rgba(245,240,232,0.5)";
+                    e.currentTarget.style.color = "rgba(245,240,232,0.82)";
                   }}
                 >
                   <svg
@@ -295,7 +295,7 @@ export default function Footer() {
             <p
               style={{
                 fontSize: 12,
-                color: "rgba(245,240,232,0.22)",
+                color: "rgba(245,240,232,0.55)",
                 fontWeight: 300,
                 letterSpacing: "0.04em",
               }}
@@ -313,7 +313,7 @@ export default function Footer() {
                   to={item.to}
                   style={{
                     fontSize: 12,
-                    color: "rgba(245,240,232,0.22)",
+                    color: "rgba(245,240,232,0.55)",
                     textDecoration: "none",
                     fontWeight: 300,
                     letterSpacing: "0.08em",
@@ -324,7 +324,7 @@ export default function Footer() {
                     (e.currentTarget.style.color = "#c9a96e")
                   }
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "rgba(245,240,232,0.22)")
+                    (e.currentTarget.style.color = "rgba(245,240,232,0.55)")
                   }
                 >
                   {item.label}

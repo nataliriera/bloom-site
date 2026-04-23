@@ -181,7 +181,7 @@ function WallCard({ x, isPreorder }) {
                 textTransform: "uppercase",
                 background: "rgba(12,12,12,0.55)",
                 border: "1px solid rgba(245,240,232,0.12)",
-                color: "rgba(245,240,232,0.5)",
+                color: "rgba(245,240,232,0.82)",
                 padding: "5px 12px",
                 backdropFilter: "blur(8px)",
               }}
@@ -198,7 +198,7 @@ function WallCard({ x, isPreorder }) {
                 textTransform: "uppercase",
                 background: "rgba(12,12,12,0.55)",
                 border: "1px solid rgba(245,240,232,0.12)",
-                color: "rgba(245,240,232,0.5)",
+                color: "rgba(245,240,232,0.82)",
                 padding: "5px 12px",
                 backdropFilter: "blur(8px)",
               }}
@@ -233,7 +233,7 @@ function WallCard({ x, isPreorder }) {
             style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 12,
-              color: "rgba(245,240,232,0.45)",
+              color: "rgba(245,240,232,0.78)",
               marginBottom: 16,
             }}
           >
@@ -270,7 +270,7 @@ function WallCard({ x, isPreorder }) {
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
                 color: "rgba(245,240,232,0.65)",
-                border: "1px solid rgba(245,240,232,0.2)",
+                border: "1px solid rgba(245,240,232,0.52)",
                 padding: "9px 20px",
                 textDecoration: "none",
                 transition: "border-color 0.2s, color 0.2s",
@@ -280,7 +280,7 @@ function WallCard({ x, isPreorder }) {
                 e.currentTarget.style.color = "#c9a96e";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(245,240,232,0.2)";
+                e.currentTarget.style.borderColor = "rgba(245,240,232,0.52)";
                 e.currentTarget.style.color = "rgba(245,240,232,0.65)";
               }}
             >
@@ -350,7 +350,7 @@ export default function Gallery() {
         .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025;
           background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
           background-size:150px; }
-        .filter-btn { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; padding:9px 20px; border:1px solid rgba(201,169,110,0.2); background:transparent; color:rgba(245,240,232,0.45); cursor:pointer; transition:all 0.2s ease; }
+        .filter-btn { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; padding:9px 20px; border:1px solid rgba(201,169,110,0.2); background:transparent; color:rgba(245,240,232,0.78); cursor:pointer; transition:all 0.2s ease; }
         .filter-btn:hover { border-color:rgba(201,169,110,0.5); color:#c9a96e; }
         .filter-btn.active { border-color:#c9a96e; background:rgba(201,169,110,0.08); color:#c9a96e; }
         .gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
@@ -389,7 +389,7 @@ export default function Gallery() {
             style={{
               fontSize: 15,
               lineHeight: 1.75,
-              color: "rgba(245,240,232,0.45)",
+              color: "rgba(245,240,232,0.78)",
               fontWeight: 300,
               maxWidth: 480,
               marginBottom: 32,
@@ -411,7 +411,7 @@ export default function Gallery() {
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: 13,
-                color: "rgba(245,240,232,0.42)",
+                color: "rgba(245,240,232,0.75)",
                 lineHeight: 1.7,
                 fontWeight: 300,
                 border: "1px solid rgba(201,169,110,0.15)",
@@ -528,7 +528,7 @@ export default function Gallery() {
               padding: "20px 24px",
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 13,
-              color: "rgba(245,240,232,0.38)",
+              color: "rgba(245,240,232,0.70)",
               lineHeight: 1.7,
               fontWeight: 300,
             }}
@@ -575,7 +575,7 @@ export default function Gallery() {
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: 13,
-                  color: "rgba(245,240,232,0.42)",
+                  color: "rgba(245,240,232,0.75)",
                   fontWeight: 300,
                 }}
               >
@@ -593,7 +593,7 @@ export default function Gallery() {
               textAlign: "center",
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 12,
-              color: "rgba(245,240,232,0.25)",
+              color: "rgba(245,240,232,0.58)",
             }}
           >
             Delivery/setup/breakdown is available for an additional fee and

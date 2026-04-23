@@ -123,7 +123,7 @@ export default function Pricing() {
         .inner { max-width:1280px; margin:0 auto; padding:0 48px; }
         .btn-gold { display:inline-flex; align-items:center; justify-content:center; gap:10px; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:14px 32px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
-        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:13px 28px; border:1px solid rgba(245,240,232,0.2); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
+        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:13px 28px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
         .addon-row { border-bottom:1px solid rgba(201,169,110,0.1); padding:28px 8px; transition:background 0.2s; cursor:default; }
         .addon-row:hover { background:rgba(201,169,110,0.03); }
@@ -164,7 +164,7 @@ export default function Pricing() {
             style={{
               fontSize: 15,
               lineHeight: 1.75,
-              color: "rgba(245,240,232,0.45)",
+              color: "rgba(245,240,232,0.78)",
               fontWeight: 300,
               maxWidth: 500,
               marginBottom: 28,
@@ -183,7 +183,7 @@ export default function Pricing() {
               maxWidth: 480,
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 13,
-              color: "rgba(245,240,232,0.42)",
+              color: "rgba(245,240,232,0.75)",
               lineHeight: 1.7,
               fontWeight: 300,
             }}
@@ -241,7 +241,7 @@ export default function Pricing() {
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
                       fontSize: 14,
-                      color: "rgba(245,240,232,0.42)",
+                      color: "rgba(245,240,232,0.75)",
                       lineHeight: 1.75,
                       fontWeight: 300,
                       maxWidth: 360,
@@ -350,7 +350,7 @@ export default function Pricing() {
                       gap: 12,
                       fontFamily: "'DM Sans', sans-serif",
                       fontSize: 14,
-                      color: "rgba(245,240,232,0.42)",
+                      color: "rgba(245,240,232,0.75)",
                       lineHeight: 1.6,
                       fontWeight: 300,
                     }}
@@ -388,7 +388,7 @@ export default function Pricing() {
                   padding: "18px 20px",
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: 13,
-                  color: "rgba(245,240,232,0.38)",
+                  color: "rgba(245,240,232,0.70)",
                   lineHeight: 1.7,
                   marginBottom: 36,
                   fontWeight: 300,
@@ -417,7 +417,7 @@ export default function Pricing() {
                   marginTop: 24,
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: 12,
-                  color: "rgba(245,240,232,0.22)",
+                  color: "rgba(245,240,232,0.55)",
                   lineHeight: 1.6,
                 }}
               >
@@ -444,7 +444,7 @@ export default function Pricing() {
                       style={{
                         fontFamily: "'DM Sans', sans-serif",
                         fontSize: 13,
-                        color: "rgba(245,240,232,0.42)",
+                        color: "rgba(245,240,232,0.75)",
                         fontWeight: 300,
                         padding: "11px 0",
                         borderBottom: "1px solid rgba(201,169,110,0.08)",
@@ -476,7 +476,7 @@ export default function Pricing() {
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: 13,
-                    color: "rgba(245,240,232,0.42)",
+                    color: "rgba(245,240,232,0.75)",
                     lineHeight: 1.8,
                     fontWeight: 300,
                   }}
@@ -521,7 +521,7 @@ export default function Pricing() {
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: 14,
-                color: "rgba(245,240,232,0.38)",
+                color: "rgba(245,240,232,0.70)",
                 fontWeight: 300,
                 maxWidth: 360,
               }}
@@ -603,7 +603,7 @@ export default function Pricing() {
                         style={{
                           fontFamily: "'DM Sans', sans-serif",
                           fontSize: 13,
-                          color: "rgba(245,240,232,0.38)",
+                          color: "rgba(245,240,232,0.70)",
                           lineHeight: 1.6,
                           fontWeight: 300,
                         }}
@@ -635,7 +635,7 @@ export default function Pricing() {
                       style={{
                         fontFamily: "'DM Sans', sans-serif",
                         fontSize: 11,
-                        color: "rgba(245,240,232,0.4)",
+                        color: "rgba(245,240,232,0.75)",
                         textDecoration: "none",
                         letterSpacing: "0.12em",
                         textTransform: "uppercase",
@@ -646,7 +646,7 @@ export default function Pricing() {
                         (e.currentTarget.style.color = "#c9a96e")
                       }
                       onMouseLeave={(e) =>
-                        (e.currentTarget.style.color = "rgba(245,240,232,0.4)")
+                        (e.currentTarget.style.color = "rgba(245,240,232,0.75)")
                       }
                     >
                       Ask about this →
@@ -664,7 +664,7 @@ export default function Pricing() {
               padding: "20px 24px",
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 13,
-              color: "rgba(245,240,232,0.35)",
+              color: "rgba(245,240,232,0.68)",
               lineHeight: 1.7,
               fontWeight: 300,
             }}
@@ -714,7 +714,7 @@ export default function Pricing() {
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: 13,
-                  color: "rgba(245,240,232,0.42)",
+                  color: "rgba(245,240,232,0.75)",
                   fontWeight: 300,
                 }}
               >
@@ -732,7 +732,7 @@ export default function Pricing() {
               textAlign: "center",
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 12,
-              color: "rgba(245,240,232,0.25)",
+              color: "rgba(245,240,232,0.58)",
             }}
           >
             Book your date: send your event date + venue and we'll confirm

@@ -99,7 +99,7 @@ export default function ServiceAreas() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         .btn-gold { display:inline-flex; align-items:center; gap:10px; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:15px 36px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
-        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 28px; border:1px solid rgba(245,240,232,0.2); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
+        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 28px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
         .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:150px; }
         .sa-inner { max-width: 1100px; margin: 0 auto; padding: 100px 48px 120px; }
@@ -107,7 +107,7 @@ export default function ServiceAreas() {
         .area-row { display: flex; align-items: center; justify-content: space-between; padding: 20px 28px; border-bottom: 1px solid rgba(201,169,110,0.1); transition: background 0.2s; }
         .area-row:hover { background: rgba(201,169,110,0.03); }
         .zone-standard { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:#c9a96e; border:1px solid rgba(201,169,110,0.3); padding:4px 12px; }
-        .zone-extended { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(245,240,232,0.38); border:1px solid rgba(245,240,232,0.12); padding:4px 12px; }
+        .zone-extended { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(245,240,232,0.70); border:1px solid rgba(245,240,232,0.12); padding:4px 12px; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(201,169,110,0.08); margin-top: 52px; }
         .bottom-cta { margin-top: 2px; background: linear-gradient(135deg,#18140c 0%,#1e1a0e 100%); border: 1px solid rgba(201,169,110,0.2); padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
         @media (max-width: 768px) {
@@ -164,7 +164,7 @@ export default function ServiceAreas() {
             style={{
               fontSize: 15,
               lineHeight: 1.75,
-              color: "rgba(245,240,232,0.42)",
+              color: "rgba(245,240,232,0.75)",
               fontWeight: 300,
               marginBottom: 36,
             }}
@@ -209,7 +209,7 @@ export default function ServiceAreas() {
                   fontSize: 10,
                   letterSpacing: "0.22em",
                   textTransform: "uppercase",
-                  color: i === 0 ? "#c9a96e" : "rgba(245,240,232,0.4)",
+                  color: i === 0 ? "#c9a96e" : "rgba(245,240,232,0.75)",
                   marginBottom: 14,
                   display: "flex",
                   alignItems: "center",
@@ -229,7 +229,7 @@ export default function ServiceAreas() {
               <p
                 style={{
                   fontSize: 14,
-                  color: "rgba(245,240,232,0.48)",
+                  color: "rgba(245,240,232,0.80)",
                   lineHeight: 1.8,
                   fontWeight: 300,
                 }}
@@ -259,7 +259,7 @@ export default function ServiceAreas() {
           <p
             style={{
               fontSize: 13,
-              color: "rgba(245,240,232,0.35)",
+              color: "rgba(245,240,232,0.68)",
               fontWeight: 300,
               marginBottom: 0,
             }}
@@ -337,7 +337,7 @@ export default function ServiceAreas() {
             <p
               style={{
                 fontSize: 13,
-                color: "rgba(245,240,232,0.42)",
+                color: "rgba(245,240,232,0.75)",
                 fontWeight: 300,
               }}
             >

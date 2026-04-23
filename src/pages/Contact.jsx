@@ -208,7 +208,7 @@ function InfoRow({ label, value }) {
           fontSize: 11,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
-          color: "rgba(245,240,232,0.5)",
+          color: "rgba(245,240,232,0.82)",
         }}
       >
         {label}
@@ -270,7 +270,6 @@ const REQUIRED = [
   "eventType",
   "eventDate",
   "location",
-  "serviceOption",
   "message",
 ];
 
@@ -433,7 +432,7 @@ export default function Contact() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        ::placeholder { color: rgba(245,240,232,0.25) !important; }
+        ::placeholder { color: rgba(245,240,232,0.58) !important; }
         select option { background: #1a1a1a; color: #f5f0e8; }
         .contact-grid { display:grid; grid-template-columns:1fr 1.35fr; gap:2px; background:rgba(201,169,110,0.08); margin-top:64px; }
         .form-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
@@ -443,9 +442,9 @@ export default function Contact() {
         .btn-gold { display:inline-flex; align-items:center; justify-content:center; gap:10px; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:15px 36px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
         .btn-gold:disabled { opacity:0.55; cursor:not-allowed; letter-spacing:0.14em; }
-        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 28px; border:1px solid rgba(245,240,232,0.2); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
+        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 28px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
-        .contact-link { font-family:'DM Sans',sans-serif; font-size:14px; color:rgba(245,240,232,0.55); text-decoration:none; font-weight:300; transition:color 0.2s ease; display:block; padding:10px 0; border-bottom:1px solid rgba(201,169,110,0.08); }
+        .contact-link { font-family:'DM Sans',sans-serif; font-size:14px; color:rgba(245,240,232,0.85); text-decoration:none; font-weight:300; transition:color 0.2s ease; display:block; padding:10px 0; border-bottom:1px solid rgba(201,169,110,0.08); }
         .contact-link:hover { color:#c9a96e; }
         .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:150px; }
         @media (max-width:900px) { .contact-grid { grid-template-columns:1fr; } .contact-inner { padding:72px 24px 100px; } .info-panel,.form-panel { padding:40px 28px; } .contact-grid { margin-top:48px; } }
@@ -476,7 +475,7 @@ export default function Contact() {
             style={{
               fontSize: 15,
               lineHeight: 1.75,
-              color: "rgba(245,240,232,0.55)",
+              color: "rgba(245,240,232,0.85)",
               fontWeight: 300,
               maxWidth: 480,
               marginBottom: 32,
@@ -514,7 +513,7 @@ export default function Contact() {
               style={{
                 fontSize: 14,
                 lineHeight: 1.75,
-                color: "rgba(245,240,232,0.55)",
+                color: "rgba(245,240,232,0.85)",
                 fontWeight: 300,
                 marginBottom: 36,
               }}
@@ -587,7 +586,7 @@ export default function Contact() {
                   <p
                     style={{
                       fontSize: 13,
-                      color: "rgba(245,240,232,0.55)",
+                      color: "rgba(245,240,232,0.85)",
                       lineHeight: 1.75,
                       fontWeight: 300,
                     }}
@@ -602,7 +601,7 @@ export default function Contact() {
               style={{
                 marginTop: 24,
                 fontSize: 12,
-                color: "rgba(245,240,232,0.35)",
+                color: "rgba(245,240,232,0.68)",
                 lineHeight: 1.6,
               }}
             >
@@ -682,7 +681,7 @@ export default function Contact() {
                   <p
                     style={{
                       fontSize: 13,
-                      color: "rgba(245,240,232,0.55)",
+                      color: "rgba(245,240,232,0.85)",
                       lineHeight: 1.75,
                       fontWeight: 300,
                     }}
@@ -715,7 +714,7 @@ export default function Contact() {
                 <p
                   style={{
                     fontSize: 13,
-                    color: "rgba(245,240,232,0.5)",
+                    color: "rgba(245,240,232,0.82)",
                     fontWeight: 300,
                     marginBottom: 36,
                   }}
@@ -977,7 +976,7 @@ export default function Contact() {
                     <p
                       style={{
                         fontSize: 12,
-                        color: "rgba(245,240,232,0.35)",
+                        color: "rgba(245,240,232,0.68)",
                         lineHeight: 1.6,
                       }}
                     >
@@ -1018,7 +1017,7 @@ export default function Contact() {
             <p
               style={{
                 fontSize: 13,
-                color: "rgba(245,240,232,0.55)",
+                color: "rgba(245,240,232,0.85)",
                 fontWeight: 300,
               }}
             >

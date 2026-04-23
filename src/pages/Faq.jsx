@@ -140,7 +140,7 @@ function FAQItem({ q, a, index, open, onToggle }) {
             marginLeft: 42,
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 14,
-            color: "rgba(245,240,232,0.48)",
+            color: "rgba(245,240,232,0.80)",
             lineHeight: 1.8,
             fontWeight: 300,
           }}
@@ -231,7 +231,7 @@ export default function Faq() {
         .inner { max-width:1280px; margin:0 auto; padding:0 48px; }
         .btn-gold { display:inline-flex; align-items:center; gap:10px; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:14px 32px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
-        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:13px 28px; border:1px solid rgba(245,240,232,0.2); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
+        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:13px 28px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
         .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
         @media (max-width:860px) {
           .faq-grid { grid-template-columns:1fr; }
@@ -266,7 +266,7 @@ export default function Faq() {
             style={{
               fontSize: 15,
               lineHeight: 1.75,
-              color: "rgba(245,240,232,0.45)",
+              color: "rgba(245,240,232,0.78)",
               fontWeight: 300,
               maxWidth: 480,
               marginBottom: 28,
@@ -307,7 +307,7 @@ export default function Faq() {
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: 13,
-                  color: "rgba(245,240,232,0.35)",
+                  color: "rgba(245,240,232,0.68)",
                   marginBottom: 32,
                   fontWeight: 300,
                 }}
@@ -350,7 +350,7 @@ export default function Faq() {
                       style={{
                         fontFamily: "'DM Sans', sans-serif",
                         fontSize: 13,
-                        color: "rgba(245,240,232,0.42)",
+                        color: "rgba(245,240,232,0.75)",
                         fontWeight: 300,
                         padding: "10px 0",
                         borderBottom: "1px solid rgba(201,169,110,0.08)",
@@ -373,7 +373,7 @@ export default function Faq() {
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: 13,
-                    color: "rgba(245,240,232,0.42)",
+                    color: "rgba(245,240,232,0.75)",
                     lineHeight: 1.8,
                     fontWeight: 300,
                   }}
@@ -422,7 +422,7 @@ export default function Faq() {
                         style={{
                           fontFamily: "'DM Sans', sans-serif",
                           fontSize: 13,
-                          color: "rgba(245,240,232,0.42)",
+                          color: "rgba(245,240,232,0.75)",
                           lineHeight: 1.6,
                           fontWeight: 300,
                         }}
@@ -457,7 +457,7 @@ export default function Faq() {
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: 13,
-                    color: "rgba(245,240,232,0.42)",
+                    color: "rgba(245,240,232,0.75)",
                     lineHeight: 1.8,
                     fontWeight: 300,
                     marginBottom: 24,
@@ -482,7 +482,7 @@ export default function Faq() {
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: 13,
-                    color: "rgba(245,240,232,0.42)",
+                    color: "rgba(245,240,232,0.75)",
                     lineHeight: 1.8,
                     fontWeight: 300,
                   }}

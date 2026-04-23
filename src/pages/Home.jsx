@@ -137,7 +137,7 @@ function Marquee({ items, speed = 45 }) {
               fontSize: "clamp(14px, 2vw, 22px)",
               fontStyle: "italic",
               fontWeight: 300,
-              color: "rgba(245,240,232,0.45)",
+              color: "rgba(245,240,232,0.78)",
               letterSpacing: "0.02em",
             }}
           >
@@ -208,7 +208,7 @@ function FAQItem({ q, a }) {
             marginTop: 16,
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 15,
-            color: "rgba(245,240,232,0.5)",
+            color: "rgba(245,240,232,0.82)",
             lineHeight: 1.8,
             fontWeight: 300,
           }}
@@ -441,7 +441,7 @@ function EmailPopup({ onClose }) {
             background: "none",
             border: "none",
             cursor: "pointer",
-            color: "rgba(245,240,232,0.35)",
+            color: "rgba(245,240,232,0.68)",
             fontSize: 20,
             lineHeight: 1,
             padding: 4,
@@ -449,7 +449,7 @@ function EmailPopup({ onClose }) {
           }}
           onMouseEnter={(e) => (e.target.style.color = "#c9a96e")}
           onMouseLeave={(e) =>
-            (e.target.style.color = "rgba(245,240,232,0.35)")
+            (e.target.style.color = "rgba(245,240,232,0.68)")
           }
         >
           ✕
@@ -483,7 +483,7 @@ function EmailPopup({ onClose }) {
               <p
                 style={{
                   fontSize: 14,
-                  color: "rgba(245,240,232,0.55)",
+                  color: "rgba(245,240,232,0.85)",
                   lineHeight: 1.75,
                   fontWeight: 300,
                   marginBottom: 20,
@@ -507,7 +507,7 @@ function EmailPopup({ onClose }) {
                     fontSize: 10,
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
-                    color: "rgba(245,240,232,0.4)",
+                    color: "rgba(245,240,232,0.75)",
                     marginBottom: 10,
                   }}
                 >
@@ -533,7 +533,7 @@ function EmailPopup({ onClose }) {
                   fontSize: 11,
                   letterSpacing: "0.16em",
                   textTransform: "uppercase",
-                  color: "rgba(245,240,232,0.4)",
+                  color: "rgba(245,240,232,0.75)",
                   background: "none",
                   border: "none",
                   cursor: "pointer",
@@ -588,7 +588,7 @@ function EmailPopup({ onClose }) {
               <p
                 style={{
                   fontSize: 13,
-                  color: "rgba(245,240,232,0.5)",
+                  color: "rgba(245,240,232,0.82)",
                   lineHeight: 1.75,
                   fontWeight: 300,
                   marginBottom: 28,
@@ -669,7 +669,7 @@ function EmailPopup({ onClose }) {
                 style={{
                   marginTop: 16,
                   fontSize: 11,
-                  color: "rgba(245,240,232,0.22)",
+                  color: "rgba(245,240,232,0.55)",
                   lineHeight: 1.6,
                 }}
               >
@@ -801,7 +801,7 @@ export default function Home() {
           background: transparent; color: var(--cream);
           font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 400;
           letter-spacing: 0.14em; text-transform: uppercase;
-          padding: 14px 36px; border: 1px solid rgba(245,240,232,0.2);
+          padding: 14px 36px; border: 1px solid rgba(245,240,232,0.52);
           cursor: pointer; text-decoration: none; transition: all 0.25s ease;
           white-space: nowrap;
         }
@@ -934,7 +934,7 @@ export default function Home() {
               fontSize: 11,
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              color: "rgba(245,240,232,0.45)",
+              color: "rgba(245,240,232,0.78)",
             }}
           >
             Now Booking
@@ -1002,7 +1002,7 @@ export default function Home() {
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: 13,
-                color: "rgba(245,240,232,0.38)",
+                color: "rgba(245,240,232,0.70)",
                 fontWeight: 300,
               }}
             >
@@ -1046,7 +1046,7 @@ export default function Home() {
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: 12,
-                color: "rgba(245,240,232,0.55)",
+                color: "rgba(245,240,232,0.85)",
                 letterSpacing: "0.1em",
               }}
             >
@@ -1221,7 +1221,7 @@ export default function Home() {
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
                       fontSize: 11,
-                      color: "rgba(245,240,232,0.48)",
+                      color: "rgba(245,240,232,0.80)",
                       letterSpacing: "0.06em",
                       marginBottom: 16,
                     }}
@@ -1426,7 +1426,7 @@ export default function Home() {
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
                       fontSize: 14,
-                      color: "rgba(245,240,232,0.42)",
+                      color: "rgba(245,240,232,0.75)",
                       lineHeight: 1.8,
                       fontWeight: 300,
                     }}
@@ -1546,7 +1546,7 @@ export default function Home() {
                       style={{
                         fontFamily: "'DM Sans', sans-serif",
                         fontSize: 14,
-                        color: "rgba(245,240,232,0.38)",
+                        color: "rgba(245,240,232,0.70)",
                         fontWeight: 300,
                       }}
                     >
