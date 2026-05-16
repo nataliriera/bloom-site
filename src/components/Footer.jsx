@@ -49,6 +49,77 @@ const ColLabel = ({ text }) => (
   </div>
 );
 
+function SocialButton({ href, label, icon, handle }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={label}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 12,
+        border: "1px solid rgba(201,169,110,0.2)",
+        padding: "12px 16px",
+        textDecoration: "none",
+        color: "rgba(245,240,232,0.82)",
+        fontSize: 13,
+        fontWeight: 300,
+        transition: "border-color 0.2s ease, color 0.2s ease",
+        width: "100%",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = "rgba(201,169,110,0.5)";
+        e.currentTarget.style.color = "#c9a96e";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = "rgba(201,169,110,0.2)";
+        e.currentTarget.style.color = "rgba(245,240,232,0.82)";
+      }}
+    >
+      {icon}
+      {handle}
+    </a>
+  );
+}
+
+const InstagramIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.4"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width="16"
+    height="16"
+    style={{ color: "#c9a96e", flexShrink: 0 }}
+  >
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <path d="M16 11.37a4 4 0 1 1-7.75 1.25 4 4 0 0 1 7.75-1.25z" />
+    <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
+  </svg>
+);
+
+const FacebookIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.4"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width="16"
+    height="16"
+    style={{ color: "#c9a96e", flexShrink: 0 }}
+  >
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+
 export default function Footer() {
   return (
     <>
@@ -70,6 +141,12 @@ export default function Footer() {
           justify-content: space-between;
           flex-wrap: wrap;
           gap: 16px;
+        }
+        .social-links {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-top: 24px;
         }
         @media (max-width: 860px) {
           .footer-grid {
@@ -230,52 +307,21 @@ export default function Footer() {
                   </a>
                 ))}
 
-                {/* Instagram */}
-                <a
-                  href="https://www.instagram.com/bloomflowerwallrentals/"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Bloom on Instagram"
-                  style={{
-                    marginTop: 24,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 12,
-                    border: "1px solid rgba(201,169,110,0.2)",
-                    padding: "12px 16px",
-                    textDecoration: "none",
-                    color: "rgba(245,240,232,0.82)",
-                    fontSize: 13,
-                    fontWeight: 300,
-                    transition: "border-color 0.2s ease, color 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(201,169,110,0.5)";
-                    e.currentTarget.style.color = "#c9a96e";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(201,169,110,0.2)";
-                    e.currentTarget.style.color = "rgba(245,240,232,0.82)";
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    width="16"
-                    height="16"
-                    style={{ color: "#c9a96e", flexShrink: 0 }}
-                  >
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="M16 11.37a4 4 0 1 1-7.75 1.25 4 4 0 0 1 7.75-1.25z" />
-                    <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
-                  </svg>
-                  @bloomflowerwallrentals
-                </a>
+                {/* Social links */}
+                <div className="social-links">
+                  <SocialButton
+                    href="https://www.instagram.com/bloomflowerwallrentals/"
+                    label="Bloom on Instagram"
+                    icon={<InstagramIcon />}
+                    handle="@bloomflowerwallrentals"
+                  />
+                  <SocialButton
+                    href="https://www.facebook.com/bloomflowerwallrentals"
+                    label="Bloom on Facebook"
+                    icon={<FacebookIcon />}
+                    handle="bloomflowerwallrentals"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -290,7 +336,7 @@ export default function Footer() {
             }}
           />
 
-          {/* Bottom bar */}
+          {/* ── Bottom bar ── */}
           <div className="footer-bottom">
             <p
               style={{

@@ -20,7 +20,7 @@ function PageMeta() {
     setMeta('meta[property="og:title"]', "content", title);
     setMeta('meta[property="og:description"]', "content", desc);
     setMeta(
-      'meta[property="og:url"]',
+      "meta[property='og:url']",
       "content",
       "https://bloomflowerwallrentals.com/service-areas"
     );
@@ -34,7 +34,8 @@ function PageMeta() {
       document.head.appendChild(canon);
     }
     canon.href = "https://bloomflowerwallrentals.com/service-areas";
-    // Service schema
+
+    // Service schema — includes all areas listed on the page
     const schema = {
       "@context": "https://schema.org",
       "@type": "Service",
@@ -48,13 +49,15 @@ function PageMeta() {
         "Clermont FL",
         "Minneola FL",
         "Groveland FL",
-        "Montverde FL",
+        "Montverde FL", // ← added to match areas array
         "Winter Garden FL",
         "Ocoee FL",
         "Windermere FL",
         "Davenport FL",
         "Kissimmee FL",
         "Orlando FL",
+        "Apopka FL",
+        "Leesburg FL",
       ],
       description:
         "Luxury flower wall rental with delivery, setup, and breakdown for weddings and events across Central Florida.",
@@ -81,6 +84,8 @@ const areas = [
   { name: "Windermere", zone: "extended" },
   { name: "Davenport", zone: "extended" },
   { name: "Kissimmee", zone: "extended" },
+  { name: "Apopka", zone: "extended" },
+  { name: "Leesburg", zone: "extended" },
   { name: "Orlando (select areas)", zone: "extended" },
 ];
 
@@ -103,9 +108,9 @@ export default function ServiceAreas() {
         .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
         .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:150px; }
         .sa-inner { max-width: 1100px; margin: 0 auto; padding: 100px 48px 120px; }
-        .sa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(201,169,110,0.08); margin-top: 52px; }
-        .area-row { display: flex; align-items: center; justify-content: space-between; padding: 20px 28px; border-bottom: 1px solid rgba(201,169,110,0.1); transition: background 0.2s; }
-        .area-row:hover { background: rgba(201,169,110,0.03); }
+        .sa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(201,169,110,0.08); margin-top: 28px; }
+        .area-row { display: flex; align-items: center; justify-content: space-between; padding: 20px 28px; border-bottom: 1px solid rgba(201,169,110,0.1); transition: background 0.2s; background: #0a0a0a; }
+        .area-row:hover { background: rgba(201,169,110,0.04); }
         .zone-standard { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:#c9a96e; border:1px solid rgba(201,169,110,0.3); padding:4px 12px; }
         .zone-extended { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(245,240,232,0.70); border:1px solid rgba(245,240,232,0.12); padding:4px 12px; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(201,169,110,0.08); margin-top: 52px; }
@@ -121,7 +126,7 @@ export default function ServiceAreas() {
       <div className="noise" />
 
       <div className="sa-inner">
-        {/* Header */}
+        {/* ── Header ── */}
         <div style={{ maxWidth: 640 }}>
           <p
             style={{
@@ -187,18 +192,20 @@ export default function ServiceAreas() {
           </div>
         </div>
 
-        {/* Zone explanation cards */}
+        {/* ── Zone explanation cards ── */}
         <div className="info-grid">
           {[
             {
               zone: "Standard Area",
               desc: "Clermont and nearby Lake County areas. Delivery/setup fees are typically lowest here.",
+              gold: true,
             },
             {
               zone: "Extended Area",
               desc: "Surrounding Orlando-area cities. Delivery/setup fees may be higher depending on distance and venue access.",
+              gold: false,
             },
-          ].map((z, i) => (
+          ].map((z) => (
             <div
               key={z.zone}
               style={{ background: "#0a0a0a", padding: "36px 36px" }}
@@ -209,7 +216,7 @@ export default function ServiceAreas() {
                   fontSize: 10,
                   letterSpacing: "0.22em",
                   textTransform: "uppercase",
-                  color: i === 0 ? "#c9a96e" : "rgba(245,240,232,0.75)",
+                  color: z.gold ? "#c9a96e" : "rgba(245,240,232,0.75)",
                   marginBottom: 14,
                   display: "flex",
                   alignItems: "center",
@@ -221,7 +228,7 @@ export default function ServiceAreas() {
                     display: "inline-block",
                     width: 16,
                     height: 1,
-                    background: i === 0 ? "#c9a96e" : "rgba(245,240,232,0.3)",
+                    background: z.gold ? "#c9a96e" : "rgba(245,240,232,0.3)",
                   }}
                 />
                 {z.zone}
@@ -240,7 +247,7 @@ export default function ServiceAreas() {
           ))}
         </div>
 
-        {/* Areas list */}
+        {/* ── Areas list ── */}
         <div style={{ marginTop: 52 }}>
           <div
             style={{
@@ -259,22 +266,17 @@ export default function ServiceAreas() {
           <p
             style={{
               fontSize: 13,
-              color: "rgba(245,240,232,0.68)",
+              color: "rgba(245,240,232,0.55)",
               fontWeight: 300,
-              marginBottom: 0,
             }}
           >
-            Share your venue address for the most accurate quote.
+            Share your venue address for the most accurate delivery quote.
           </p>
         </div>
 
-        <div className="sa-grid" style={{ marginTop: 28 }}>
+        <div className="sa-grid">
           {areas.map((a) => (
-            <div
-              key={a.name}
-              className="area-row"
-              style={{ background: "#0a0a0a" }}
-            >
+            <div key={a.name} className="area-row">
               <span
                 style={{
                   fontFamily: "'Cormorant Garamond', serif",
@@ -296,32 +298,28 @@ export default function ServiceAreas() {
           ))}
         </div>
 
+        {/* ── Not in the list CTA ── */}
         <div
-          style={{
-            padding: "28px 28px",
-            background: "#090909",
-            borderTop: "none",
-            marginTop: 2,
-          }}
+          style={{ padding: "28px 28px", background: "#090909", marginTop: 2 }}
         >
           <p
             style={{
               fontSize: 13,
-              color: "rgba(245,240,232,0.3)",
+              color: "rgba(245,240,232,0.45)",
               lineHeight: 1.7,
               fontWeight: 300,
               marginBottom: 20,
             }}
           >
-            Don't see your city? Send your venue address and event date — we'll
-            confirm availability and quote any delivery/setup fees if needed.
+            Don't see your city? Send your venue address and we'll confirm
+            availability.
           </p>
           <Link to="/contact" className="btn-gold">
             Check My Venue
           </Link>
         </div>
 
-        {/* Bottom CTA */}
+        {/* ── Bottom CTA ── */}
         <div className="bottom-cta">
           <div>
             <div

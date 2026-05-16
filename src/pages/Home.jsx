@@ -1,57 +1,53 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
+// 🌿 Update image imports once you have Tropical Oasis + Midnight Noir photos
+import whiteGardenImg from "../assets/walls/white-garden.jpg";
+import enchantedGardenImg from "../assets/walls/enchanted-garden.jpg";
+import greeneryWallImg from "../assets/walls/greenery-wall.jpg"; // temp placeholder for Tropical Oasis
+import blushOmbreImg from "../assets/walls/blush-ombre.jpg"; // temp placeholder for Midnight Noir
+import tropicalOasisImg from "../assets/walls/tropical-oasis.jpg";
+import midnightNoirImg from "../assets/walls/midnight-noir.jpg";
+
 const walls = [
   {
     name: "White Garden",
     size: "8×8",
     vibe: "Soft, photo-ready whites",
-    img: "/white-wall.png",
+    img: whiteGardenImg,
     tag: "Most Popular",
+    price: "Starting at $350",
   },
   {
     name: "Enchanted Garden",
     size: "8×8",
     vibe: "Colorful, playful florals",
-    img: "/enchanted-garden.jpg",
+    img: enchantedGardenImg,
     tag: "Most Popular",
+    price: "Starting at $350",
   },
   {
-    name: "Blush Romance",
+    name: "Tropical Oasis",
     size: "8×8",
-    vibe: "Warm pinks for showers",
-    img: "/blush-ombre.jpg",
-    tag: "New",
+    vibe: "Lush tropical greenery",
+    img: tropicalOasisImg, // swap to tropicalOasisImg once you have the photo
+    tag: "Available Now",
+    price: "Starting at $450",
   },
   {
-    name: "Luxe",
+    name: "Midnight Noir",
     size: "8×8",
-    vibe: "Timeless Romance",
-    img: "/red-rose.jpg",
-    tag: "Elegant",
+    vibe: "Dramatic dark florals",
+    img: midnightNoirImg, // swap to midnightNoirImg once you have the photo
+    tag: "Available Now",
+    price: "Starting at $375",
   },
-  {
-    name: "Mixed Meadow",
-    size: "8×8",
-    vibe: "Colorful, playful florals",
-    img: "/pink-mix.jpg",
-    tag: "Fun",
-  },
-];
-
-const recentSetups = [
-  "/setup-1.jpg",
-  "/setup-2.jpg",
-  "/setup-3.jpg",
-  "/setup-4.jpg",
-  "/setup-5.jpg",
-  "/setup-6.jpg",
 ];
 
 const faqs = [
   {
     q: "What areas do you serve?",
-    a: "We're based in Clermont, FL and serve surrounding areas. Travel is quoted based on venue location.",
+    a: "We're based in Clermont, FL and serve surrounding areas including Orlando, Winter Garden, Windermere, Kissimmee, Davenport, and Groveland. Travel is quoted based on venue location.",
   },
   {
     q: "Is delivery and setup included?",
@@ -71,6 +67,17 @@ const faqs = [
   },
 ];
 
+const serviceAreas = [
+  "Clermont",
+  "Groveland",
+  "Minneola",
+  "Winter Garden",
+  "Windermere",
+  "Orlando",
+  "Kissimmee",
+  "Davenport",
+];
+
 function useInView(threshold = 0.1) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -78,7 +85,6 @@ function useInView(threshold = 0.1) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
     const obs = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -88,7 +94,6 @@ function useInView(threshold = 0.1) {
       },
       { threshold }
     );
-
     obs.observe(el);
     return () => obs.disconnect();
   }, [threshold]);
@@ -98,7 +103,6 @@ function useInView(threshold = 0.1) {
 
 function Reveal({ children, delay = 0, y = 36 }) {
   const [ref, visible] = useInView();
-
   return (
     <div
       ref={ref}
@@ -115,7 +119,6 @@ function Reveal({ children, delay = 0, y = 36 }) {
 
 function Marquee({ items, speed = 45 }) {
   const doubled = [...items, ...items];
-
   return (
     <div style={{ overflow: "hidden", display: "flex", userSelect: "none" }}>
       <div
@@ -152,7 +155,6 @@ function Marquee({ items, speed = 45 }) {
 
 function FAQItem({ q, a }) {
   const [open, setOpen] = useState(false);
-
   return (
     <div
       onClick={() => setOpen((o) => !o)}
@@ -195,7 +197,6 @@ function FAQItem({ q, a }) {
           +
         </span>
       </div>
-
       <div
         style={{
           overflow: "hidden",
@@ -359,9 +360,7 @@ function EmailPopup({ onClose }) {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-
     setStatus("sending");
-
     try {
       const res = await fetch(POPUP_ENDPOINT, {
         method: "POST",
@@ -376,10 +375,8 @@ function EmailPopup({ onClose }) {
           discount: "BLOOM10",
         }),
       });
-
       const data = await res.json();
       if (!res.ok || data.error) throw new Error();
-
       setStatus("success");
       localStorage.setItem(POPUP_KEY, "1");
     } catch {
@@ -430,7 +427,6 @@ function EmailPopup({ onClose }) {
             background: "linear-gradient(90deg, #c9a96e, #e8d5a8, #c9a96e)",
           }}
         />
-
         <button
           onClick={dismiss}
           aria-label="Close"
@@ -454,7 +450,6 @@ function EmailPopup({ onClose }) {
         >
           ✕
         </button>
-
         <div style={{ padding: "44px 44px 40px" }}>
           {status === "success" ? (
             <div style={{ textAlign: "center", padding: "16px 0 8px" }}>
@@ -468,7 +463,6 @@ function EmailPopup({ onClose }) {
               >
                 ✦
               </div>
-
               <h2
                 style={{
                   fontFamily: "'Cormorant Garamond', serif",
@@ -479,7 +473,6 @@ function EmailPopup({ onClose }) {
               >
                 You're in!
               </h2>
-
               <p
                 style={{
                   fontSize: 14,
@@ -492,7 +485,6 @@ function EmailPopup({ onClose }) {
                 We'll email your discount code shortly. Use it when requesting a
                 quote.
               </p>
-
               <div
                 style={{
                   background: "#131313",
@@ -525,7 +517,6 @@ function EmailPopup({ onClose }) {
                   BLOOM10
                 </div>
               </div>
-
               <button
                 onClick={dismiss}
                 style={{
@@ -567,7 +558,6 @@ function EmailPopup({ onClose }) {
                 />
                 Limited Time
               </p>
-
               <h2
                 style={{
                   fontFamily: "'Cormorant Garamond', serif",
@@ -584,7 +574,6 @@ function EmailPopup({ onClose }) {
                   first rental
                 </em>
               </h2>
-
               <p
                 style={{
                   fontSize: 13,
@@ -597,7 +586,6 @@ function EmailPopup({ onClose }) {
                 Drop your email and we'll send your discount code — plus
                 priority availability updates when new wall styles arrive.
               </p>
-
               <form
                 onSubmit={handleSubmit}
                 noValidate
@@ -654,7 +642,6 @@ function EmailPopup({ onClose }) {
                     {status === "sending" ? "…" : "Get 10% Off"}
                   </button>
                 </div>
-
                 {status === "error" && (
                   <p
                     role="alert"
@@ -664,7 +651,6 @@ function EmailPopup({ onClose }) {
                   </p>
                 )}
               </form>
-
               <p
                 style={{
                   marginTop: 16,
@@ -695,7 +681,6 @@ export default function Home() {
 
   useEffect(() => {
     if (localStorage.getItem(POPUP_KEY)) return;
-
     let triggered = false;
 
     function onMouseOut(e) {
@@ -706,15 +691,15 @@ export default function Home() {
       }
     }
 
+    // Increased to 60s for better mobile experience
     const fallback = setTimeout(() => {
       if (!triggered && !localStorage.getItem(POPUP_KEY)) {
         triggered = true;
         setShowPopup(true);
       }
-    }, 45000);
+    }, 60000);
 
     document.addEventListener("mouseout", onMouseOut);
-
     return () => {
       document.removeEventListener("mouseout", onMouseOut);
       clearTimeout(fallback);
@@ -726,11 +711,23 @@ export default function Home() {
     const existingScript = document.querySelector(
       'script[src="https://w.behold.so/widget.js"]'
     );
-
     if (!existingScript) {
       const script = document.createElement("script");
       script.type = "module";
       script.src = "https://w.behold.so/widget.js";
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  // Load Elfsight script once
+  useEffect(() => {
+    const existingScript = document.querySelector(
+      'script[src="https://elfsightcdn.com/platform.js"]'
+    );
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.src = "https://elfsightcdn.com/platform.js";
+      script.async = true;
       document.head.appendChild(script);
     }
   }, []);
@@ -785,69 +782,38 @@ export default function Home() {
         .wall-card .wall-img { transition: transform 1s cubic-bezier(0.16,1,0.3,1); }
         .wall-card:hover .wall-img { transform: scale(1.07); }
 
-        .btn-gold {
-          display: inline-flex; align-items: center; gap: 10px;
-          background: var(--gold); color: #0c0c0c;
-          font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
-          letter-spacing: 0.14em; text-transform: uppercase;
-          padding: 15px 36px; border: none; cursor: pointer;
-          text-decoration: none; transition: all 0.25s ease;
-          white-space: nowrap;
-        }
-        .btn-gold:hover { background: #d4b280; letter-spacing: 0.18em; }
-
-        .btn-outline {
-          display: inline-flex; align-items: center; gap: 10px;
-          background: transparent; color: var(--cream);
-          font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 400;
-          letter-spacing: 0.14em; text-transform: uppercase;
-          padding: 14px 36px; border: 1px solid rgba(245,240,232,0.52);
-          cursor: pointer; text-decoration: none; transition: all 0.25s ease;
-          white-space: nowrap;
-        }
-        .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-gold { display:inline-flex; align-items:center; gap:10px; background:var(--gold); color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:15px 36px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; white-space:nowrap; }
+        .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
+        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:var(--cream); font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 36px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; white-space:nowrap; }
+        .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
 
         .ig-follow { transition: opacity 0.2s; }
         .ig-follow:hover { opacity: 1 !important; }
         .ig-follow:hover span { color: #c9a96e !important; }
 
-        .noise {
-          position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-          background-size: 150px;
-        }
+        .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:150px; }
 
-        .photo-img { transition: transform 0.9s ease, opacity 0.3s; width: 100%; height: 100%; object-fit: cover; opacity: 0.82; }
-        .photo-img:hover { transform: scale(1.04); opacity: 1; }
         .addon-row { transition: background 0.2s; }
         .addon-row:hover { background: rgba(201,169,110,0.03); }
 
-        .ig-cell:hover img { transform: scale(1.06); opacity: 1; }
-        .ig-cell:hover .ig-overlay { opacity: 1 !important; }
-        @media (max-width: 900px) { .ig-grid { grid-template-columns: repeat(3, 1fr) !important; } }
-        @media (max-width: 580px) { .ig-grid { grid-template-columns: repeat(2, 1fr) !important; } }
-
         .hero-content { padding: 0 48px 80px; }
-        .section-pad { padding: 100px 48px; }
-        .section-pad-tb { padding-top: 100px; padding-bottom: 100px; }
         .inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
         .inner-narrow { max-width: 860px; margin: 0 auto; padding: 0 48px; }
 
         .walls-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
-        .photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
         .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(201,169,110,0.08); }
         .addons-header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; margin-bottom: 68px; }
         .section-header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
         .addon-inner { display: flex; align-items: center; gap: 32px; flex: 1; min-width: 240px; }
 
+        .area-pill { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; padding:8px 18px; border:1px solid rgba(201,169,110,0.2); color:rgba(245,240,232,0.75); background:transparent; white-space:nowrap; }
+
         @media (max-width: 900px) {
           .walls-grid { grid-template-columns: repeat(2, 1fr); }
           .steps-grid { grid-template-columns: 1fr; }
-          .photos-grid { grid-template-columns: repeat(2, 1fr); }
           .hero-content { padding: 0 24px 60px; }
           .inner { padding: 0 24px; }
           .inner-narrow { padding: 0 24px; }
-          .section-pad { padding: 80px 24px; }
           .addon-inner { flex-wrap: wrap; gap: 12px; }
           .addons-header-row { flex-direction: column; align-items: flex-start; }
           .section-header-row { flex-direction: column; align-items: flex-start; }
@@ -855,10 +821,8 @@ export default function Home() {
 
         @media (max-width: 580px) {
           .walls-grid { grid-template-columns: 1fr; }
-          .photos-grid { grid-template-columns: 1fr; }
           .hero-btns { flex-direction: column; align-items: flex-start; }
           .btn-gold, .btn-outline { width: 100%; justify-content: center; }
-          .addon-row { flex-direction: column; align-items: flex-start; gap: 16px; }
         }
       `}</style>
 
@@ -1110,6 +1074,8 @@ export default function Home() {
             "Custom Signage",
             "Balloon Installs",
             "Clermont FL",
+            "Orlando FL",
+            "Winter Garden FL",
           ]}
         />
       </div>
@@ -1160,7 +1126,7 @@ export default function Home() {
                 <img
                   className="wall-img"
                   src={w.img}
-                  alt={`${w.name} flower wall`}
+                  alt={`${w.name} flower wall rental Clermont FL`}
                   style={{
                     position: "absolute",
                     inset: 0,
@@ -1212,7 +1178,7 @@ export default function Home() {
                       fontSize: "clamp(22px, 3vw, 30px)",
                       fontWeight: 400,
                       lineHeight: 1.05,
-                      marginBottom: 6,
+                      marginBottom: 4,
                     }}
                   >
                     {w.name}
@@ -1223,10 +1189,21 @@ export default function Home() {
                       fontSize: 11,
                       color: "rgba(245,240,232,0.80)",
                       letterSpacing: "0.06em",
-                      marginBottom: 16,
+                      marginBottom: 6,
                     }}
                   >
                     {w.size} · {w.vibe}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: 17,
+                      color: "#c9a96e",
+                      fontWeight: 400,
+                      marginBottom: 14,
+                    }}
+                  >
+                    {w.price}
                   </div>
                   <Link
                     to="/contact"
@@ -1248,7 +1225,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════ 5. QUOTE BREAK ══════════ */}
+      {/* ══════════ 4. QUOTE BREAK ══════════ */}
       <section
         style={{
           position: "relative",
@@ -1331,7 +1308,7 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ══════════ 6. HOW IT WORKS ══════════ */}
+      {/* ══════════ 5. HOW IT WORKS ══════════ */}
       <section style={{ padding: "100px 0", background: "#090909" }}>
         <div className="inner">
           <Reveal>
@@ -1346,7 +1323,7 @@ export default function Home() {
                 marginBottom: 64,
               }}
             >
-              Simple from first call
+              Simple from first message
               <br />
               <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
                 to final setup
@@ -1359,17 +1336,17 @@ export default function Home() {
               {
                 n: "01",
                 title: "Tell us your date & vibe",
-                body: "Share your event date, venue, and the style you're imagining. More detail means a better quote.",
+                body: "Share your event date, venue, and the style you're imagining. The more detail, the better your quote.",
               },
               {
                 n: "02",
                 title: "Receive your custom quote",
-                body: "We confirm availability and send full pricing.",
+                body: "We confirm availability and send full pricing — usually within 24 hours. No pressure, no obligation.",
               },
               {
                 n: "03",
                 title: "You're on the calendar",
-                body: "Reserve your date with a retainer. Add-ons like neon and signage can be layered in anytime.",
+                body: "Reserve your date with a retainer. Add-ons like neon and signage can be layered in anytime before the event.",
               },
             ].map((step, i) => (
               <Reveal key={step.n} delay={i * 0.1}>
@@ -1458,7 +1435,107 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════ 7. ADD-ONS ══════════ */}
+      {/* ══════════ 6. GOOGLE REVIEWS ══════════ */}
+      <section style={{ padding: "100px 0", background: "#0c0c0c" }}>
+        <div className="inner" style={{ paddingBottom: 52 }}>
+          <Reveal>
+            <div className="section-header-row">
+              <div>
+                {eyebrow("Happy Clients")}
+                <h2
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: "clamp(34px, 5vw, 68px)",
+                    fontWeight: 300,
+                    lineHeight: 0.95,
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  What our clients
+                  <br />
+                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                    are saying
+                  </em>
+                </h2>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+        <div className="inner">
+          <Reveal>
+            <div
+              className="elfsight-app-e3dbe60b-db03-4f47-914d-3b2ad11a55e3"
+              data-elfsight-app-lazy
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══════════ 7. SERVICE AREA ══════════ */}
+      <section
+        style={{
+          padding: "80px 0",
+          background: "#090909",
+          borderTop: "1px solid rgba(201,169,110,0.08)",
+        }}
+      >
+        <div className="inner">
+          <Reveal>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: 32,
+              }}
+            >
+              <div>
+                {eyebrow("Where We Go")}
+                <h2
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: "clamp(28px, 4vw, 52px)",
+                    fontWeight: 300,
+                    lineHeight: 1,
+                    marginBottom: 8,
+                  }}
+                >
+                  Serving{" "}
+                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                    Central Florida
+                  </em>
+                </h2>
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 13,
+                    color: "rgba(245,240,232,0.65)",
+                    fontWeight: 300,
+                    marginBottom: 28,
+                    maxWidth: 420,
+                  }}
+                >
+                  Based in Clermont, FL. Delivery quoted by venue location — ask
+                  about your area.
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+                  {serviceAreas.map((area) => (
+                    <span key={area} className="area-pill">
+                      {area}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <Link to="/contact" className="btn-gold">
+                Check My Area
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══════════ 8. ADD-ONS ══════════ */}
       <section style={{ background: "#080808", padding: "100px 0" }}>
         <div className="inner">
           <Reveal>
@@ -1574,7 +1651,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════ 8. FAQ ══════════ */}
+      {/* ══════════ 9. FAQ ══════════ */}
       <section style={{ padding: "100px 0" }}>
         <div className="inner-narrow">
           <Reveal>
@@ -1619,7 +1696,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════ 9. INSTAGRAM GRID ══════════ */}
+      {/* ══════════ 10. INSTAGRAM GRID ══════════ */}
       <section style={{ padding: "100px 0", background: "#0a0a0a" }}>
         <div className="inner" style={{ paddingBottom: 52 }}>
           <Reveal>
@@ -1655,11 +1732,7 @@ export default function Home() {
         </div>
 
         <div
-          style={{
-            padding: "0 24px 36px",
-            maxWidth: 1200,
-            margin: "0 auto",
-          }}
+          style={{ padding: "0 24px 36px", maxWidth: 1200, margin: "0 auto" }}
         >
           <div data-behold-id="qDJTl17ooRzEHgeQ0dBq"></div>
         </div>
@@ -1685,7 +1758,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════ 10. FOOTER CTA ══════════ */}
+      {/* ══════════ 11. FOOTER CTA ══════════ */}
       <section
         style={{
           padding: "80px 24px",
@@ -1711,7 +1784,10 @@ export default function Home() {
               marginBottom: 32,
             }}
           >
-            Want a full quote with add-ons?
+            Ready to make it{" "}
+            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+              unforgettable?
+            </em>
           </h2>
           <Link to="/contact" className="btn-gold">
             Request a Quote

@@ -116,7 +116,7 @@ export default function Navbar() {
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 1000 /* high enough to sit above everything */,
+          zIndex: 1000,
           background:
             scrolled || open ? "rgba(10,10,10,0.97)" : "rgba(12,12,12,0.70)",
           backdropFilter: "blur(18px)",
@@ -138,7 +138,7 @@ export default function Navbar() {
               transition: "height 0.3s ease",
             }}
           >
-            {/* Logo — always on top of overlay */}
+            {/* Logo */}
             <Link
               to="/"
               aria-label="Bloom home"
@@ -236,7 +236,7 @@ export default function Navbar() {
               </Link>
             </nav>
 
-            {/* Hamburger — always on top of overlay */}
+            {/* Hamburger */}
             <button
               className="bloom-hamburger"
               onClick={() => setOpen((v) => !v)}
@@ -281,7 +281,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ── Mobile full-screen overlay — rendered OUTSIDE the header so it truly covers everything ── */}
+      {/* ── Mobile full-screen overlay ── */}
       <div
         style={{
           position: "fixed",
@@ -289,21 +289,21 @@ export default function Navbar() {
           left: 0,
           right: 0,
           bottom: 0,
-          zIndex: 999 /* below the header bar (1000) but above page content */,
+          zIndex: 999,
           background: "rgba(8,8,8,0.99)",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          padding: "88px 32px 48px" /* 88px top clears the fixed nav bar */,
+          padding: "88px 32px 48px",
           opacity: open ? 1 : 0,
           pointerEvents: open ? "auto" : "none",
           transition: "opacity 0.38s cubic-bezier(0.16,1,0.3,1)",
           overflowY: "auto",
         }}
       >
-        {/* Now booking badge */}
+        {/* Now booking badge — updated to reflect all 4 walls */}
         <div
           style={{
             display: "flex",
@@ -327,7 +327,7 @@ export default function Navbar() {
               animation: "pulse-dot 2.2s ease infinite",
             }}
           />
-          Now Booking · White 8×8 available
+          Now Booking · 4 styles available
         </div>
 
         {/* Big italic nav links */}
@@ -382,6 +382,7 @@ export default function Navbar() {
             Request a Quote
           </Link>
 
+          {/* Contact details + social */}
           <div
             style={{
               marginTop: 28,
@@ -414,6 +415,72 @@ export default function Navbar() {
             >
               info@bloomflowerwallrentals.com
             </a>
+
+            {/* Social links */}
+            <div style={{ display: "flex", gap: 16, marginTop: 8 }}>
+              <a
+                href="https://www.instagram.com/bloomflowerwallrentals/"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 11,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color: "#c9a96e",
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 7,
+                }}
+              >
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37a4 4 0 1 1-7.75 1.25 4 4 0 0 1 7.75-1.25z" />
+                  <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
+                </svg>
+                Instagram
+              </a>
+              <a
+                href="https://www.facebook.com/bloomflowerwallrentals"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 11,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color: "#c9a96e",
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 7,
+                }}
+              >
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
+                Facebook
+              </a>
+            </div>
           </div>
         </div>
       </div>

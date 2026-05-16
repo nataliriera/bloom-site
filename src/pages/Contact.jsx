@@ -16,7 +16,6 @@ const initial = {
   message: "",
 };
 
-// ── Phone helpers ─────────────────────────────────────────────────────────────
 function normalizePhone(val) {
   return val.replace(/[^\d+\-\s().]/g, "");
 }
@@ -24,7 +23,6 @@ function isValidPhone(val) {
   return val.replace(/\D/g, "").length >= 10;
 }
 
-// ── Field wrapper with accessible label + inline error ────────────────────────
 function FormField({ label, required, error, id, children }) {
   return (
     <div>
@@ -65,7 +63,6 @@ function FormField({ label, required, error, id, children }) {
   );
 }
 
-// ── Shared input style ────────────────────────────────────────────────────────
 function iStyle(focused, error) {
   return {
     width: "100%",
@@ -227,7 +224,6 @@ function InfoRow({ label, value }) {
   );
 }
 
-// ── Per-page SEO ──────────────────────────────────────────────────────────────
 function PageMeta() {
   useEffect(() => {
     const t = "Request a Quote | Bloom Flower Wall Rentals — Clermont, FL";
@@ -262,7 +258,6 @@ function PageMeta() {
   return null;
 }
 
-// ── Validation ────────────────────────────────────────────────────────────────
 const REQUIRED = [
   "name",
   "email",
@@ -283,7 +278,6 @@ function validate(name, value) {
   return null;
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
 export default function Contact() {
   const [form, setForm] = useState(initial);
   const [errors, setErrors] = useState({});
@@ -346,7 +340,7 @@ export default function Contact() {
           eventDate: form.eventDate,
           location: form.location,
           setupType: form.setupType || "Not specified",
-          serviceOption: form.serviceOption,
+          serviceOption: form.serviceOption || "Not specified",
           addOns: form.addOns || "None",
           message: form.message,
           _subject: "New quote request — Bloom Flower Wall Rentals",
@@ -489,15 +483,15 @@ export default function Contact() {
             <Link to="/pricing" className="btn-outline">
               See Pricing
             </Link>
-            <Link to="/faq" className="btn-outline">
-              Read FAQ
+            <Link to="/gallery" className="btn-outline">
+              Browse Walls
             </Link>
           </div>
         </div>
 
         {/* Main grid */}
         <div className="contact-grid">
-          {/* Info panel */}
+          {/* ── Info panel ── */}
           <div className="info-panel">
             <div
               style={{
@@ -522,6 +516,7 @@ export default function Contact() {
               Delivery, setup, and breakdown available for an additional fee.
             </p>
 
+            {/* Contact links */}
             <div style={{ marginBottom: 36 }}>
               {colLabel("Contact")}
               <a
@@ -534,6 +529,15 @@ export default function Contact() {
               <a href="tel:+18633355022" className="contact-link">
                 (863) 335-5022
               </a>
+              {/* WhatsApp / text link */}
+              <a
+                href="https://wa.me/18633355022?text=Hi%20Bloom!%20I%27d%20like%20to%20request%20a%20quote%20for%20a%20flower%20wall%20rental."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-link"
+              >
+                Text or WhatsApp us →
+              </a>
               <a
                 href="https://www.instagram.com/bloomflowerwallrentals/"
                 target="_blank"
@@ -544,13 +548,16 @@ export default function Contact() {
               </a>
             </div>
 
+            {/* At a glance */}
             <div style={{ marginBottom: 36 }}>
               {colLabel("At a Glance")}
               <InfoRow label="Reply time" value="Within 24–48 hours" />
               <InfoRow label="Deposit" value="50% to reserve" />
               <InfoRow label="Starting at" value="$350" />
+              <InfoRow label="Service area" value="Central Florida" />
             </div>
 
+            {/* Policy cards */}
             <div
               style={{
                 display: "flex",
@@ -562,11 +569,15 @@ export default function Contact() {
               {[
                 {
                   title: "Deposit policy",
-                  body: "A 50% deposit reserves your date and is applied to your total. Remaining balance is due before the event. Pre-order/custom styles may require a higher, non-refundable deposit.",
+                  body: "A 50% deposit reserves your date and is applied to your total. Remaining balance is due one week before the event. Pre-order or custom styles may require a higher, non-refundable deposit.",
                 },
                 {
                   title: "Add-ons",
                   body: "Neon signs, custom signage, balloons, and styling are optional and only included if listed on your quote.",
+                },
+                {
+                  title: "Delivery & setup",
+                  body: "Delivery, setup, and breakdown are available for an additional fee quoted by venue location and logistics. Let us know in the form and we'll include it in your quote.",
                 },
               ].map((card) => (
                 <div
@@ -610,7 +621,7 @@ export default function Contact() {
             </p>
           </div>
 
-          {/* Form panel */}
+          {/* ── Form panel ── */}
           <div className="form-panel">
             {status === "success" ? (
               <div
@@ -877,31 +888,26 @@ export default function Contact() {
                         <option>Not sure yet</option>
                       </Select>
                     </FormField>
-                    {/* <FormField
-                      label="Delivery / Setup / Breakdown?"
-                      required
+                    <FormField
+                      label="Need Delivery / Setup / Breakdown?"
                       id="f-serviceOption"
-                      error={touched.serviceOption && errors.serviceOption}
                     >
-                      <Select
+                      {/* <Select
                         id="f-serviceOption"
                         name="serviceOption"
                         value={form.serviceOption}
                         onChange={updateField}
-                        onBlur={handleBlur}
-                        required
-                        error={touched.serviceOption && errors.serviceOption}
                       >
                         <option value="">Select one…</option>
-                        <option value="Yes (quote delivery/setup/breakdown)">
-                          Yes — quote delivery/setup/breakdown
+                        <option value="Yes — please quote delivery/setup/breakdown">
+                          Yes — please include in quote
                         </option>
-                        <option value="No (client pickup/return)">
-                          No — I will arrange pickup/return
+                        <option value="No — I will arrange pickup/return">
+                          No — I'll arrange pickup/return
                         </option>
                         <option value="Not sure yet">Not sure yet</option>
-                      </Select>
-                    </FormField> */}
+                      </Select> */}
+                    </FormField>
                   </div>
 
                   <FormField label="Add-ons (optional)" id="f-addOns">
@@ -928,7 +934,7 @@ export default function Contact() {
                       onBlur={handleBlur}
                       required
                       rows={5}
-                      placeholder="Theme, colors, venue notes, setup window, timeline, add-ons…"
+                      placeholder="Theme, colors, venue notes, setup window, timeline…"
                       error={touched.message && errors.message}
                     />
                   </FormField>
@@ -1012,7 +1018,7 @@ export default function Contact() {
                 marginBottom: 6,
               }}
             >
-              Booking ahead and want a different wall style?
+              Want a style we don't have in stock?
             </div>
             <p
               style={{
@@ -1022,11 +1028,11 @@ export default function Contact() {
               }}
             >
               If your event is 6–8+ weeks out, we can often source additional
-              styles by request.
+              styles by request. Ask us about pre-order options.
             </p>
           </div>
-          <Link to="/pricing" className="btn-gold">
-            See Add-ons
+          <Link to="/gallery" className="btn-gold">
+            Browse All Styles
           </Link>
         </div>
       </div>

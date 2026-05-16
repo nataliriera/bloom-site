@@ -21,10 +21,10 @@ const extras = [
     price: "$75–$125",
   },
   {
-    title: "Extended rental time",
-    note: "Need a later pickup time? Add extra hours as needed.",
+    title: "Late pickup",
+    note: "Need a later breakdown time? Ask about availability — quoted per event.",
     pill: "ADD-ON",
-    price: "$75 / hour",
+    price: "Custom quote",
   },
   {
     title: "Neon sign",
@@ -173,8 +173,7 @@ export default function Pricing() {
             Flower wall rentals in Clermont, FL and surrounding areas. Packages
             start at{" "}
             <strong style={{ color: "#c9a96e", fontWeight: 500 }}>$350</strong>.
-            Delivery, professional setup, and breakdown available for an
-            additional fee.
+            Delivery, setup, and breakdown are available for an additional fee.
           </p>
           <div
             style={{
@@ -235,7 +234,7 @@ export default function Pricing() {
                       marginBottom: 12,
                     }}
                   >
-                    Starting pricing
+                    Rental pricing
                   </div>
                   <p
                     style={{
@@ -247,8 +246,8 @@ export default function Pricing() {
                       maxWidth: 360,
                     }}
                   >
-                    Your final quote depends on date, wall style, rental length,
-                    add-ons, and delivery/setup logistics.
+                    Your final quote depends on the wall style, add-ons, and
+                    delivery/setup logistics.
                   </p>
                 </div>
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
@@ -272,22 +271,24 @@ export default function Pricing() {
                       marginTop: 4,
                     }}
                   >
-                    starting
+                    per event
                   </div>
                 </div>
               </div>
 
               {/* Stat rows */}
-              {/* <div
+              <div
                 style={{
                   borderTop: "1px solid rgba(201,169,110,0.1)",
                   marginBottom: 36,
                 }}
               >
                 {[
-                  { k: "Rental", v: "Included" },
-                  { k: "Delivery / Pick Up", v: "Additional fee" },
-                  { k: "Setup / Breakdown", v: "Included" },
+                  { k: "White Garden", v: "Starting at $350" },
+                  { k: "The Enchanted Garden", v: "Starting at $350" },
+                  { k: "Midnight Noir", v: "Starting at $375" },
+                  { k: "Tropical Oasis", v: "Starting at $450" },
+                  { k: "Delivery / Setup / Breakdown", v: "Additional fee" },
                 ].map((row) => (
                   <div key={row.k} className="stat-row">
                     <span
@@ -313,7 +314,7 @@ export default function Pricing() {
                     </span>
                   </div>
                 ))}
-              </div> */}
+              </div>
 
               {/* Bullet points */}
               <div
@@ -326,8 +327,8 @@ export default function Pricing() {
               >
                 {[
                   {
-                    bold: "Packages start at $350",
-                    rest: " (varies by wall + rental length)",
+                    bold: "Priced per event",
+                    rest: " — no hourly stress, no surprises",
                   },
                   {
                     bold: null,
@@ -339,7 +340,7 @@ export default function Pricing() {
                   },
                   {
                     bold: null,
-                    rest: "Delivery/setup/breakdown pricing quoted based on venue access + location",
+                    rest: "Delivery/setup/breakdown quoted based on venue location + logistics",
                   },
                 ].map((item, i) => (
                   <div
@@ -399,8 +400,8 @@ export default function Pricing() {
                 >
                   Want a specific wall style?
                 </strong>{" "}
-                Browse available styles or request a custom/pre-order wall if
-                your event is 6–8+ weeks out.
+                Browse available styles or request a pre-order wall if your
+                event is 6–8+ weeks out.
               </div>
 
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
@@ -421,8 +422,8 @@ export default function Pricing() {
                   lineHeight: 1.6,
                 }}
               >
-                Final pricing may vary based on date, rental length, add-ons,
-                and venue logistics. Your quote is confirmed before booking.
+                Final pricing may vary based on wall style, add-ons, and venue
+                logistics. Your quote is confirmed before booking.
               </p>
             </div>
 
@@ -437,7 +438,7 @@ export default function Pricing() {
                     "Delivery/setup/breakdown based on venue location",
                     "Venue rules (stairs, tight load-in, required time windows)",
                     "Add-ons (signage, balloons, neon, styling)",
-                    "Multi-day rentals or extended hours",
+                    "Pre-order walls or custom styles",
                   ].map((item) => (
                     <div
                       key={item}
@@ -726,18 +727,6 @@ export default function Pricing() {
               Request a Quote
             </Link>
           </div>
-          <p
-            style={{
-              marginTop: 28,
-              textAlign: "center",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: 12,
-              color: "rgba(245,240,232,0.58)",
-            }}
-          >
-            Book your date: send your event date + venue and we'll confirm
-            availability.
-          </p>
         </div>
       </section>
     </div>
