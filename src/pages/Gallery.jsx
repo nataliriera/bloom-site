@@ -382,6 +382,8 @@ function Lightbox({ wall, onClose }) {
             display: "block",
           }}
         />
+
+        {/* ✅ Arrows fixed for mobile — positioned inside the image (8px) not outside (-56px) */}
         {total > 1 && (
           <>
             <button
@@ -389,7 +391,7 @@ function Lightbox({ wall, onClose }) {
               aria-label="Previous photo"
               style={{
                 position: "absolute",
-                left: -56,
+                left: 8,
                 top: "50%",
                 transform: "translateY(-50%)",
                 background: "rgba(12,12,12,0.7)",
@@ -403,6 +405,7 @@ function Lightbox({ wall, onClose }) {
                 cursor: "pointer",
                 fontSize: 18,
                 transition: "border-color 0.2s, background 0.2s",
+                zIndex: 3,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#c9a96e";
@@ -420,7 +423,7 @@ function Lightbox({ wall, onClose }) {
               aria-label="Next photo"
               style={{
                 position: "absolute",
-                right: -56,
+                right: 8,
                 top: "50%",
                 transform: "translateY(-50%)",
                 background: "rgba(12,12,12,0.7)",
@@ -434,6 +437,7 @@ function Lightbox({ wall, onClose }) {
                 cursor: "pointer",
                 fontSize: 18,
                 transition: "border-color 0.2s, background 0.2s",
+                zIndex: 3,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#c9a96e";

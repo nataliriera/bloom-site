@@ -500,7 +500,6 @@ export default function Faq() {
                     "Venue name + city",
                     "Indoor or outdoor",
                     "Preferred wall style",
-                    "Delivery/setup needed? (yes/no)",
                     "Any add-ons (signage, neon, balloons)",
                   ].map((item) => (
                     <div
