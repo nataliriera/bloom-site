@@ -1,4 +1,0 @@
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://elfsightcdn.com https://static.elfsight.com https://w.behold.so https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://elfsightcdn.com https://static.elfsight.com https://formspree.io https://w.behold.so; frame-src 'self' https://elfsightcdn.com; worker-src 'self' blob:;"
