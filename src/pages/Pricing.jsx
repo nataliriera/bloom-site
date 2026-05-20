@@ -286,7 +286,7 @@ export default function Pricing() {
                 {[
                   { k: "White Garden", v: "Starting at $350" },
                   { k: "The Enchanted Garden", v: "Starting at $350" },
-                  { k: "Midnight Noir", v: "Starting at $375" },
+                  { k: "Midnight Noir", v: "Starting at $500" },
                   { k: "Tropical Oasis", v: "Starting at $450" },
                   { k: "Delivery / Setup / Breakdown", v: "Additional fee" },
                 ].map((row) => (

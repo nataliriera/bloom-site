@@ -40,7 +40,7 @@ const walls = [
     vibe: "Dramatic dark florals",
     img: midnightNoirImg, // swap to midnightNoirImg once you have the photo
     tag: "Available Now",
-    price: "Starting at $375",
+    price: "Starting at $500",
   },
 ];
 
