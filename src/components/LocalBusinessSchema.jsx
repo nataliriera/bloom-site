@@ -28,8 +28,11 @@ export default function LocalBusinessSchema() {
       addressRegion: "FL",
       addressCountry: "US",
     },
-    sameAs: ["https://www.instagram.com/bloomflowerwallrentals/"],
-    priceRange: "$$$",
+    sameAs: [
+      "https://www.instagram.com/bloomflowerwallrentals/",
+      "https://www.facebook.com/bloomflowerwallrentals",
+    ],
+    priceRange: "$$",
   };
 
   return <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>;

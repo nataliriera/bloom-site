@@ -6,6 +6,8 @@ import logo from "../assets/bloom-logo.png";
 const navLinks = [
   { to: "/gallery", label: "Styles" },
   { to: "/pricing", label: "Pricing" },
+  { to: "/about", label: "About" },
+  { to: "/events", label: "Events" },
   { to: "/faq", label: "FAQ" },
   { to: "/service-areas", label: "Service Areas" },
   { to: "/contact", label: "Contact" },

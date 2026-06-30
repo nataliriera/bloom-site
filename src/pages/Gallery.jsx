@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
+import SnapCarousel from "../components/SnapCarousel.jsx";
 
 import whiteGardenImg from "../assets/walls/white-garden.jpg";
 import blushOmbreImg from "../assets/walls/blush-ombre.jpg";
@@ -79,9 +80,9 @@ const data = [
     image: midnightNoirImg,
     imageUrl: `${SITE_URL}/midnight-noir.jpg`,
     alt: "Black flower wall backdrop rental in Clermont, Florida",
-    pricingNote: "Starting at $375",
+    pricingNote: "Starting at $500",
     pinDescription:
-      "Midnight Noir flower wall rental — dramatic dark floral backdrop for weddings & events in Clermont, FL. Starting at $375. 🖤 bloomflowerwallrentals.com",
+      "Midnight Noir flower wall rental — dramatic dark floral backdrop for weddings & events in Clermont, FL. Starting at $500. 🖤 bloomflowerwallrentals.com",
     gallery: [midnightNoirImg, midnightNoir2, midnightNoir3],
   },
   {
@@ -855,7 +856,6 @@ export default function Gallery() {
           .inner { padding:0 24px; }
           .pin-btn { opacity: 0.85 !important; }
         }
-        @media (max-width:520px) { .gallery-grid { grid-template-columns:1fr; } }
       `}</style>
       <div className="noise" />
 
@@ -931,7 +931,7 @@ export default function Gallery() {
           </h2>
         </div>
         <div className="inner">
-          <div className="gallery-grid">
+          <SnapCarousel className="gallery-grid" hint="Swipe for more styles">
             {available.map((x) => (
               <WallCard
                 key={x.name}
@@ -940,7 +940,7 @@ export default function Gallery() {
                 onViewPhotos={openLightbox}
               />
             ))}
-          </div>
+          </SnapCarousel>
         </div>
       </section>
 
@@ -986,7 +986,7 @@ export default function Gallery() {
           </div>
         </div>
         <div className="inner">
-          <div className="gallery-grid">
+          <SnapCarousel className="gallery-grid" hint="Swipe for more styles">
             {preorder.map((x) => (
               <WallCard
                 key={x.name}
@@ -995,7 +995,7 @@ export default function Gallery() {
                 onViewPhotos={openLightbox}
               />
             ))}
-          </div>
+          </SnapCarousel>
         </div>
         <div className="inner" style={{ paddingTop: 48 }}>
           <div

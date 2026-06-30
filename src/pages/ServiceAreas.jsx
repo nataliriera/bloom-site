@@ -60,7 +60,7 @@ function PageMeta() {
         "Leesburg FL",
       ],
       description:
-        "Luxury flower wall rental with delivery, setup, and breakdown for weddings and events across Central Florida.",
+        "Luxury flower wall rental for weddings and events across Central Florida. Delivery, setup, and breakdown available for an additional fee, quoted by venue.",
     };
     let ld = document.getElementById("ld-service");
     if (!ld) {

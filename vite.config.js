@@ -11,6 +11,8 @@ export default defineConfig({
         "/",
         "/gallery",
         "/pricing",
+        "/about",
+        "/events",
         "/faq",
         "/service-areas",
         "/contact",

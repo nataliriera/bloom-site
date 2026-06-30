@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { upcomingEvents } from "../data/events.js";
+import { useLazyScript } from "../hooks/useLazyScript.js";
+import SnapCarousel from "../components/SnapCarousel.jsx";
+import ReviewsSection from "../components/ReviewsSection.jsx";
 
 // 🌿 Update image imports once you have Tropical Oasis + Midnight Noir photos
 import whiteGardenImg from "../assets/walls/white-garden.jpg";
@@ -228,7 +232,7 @@ const SCHEMA = {
   description:
     "Luxury flower wall rentals for weddings, baby showers, birthdays, and events in Clermont, FL and surrounding areas. Delivery, setup, and breakdown available.",
   url: "https://bloomflowerwallrentals.com",
-  telephone: "",
+  telephone: "+1-863-335-5022",
   email: "info@bloomflowerwallrentals.com",
   image: "https://bloomflowerwallrentals.com/white-wall.png",
   priceRange: "$$",
@@ -259,7 +263,10 @@ const SCHEMA = {
     "Event Decor Rental",
     "Photo Backdrop Rental",
   ],
-  sameAs: ["https://www.instagram.com/bloomflowerwallrentals"],
+  sameAs: [
+    "https://www.instagram.com/bloomflowerwallrentals",
+    "https://www.facebook.com/bloomflowerwallrentals",
+  ],
 };
 
 function PageMeta() {
@@ -344,393 +351,20 @@ function PageMeta() {
   return null;
 }
 
-const POPUP_ENDPOINT = "https://formspree.io/f/xjgeqaqq";
-const POPUP_KEY = "bloom_popup_dismissed";
-
-function EmailPopup({ onClose }) {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("idle");
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 60);
-    return () => clearTimeout(t);
-  }, []);
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-    setStatus("sending");
-    try {
-      const res = await fetch(POPUP_ENDPOINT, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          _subject: "10% Discount Signup — Bloom Flower Wall Rentals",
-          source: "Homepage exit-intent popup",
-          discount: "BLOOM10",
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok || data.error) throw new Error();
-      setStatus("success");
-      localStorage.setItem(POPUP_KEY, "1");
-    } catch {
-      setStatus("error");
-    }
-  }
-
-  function dismiss() {
-    setVisible(false);
-    setTimeout(onClose, 400);
-  }
-
-  return (
-    <div
-      onClick={(e) => {
-        if (e.target === e.currentTarget) dismiss();
-      }}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 10000,
-        background: "rgba(0,0,0,0.72)",
-        backdropFilter: "blur(6px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 24,
-        opacity: visible ? 1 : 0,
-        transition: "opacity 0.4s ease",
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: 520,
-          background: "#0e0e0e",
-          border: "1px solid rgba(201,169,110,0.25)",
-          boxShadow: "0 32px 80px rgba(0,0,0,0.7)",
-          transform: visible ? "translateY(0)" : "translateY(24px)",
-          transition: "transform 0.45s cubic-bezier(0.16,1,0.3,1)",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            height: 3,
-            background: "linear-gradient(90deg, #c9a96e, #e8d5a8, #c9a96e)",
-          }}
-        />
-        <button
-          onClick={dismiss}
-          aria-label="Close"
-          style={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "rgba(245,240,232,0.68)",
-            fontSize: 20,
-            lineHeight: 1,
-            padding: 4,
-            transition: "color 0.2s",
-          }}
-          onMouseEnter={(e) => (e.target.style.color = "#c9a96e")}
-          onMouseLeave={(e) =>
-            (e.target.style.color = "rgba(245,240,232,0.68)")
-          }
-        >
-          ✕
-        </button>
-        <div style={{ padding: "44px 44px 40px" }}>
-          {status === "success" ? (
-            <div style={{ textAlign: "center", padding: "16px 0 8px" }}>
-              <div
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: 48,
-                  color: "#c9a96e",
-                  marginBottom: 16,
-                }}
-              >
-                ✦
-              </div>
-              <h2
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: "clamp(26px, 4vw, 36px)",
-                  fontWeight: 300,
-                  marginBottom: 12,
-                }}
-              >
-                You're in!
-              </h2>
-              <p
-                style={{
-                  fontSize: 14,
-                  color: "rgba(245,240,232,0.85)",
-                  lineHeight: 1.75,
-                  fontWeight: 300,
-                  marginBottom: 20,
-                }}
-              >
-                We'll email your discount code shortly. Use it when requesting a
-                quote.
-              </p>
-              <div
-                style={{
-                  background: "#131313",
-                  border: "1px solid rgba(201,169,110,0.2)",
-                  padding: "18px 24px",
-                  marginBottom: 28,
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 10,
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "rgba(245,240,232,0.75)",
-                    marginBottom: 10,
-                  }}
-                >
-                  Your discount code
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 32,
-                    fontWeight: 400,
-                    color: "#c9a96e",
-                    letterSpacing: "0.12em",
-                  }}
-                >
-                  BLOOM10
-                </div>
-              </div>
-              <button
-                onClick={dismiss}
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 11,
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  color: "rgba(245,240,232,0.75)",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                Close
-              </button>
-            </div>
-          ) : (
-            <>
-              <p
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 10,
-                  letterSpacing: "0.22em",
-                  textTransform: "uppercase",
-                  color: "#c9a96e",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  marginBottom: 18,
-                }}
-              >
-                <span
-                  style={{
-                    display: "inline-block",
-                    width: 18,
-                    height: 1,
-                    background: "#c9a96e",
-                  }}
-                />
-                Limited Time
-              </p>
-              <h2
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: "clamp(28px, 5vw, 42px)",
-                  fontWeight: 300,
-                  lineHeight: 1.0,
-                  letterSpacing: "-0.01em",
-                  marginBottom: 14,
-                }}
-              >
-                10% off your
-                <br />
-                <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                  first rental
-                </em>
-              </h2>
-              <p
-                style={{
-                  fontSize: 13,
-                  color: "rgba(245,240,232,0.82)",
-                  lineHeight: 1.75,
-                  fontWeight: 300,
-                  marginBottom: 28,
-                }}
-              >
-                Drop your email and we'll send your discount code — plus
-                priority availability updates when new wall styles arrive.
-              </p>
-              <form
-                onSubmit={handleSubmit}
-                noValidate
-                style={{ display: "flex", flexDirection: "column", gap: 12 }}
-              >
-                <div style={{ display: "flex", gap: 0 }}>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    required
-                    aria-label="Email address"
-                    inputMode="email"
-                    autoComplete="email"
-                    style={{
-                      flex: 1,
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(201,169,110,0.25)",
-                      borderRight: "none",
-                      color: "#f5f0e8",
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: 14,
-                      padding: "13px 16px",
-                      outline: "none",
-                      minWidth: 0,
-                    }}
-                    onFocus={(e) =>
-                      (e.target.style.borderColor = "rgba(201,169,110,0.6)")
-                    }
-                    onBlur={(e) =>
-                      (e.target.style.borderColor = "rgba(201,169,110,0.25)")
-                    }
-                  />
-                  <button
-                    type="submit"
-                    disabled={status === "sending"}
-                    style={{
-                      background: "#c9a96e",
-                      color: "#0c0c0c",
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: 11,
-                      fontWeight: 500,
-                      letterSpacing: "0.14em",
-                      textTransform: "uppercase",
-                      padding: "13px 22px",
-                      border: "none",
-                      cursor: "pointer",
-                      whiteSpace: "nowrap",
-                      transition: "background 0.2s",
-                      opacity: status === "sending" ? 0.7 : 1,
-                    }}
-                  >
-                    {status === "sending" ? "…" : "Get 10% Off"}
-                  </button>
-                </div>
-                {status === "error" && (
-                  <p
-                    role="alert"
-                    style={{ fontSize: 11, color: "rgba(220,100,100,0.85)" }}
-                  >
-                    Something went wrong. Try emailing us directly.
-                  </p>
-                )}
-              </form>
-              <p
-                style={{
-                  marginTop: 16,
-                  fontSize: 11,
-                  color: "rgba(245,240,232,0.55)",
-                  lineHeight: 1.6,
-                }}
-              >
-                No spam. Unsubscribe anytime. Code applies to your first
-                booking.
-              </p>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
   const [heroIn, setHeroIn] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
+  const instagramRef = useRef(null);
 
   useEffect(() => {
     const t = setTimeout(() => setHeroIn(true), 80);
     return () => clearTimeout(t);
   }, []);
 
-  useEffect(() => {
-    if (localStorage.getItem(POPUP_KEY)) return;
-    let triggered = false;
-
-    function onMouseOut(e) {
-      if (triggered) return;
-      if (e.clientY <= 8 && e.relatedTarget === null) {
-        triggered = true;
-        setShowPopup(true);
-      }
-    }
-
-    // Increased to 60s for better mobile experience
-    const fallback = setTimeout(() => {
-      if (!triggered && !localStorage.getItem(POPUP_KEY)) {
-        triggered = true;
-        setShowPopup(true);
-      }
-    }, 60000);
-
-    document.addEventListener("mouseout", onMouseOut);
-    return () => {
-      document.removeEventListener("mouseout", onMouseOut);
-      clearTimeout(fallback);
-    };
-  }, []);
-
-  // Load Behold widget script once
-  useEffect(() => {
-    const existingScript = document.querySelector(
-      'script[src="https://w.behold.so/widget.js"]'
-    );
-    if (!existingScript) {
-      const script = document.createElement("script");
-      script.type = "module";
-      script.src = "https://w.behold.so/widget.js";
-      document.head.appendChild(script);
-    }
-  }, []);
-
-  // Load Elfsight script once
-  useEffect(() => {
-    const existingScript = document.querySelector(
-      'script[src="https://elfsightcdn.com/platform.js"]'
-    );
-    if (!existingScript) {
-      const script = document.createElement("script");
-      script.src = "https://elfsightcdn.com/platform.js";
-      script.async = true;
-      document.head.appendChild(script);
-    }
-  }, []);
+  useLazyScript(instagramRef, {
+    src: "https://w.behold.so/widget.js",
+    type: "module",
+    id: "behold-widget",
+  });
 
   const eyebrow = (text) => (
     <p
@@ -769,7 +403,6 @@ export default function Home() {
       }}
     >
       <PageMeta />
-      {showPopup && <EmailPopup onClose={() => setShowPopup(false)} />}
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap');
@@ -808,6 +441,35 @@ export default function Home() {
 
         .area-pill { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; padding:8px 18px; border:1px solid rgba(201,169,110,0.2); color:rgba(245,240,232,0.75); background:transparent; white-space:nowrap; }
 
+        .home-events-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: rgba(201,169,110,0.08); }
+        .home-event-card {
+          display: flex; flex-direction: column; background: #0a0a0a; text-decoration: none; color: inherit;
+          height: 100%; overflow: hidden; position: relative;
+          transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease;
+        }
+        .home-event-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.4); }
+        .home-event-card:hover .home-event-img { transform: scale(1.06); }
+        .home-event-card:hover .home-event-shine { opacity: 1; }
+        .home-event-visual { position: relative; aspect-ratio: 4/5; overflow: hidden; background: #111; }
+        .home-event-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+        .home-event-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(10,10,10,0.92) 100%); pointer-events: none; }
+        .home-event-shine { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,169,110,0.12) 0%, transparent 50%); opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
+        .home-event-date {
+          position: absolute; top: 16px; left: 16px; z-index: 2;
+          background: rgba(12,12,12,0.85); border: 1px solid rgba(201,169,110,0.35);
+          backdrop-filter: blur(8px); padding: 10px 14px; text-align: center; min-width: 54px;
+        }
+        .home-event-date-month { display: block; font-size: 9px; letter-spacing: 0.18em; color: #c9a96e; }
+        .home-event-date-day { display: block; font-family: 'Cormorant Garamond', serif; font-size: 26px; line-height: 1; margin-top: 2px; }
+        .home-event-body { padding: 22px 22px 26px; flex: 1; display: flex; flex-direction: column; border-top: 1px solid rgba(201,169,110,0.1); }
+        .home-event-pill { display: inline-block; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: #c9a96e; border: 1px solid rgba(201,169,110,0.35); padding: 4px 10px; margin-bottom: 12px; align-self: flex-start; }
+        .home-event-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(19px, 2vw, 24px); font-weight: 400; line-height: 1.15; margin-bottom: 8px; }
+        .home-event-loc { font-size: 11px; color: rgba(245,240,232,0.5); letter-spacing: 0.06em; margin-bottom: 14px; }
+        .home-event-meta { font-size: 12px; color: rgba(245,240,232,0.62); margin-bottom: 16px; flex: 1; }
+        .home-event-link { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #c9a96e; display: flex; align-items: center; gap: 8px; }
+        .home-event-link span { transition: transform 0.25s ease; }
+        .home-event-card:hover .home-event-link span { transform: translateX(4px); }
+
         @media (max-width: 900px) {
           .walls-grid { grid-template-columns: repeat(2, 1fr); }
           .steps-grid { grid-template-columns: 1fr; }
@@ -820,7 +482,6 @@ export default function Home() {
         }
 
         @media (max-width: 580px) {
-          .walls-grid { grid-template-columns: 1fr; }
           .hero-btns { flex-direction: column; align-items: flex-start; }
           .btn-gold, .btn-outline { width: 100%; justify-content: center; }
         }
@@ -1110,7 +771,7 @@ export default function Home() {
           </Reveal>
         </div>
 
-        <div className="walls-grid">
+        <SnapCarousel className="walls-grid" hint="Swipe for more walls" bleed={false}>
           {walls.map((w, i) => (
             <Reveal key={w.name} delay={i * 0.08}>
               <div
@@ -1222,7 +883,7 @@ export default function Home() {
               </div>
             </Reveal>
           ))}
-        </div>
+        </SnapCarousel>
       </section>
 
       {/* ══════════ 4. QUOTE BREAK ══════════ */}
@@ -1435,13 +1096,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════ 6. GOOGLE REVIEWS ══════════ */}
-      <section style={{ padding: "100px 0", background: "#0c0c0c" }}>
-        <div className="inner" style={{ paddingBottom: 52 }}>
+      <ReviewsSection />
+
+      {/* ══════════ 6b. UPCOMING EVENTS ══════════ */}
+      <section style={{ padding: "100px 0", background: "#090909" }}>
+        <div className="inner" style={{ paddingBottom: 48 }}>
           <Reveal>
             <div className="section-header-row">
               <div>
-                {eyebrow("Happy Clients")}
+                {eyebrow("Meet Me In Person")}
                 <h2
                   style={{
                     fontFamily: "'Cormorant Garamond', serif",
@@ -1451,23 +1114,69 @@ export default function Home() {
                     letterSpacing: "-0.01em",
                   }}
                 >
-                  What our clients
+                  Upcoming
                   <br />
                   <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                    are saying
+                    events
                   </em>
                 </h2>
               </div>
+              <Link to="/events" className="btn-outline">
+                View All Events →
+              </Link>
             </div>
           </Reveal>
         </div>
         <div className="inner">
-          <Reveal>
-            <div
-              className="elfsight-app-e3dbe60b-db03-4f47-914d-3b2ad11a55e3"
-              data-elfsight-app-lazy
-            />
-          </Reveal>
+          <SnapCarousel className="home-events-grid" hint="Swipe for events">
+            {upcomingEvents.map((event, i) => {
+              const d = new Date(`${event.date}T12:00:00`);
+              const month = d
+                .toLocaleDateString("en-US", { month: "short" })
+                .toUpperCase();
+              const day = d.getDate();
+              const thumb = event.image || enchantedGardenImg;
+              return (
+                <Reveal key={event.id} delay={i * 0.08}>
+                  <a
+                    href={event.eventUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="home-event-card"
+                  >
+                    <div className="home-event-visual">
+                      <img
+                        src={thumb}
+                        alt={event.imageAlt}
+                        loading="lazy"
+                        className="home-event-img"
+                        style={
+                          !event.image
+                            ? { opacity: 0.55, filter: "saturate(0.85)" }
+                            : undefined
+                        }
+                      />
+                      <div className="home-event-overlay" />
+                      <div className="home-event-shine" />
+                      <div className="home-event-date">
+                        <span className="home-event-date-month">{month}</span>
+                        <span className="home-event-date-day">{day}</span>
+                      </div>
+                    </div>
+                    <div className="home-event-body">
+                      <span className="home-event-pill">{event.category}</span>
+                      <div className="home-event-title">{event.title}</div>
+                      <div className="home-event-loc">{event.location}</div>
+                      <p className="home-event-meta">{event.time}</p>
+                      <span className="home-event-link">
+                        Event details <span>→</span>
+                      </span>
+                    </div>
+                  </a>
+                </Reveal>
+              );
+            })}
+          </SnapCarousel>
         </div>
       </section>
 
@@ -1697,7 +1406,10 @@ export default function Home() {
       </section>
 
       {/* ══════════ 10. INSTAGRAM GRID ══════════ */}
-      <section style={{ padding: "100px 0", background: "#0a0a0a" }}>
+      <section
+        ref={instagramRef}
+        style={{ padding: "100px 0", background: "#0a0a0a" }}
+      >
         <div className="inner" style={{ paddingBottom: 52 }}>
           <Reveal>
             <div className="section-header-row">
