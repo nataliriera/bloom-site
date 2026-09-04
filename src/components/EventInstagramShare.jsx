@@ -207,8 +207,8 @@ export default function EventInstagramShare({
             </div>
 
             <p className="bloom-share-hint">
-              This is how it will look on Instagram — branded from your website.
-              Caption copies automatically when you share.
+              Full Instagram Story from Bloom — flyer + your branding. On your
+              phone, tap share and choose Instagram Stories.
             </p>
 
             <div className="bloom-share-actions">
