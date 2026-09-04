@@ -1,35 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { createBloomEventShareCard } from "../utils/createBloomEventShareCard.js";
 
 const BLOOM_IG = "@bloomflowerwallrentals";
+const SITE = "https://bloomflowerwallrentals.com";
 
 function buildCaption(event) {
   const lines = [
-    event.title,
+    `${event.title} ✨`,
     `${event.dateLabel} · ${event.time}`,
     event.location,
     "",
     event.description,
     "",
     event.role === "bloom"
-      ? `Find Bloom ${BLOOM_IG} at this event 🌸`
-      : `Hosted with love · ${BLOOM_IG} 🌸`,
+      ? `Come see Bloom Flower Wall Rentals at this event 🌸`
+      : `Hosted with love by Natali · Bloom 🌸`,
+    "",
+    BLOOM_IG,
+    SITE,
     event.eventUrl,
   ];
-  return lines.filter((line) => line !== undefined).join("\n");
-}
-
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
-async function flyerAsFile(imageUrl, filename) {
-  const res = await fetch(imageUrl);
-  const blob = await res.blob();
-  const type = blob.type || "image/png";
-  return new File([blob], filename, { type });
+  return lines.join("\n");
 }
 
 async function copyText(text) {
@@ -58,47 +49,71 @@ function canShareFiles(file) {
 }
 
 /**
- * Shares event flyer via the phone's share sheet (Instagram appears there).
- * Caption is copied so you can paste it in Instagram. No forced download.
+ * Opens a Bloom-branded preview card, then shares it to Instagram via the phone share sheet.
  */
 export default function EventInstagramShare({
   event,
   variant = "outline",
   className = "",
 }) {
-  const [status, setStatus] = useState("idle"); // idle | working | done | error | desktop
+  const [status, setStatus] = useState("idle");
+  const [open, setOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [shareFile, setShareFile] = useState(null);
+  const [building, setBuilding] = useState(false);
 
-  const handleShare = async (e) => {
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
+  const openPreview = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (status === "working") return;
+    if (building) return;
 
+    setBuilding(true);
+    setStatus("working");
+    try {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      const { file, previewUrl: url } = await createBloomEventShareCard(event);
+      setShareFile(file);
+      setPreviewUrl(url);
+      setOpen(true);
+      setStatus("idle");
+    } catch {
+      setStatus("error");
+      window.setTimeout(() => setStatus("idle"), 2800);
+    } finally {
+      setBuilding(false);
+    }
+  };
+
+  const closePreview = () => {
+    setOpen(false);
+  };
+
+  const shareNow = async () => {
+    if (!shareFile || status === "working") return;
     setStatus("working");
     const caption = buildCaption(event);
-    const filename = `${slugify(event.title) || "bloom-event"}-flyer.png`;
 
     try {
       await copyText(caption);
 
-      let file = null;
-      if (event.image) {
-        try {
-          file = await flyerAsFile(event.image, filename);
-        } catch {
-          file = null;
-        }
-      }
-
-      // Best path: open share sheet with flyer attached (phone / tablet)
-      if (canShareFiles(file)) {
+      if (canShareFiles(shareFile)) {
         try {
           await navigator.share({
-            files: [file],
+            files: [shareFile],
             title: event.title,
             text: caption,
           });
           setStatus("done");
-          window.setTimeout(() => setStatus("idle"), 2800);
+          window.setTimeout(() => {
+            setStatus("idle");
+            setOpen(false);
+          }, 1600);
           return;
         } catch (shareErr) {
           if (shareErr?.name === "AbortError") {
@@ -108,16 +123,18 @@ export default function EventInstagramShare({
         }
       }
 
-      // Text-only share sheet (no flyer support in this browser)
       if (typeof navigator.share === "function") {
         try {
           await navigator.share({
             title: event.title,
             text: caption,
-            url: event.eventUrl,
+            url: SITE,
           });
           setStatus("done");
-          window.setTimeout(() => setStatus("idle"), 2800);
+          window.setTimeout(() => {
+            setStatus("idle");
+            setOpen(false);
+          }, 1600);
           return;
         } catch (shareErr) {
           if (shareErr?.name === "AbortError") {
@@ -127,44 +144,92 @@ export default function EventInstagramShare({
         }
       }
 
-      // Desktop fallback: caption is copied; open Instagram so they can paste
-      window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+      // Desktop: caption copied + keep preview open so they can screenshot/save
       setStatus("desktop");
-      window.setTimeout(() => setStatus("idle"), 4000);
+      window.setTimeout(() => setStatus("idle"), 4500);
     } catch {
       setStatus("error");
-      window.setTimeout(() => setStatus("idle"), 3200);
+      window.setTimeout(() => setStatus("idle"), 2800);
     }
   };
 
-  const label =
-    status === "working"
-      ? "Opening…"
+  const buttonLabel =
+    status === "working" || building
+      ? "Preparing…"
       : status === "done"
-        ? "Shared · caption ready"
-        : status === "desktop"
-          ? "Caption copied — paste in IG"
-          : status === "error"
-            ? "Try again"
-            : variant === "compact"
-              ? "Share"
-              : "Share to Instagram";
+        ? "Shared!"
+        : status === "error"
+          ? "Try again"
+          : variant === "compact"
+            ? "Share"
+            : "Share to Instagram";
 
   return (
-    <button
-      type="button"
-      className={`event-ig-share event-ig-share--${variant} ${className}`.trim()}
-      onClick={handleShare}
-      disabled={status === "working"}
-      aria-label={
-        status === "done" || status === "desktop"
-          ? "Event caption copied for Instagram"
-          : `Share ${event.title} to Instagram`
-      }
-      aria-live="polite"
-    >
-      <InstagramIcon />
-      <span>{label}</span>
+    <>
+      <button
+        type="button"
+        className={`event-ig-share event-ig-share--${variant} ${className}`.trim()}
+        onClick={openPreview}
+        disabled={building || status === "working"}
+        aria-label={`Share ${event.title} to Instagram`}
+      >
+        <InstagramIcon />
+        <span>{buttonLabel}</span>
+      </button>
+
+      {open && (
+        <div
+          className="bloom-share-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Instagram share preview"
+          onClick={closePreview}
+        >
+          <div
+            className="bloom-share-sheet"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bloom-share-sheet-head">
+              <p>Share from Bloom</p>
+              <button type="button" className="bloom-share-close" onClick={closePreview} aria-label="Close">
+                ×
+              </button>
+            </div>
+
+            <div className="bloom-share-preview-wrap">
+              {previewUrl ? (
+                <img
+                  src={previewUrl}
+                  alt={`Bloom share card for ${event.title}`}
+                  className="bloom-share-preview"
+                />
+              ) : null}
+            </div>
+
+            <p className="bloom-share-hint">
+              This is how it will look on Instagram — branded from your website.
+              Caption copies automatically when you share.
+            </p>
+
+            <div className="bloom-share-actions">
+              <button type="button" className="bloom-share-primary" onClick={shareNow}>
+                <InstagramIcon />
+                {status === "working"
+                  ? "Opening…"
+                  : status === "done"
+                    ? "Shared · caption ready"
+                    : status === "desktop"
+                      ? "Caption copied — paste in IG"
+                      : "Share to Instagram"}
+              </button>
+              <button type="button" className="bloom-share-secondary" onClick={closePreview}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <style>{`
         .event-ig-share {
           display: inline-flex;
@@ -205,26 +270,115 @@ export default function EventInstagramShare({
           background: rgba(12,12,12,0.9);
           color: #f5f0e8;
         }
-        .event-ig-share svg {
-          flex-shrink: 0;
+        .event-ig-share svg { flex-shrink: 0; }
+
+        .bloom-share-modal {
+          position: fixed;
+          inset: 0;
+          z-index: 10000;
+          background: rgba(0,0,0,0.72);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+          backdrop-filter: blur(8px);
+        }
+        .bloom-share-sheet {
+          width: min(420px, 100%);
+          max-height: min(92vh, 860px);
+          overflow: auto;
+          background: #111;
+          border: 1px solid rgba(201,169,110,0.25);
+          border-radius: 18px;
+          padding: 20px 20px 24px;
+          box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+        }
+        .bloom-share-sheet-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 16px;
+        }
+        .bloom-share-sheet-head p {
+          margin: 0;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #c9a96e;
+        }
+        .bloom-share-close {
+          border: none;
+          background: transparent;
+          color: rgba(245,240,232,0.7);
+          font-size: 28px;
+          line-height: 1;
+          cursor: pointer;
+          padding: 0 4px;
+        }
+        .bloom-share-preview-wrap {
+          border-radius: 14px;
+          overflow: hidden;
+          border: 1px solid rgba(201,169,110,0.2);
+          background: #0c0c0c;
+        }
+        .bloom-share-preview {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+        .bloom-share-hint {
+          margin: 14px 0 18px;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 13px;
+          line-height: 1.55;
+          color: rgba(245,240,232,0.62);
+          font-weight: 300;
+        }
+        .bloom-share-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .bloom-share-primary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          width: 100%;
+          border: none;
+          background: #c9a96e;
+          color: #0c0c0c;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          padding: 16px 20px;
+          cursor: pointer;
+        }
+        .bloom-share-primary:hover { background: #d4b280; }
+        .bloom-share-secondary {
+          width: 100%;
+          border: 1px solid rgba(245,240,232,0.2);
+          background: transparent;
+          color: rgba(245,240,232,0.7);
+          font-family: 'DM Sans', sans-serif;
+          font-size: 11px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          padding: 14px 20px;
+          cursor: pointer;
         }
       `}</style>
-    </button>
+    </>
   );
 }
 
 function InstagramIcon() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect
-        x="3"
-        y="3"
-        width="18"
-        height="18"
-        rx="5"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
+      <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.5" />
       <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.5" />
       <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
     </svg>
