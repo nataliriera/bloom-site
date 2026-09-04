@@ -207,8 +207,8 @@ export default function EventInstagramShare({
             </div>
 
             <p className="bloom-share-hint">
-              Full Instagram Story from Bloom — flyer + your branding. On your
-              phone, tap share and choose Instagram Stories.
+              Modern Bloom Story — flyer, date, and your website branding.
+              Perfect for Instagram Stories.
             </p>
 
             <div className="bloom-share-actions">

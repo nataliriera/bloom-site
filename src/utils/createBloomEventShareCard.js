@@ -1,6 +1,5 @@
 import logoUrl from "../assets/bloom-logo.png";
 
-// True Instagram Stories size — fills the screen edge to edge
 const W = 1080;
 const H = 1920;
 
@@ -31,7 +30,15 @@ function wrapText(ctx, text, maxWidth) {
   return lines;
 }
 
-/** Fit whole flyer inside the frame (no crop) */
+function drawCover(ctx, img, x, y, w, h) {
+  const scale = Math.max(w / img.width, h / img.height);
+  const sw = w / scale;
+  const sh = h / scale;
+  const sx = (img.width - sw) / 2;
+  const sy = (img.height - sh) / 2;
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+}
+
 function drawContain(ctx, img, x, y, w, h) {
   const scale = Math.min(w / img.width, h / img.height);
   const dw = img.width * scale;
@@ -39,7 +46,6 @@ function drawContain(ctx, img, x, y, w, h) {
   const dx = x + (w - dw) / 2;
   const dy = y + (h - dh) / 2;
   ctx.drawImage(img, dx, dy, dw, dh);
-  return { dx, dy, dw, dh };
 }
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -53,137 +59,233 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
+function parseDateParts(dateStr) {
+  const d = new Date(`${dateStr}T12:00:00`);
+  return {
+    day: String(d.getDate()).padStart(2, "0"),
+    month: d.toLocaleDateString("en-US", { month: "short" }).toUpperCase(),
+    weekday: d.toLocaleDateString("en-US", { weekday: "long" }),
+  };
+}
+
 /**
- * Full-bleed Bloom Instagram Story card (1080×1920).
+ * Modern Bloom Instagram Story — editorial, eye-catching, website-branded.
  */
 export async function createBloomEventShareCard(event) {
   const canvas = document.createElement("canvas");
   canvas.width = W;
   canvas.height = H;
   const ctx = canvas.getContext("2d");
+  const { day, month, weekday } = parseDateParts(event.date);
 
-  // Base
-  ctx.fillStyle = "#0c0c0c";
+  let flyer = null;
+  if (event.image) {
+    try {
+      flyer = await loadImage(event.image);
+    } catch {
+      flyer = null;
+    }
+  }
+
+  // ── Atmosphere: blurred/zoomed flyer as full-bleed backdrop ──
+  ctx.fillStyle = "#0a0908";
   ctx.fillRect(0, 0, W, H);
 
-  // Ambient gold glows (website feel)
-  const topGlow = ctx.createRadialGradient(W * 0.5, 0, 40, W * 0.5, 0, 700);
-  topGlow.addColorStop(0, "rgba(201,169,110,0.22)");
-  topGlow.addColorStop(1, "rgba(201,169,110,0)");
-  ctx.fillStyle = topGlow;
+  if (flyer) {
+    ctx.save();
+    ctx.filter = "blur(28px) saturate(1.15) brightness(0.45)";
+    drawCover(ctx, flyer, -80, -80, W + 160, H + 160);
+    ctx.restore();
+  }
+
+  // Dark cinematic gradient
+  const veil = ctx.createLinearGradient(0, 0, 0, H);
+  veil.addColorStop(0, "rgba(8,7,6,0.55)");
+  veil.addColorStop(0.35, "rgba(8,7,6,0.2)");
+  veil.addColorStop(0.62, "rgba(8,7,6,0.72)");
+  veil.addColorStop(1, "rgba(8,7,6,0.96)");
+  ctx.fillStyle = veil;
   ctx.fillRect(0, 0, W, H);
 
-  const bottomGlow = ctx.createRadialGradient(W * 0.2, H, 20, W * 0.2, H, 560);
-  bottomGlow.addColorStop(0, "rgba(201,169,110,0.12)");
-  bottomGlow.addColorStop(1, "rgba(201,169,110,0)");
-  ctx.fillStyle = bottomGlow;
+  // Soft gold bloom light
+  const glow = ctx.createRadialGradient(W * 0.8, 180, 20, W * 0.75, 220, 520);
+  glow.addColorStop(0, "rgba(201,169,110,0.28)");
+  glow.addColorStop(1, "rgba(201,169,110,0)");
+  ctx.fillStyle = glow;
   ctx.fillRect(0, 0, W, H);
 
-  // Top brand row
-  ctx.fillStyle = "rgba(201,169,110,0.4)";
-  ctx.fillRect(64, 88, 40, 2);
-
-  ctx.fillStyle = "#c9a96e";
-  ctx.font = "500 20px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText("BLOOM FLOWER WALL RENTALS", 64, 128);
+  // ── Top brand bar ──
+  ctx.fillStyle = "rgba(245,240,232,0.08)";
+  roundRect(ctx, 48, 72, W - 96, 78, 39);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(201,169,110,0.28)";
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, 48, 72, W - 96, 78, 39);
+  ctx.stroke();
 
   try {
     const logo = await loadImage(logoUrl);
-    const logoH = 64;
+    const logoH = 44;
     const logoW = (logo.width / logo.height) * logoH;
-    ctx.drawImage(logo, W - 64 - logoW, 86, logoW, logoH);
+    ctx.drawImage(logo, 72, 89, logoW, logoH);
   } catch {
     // optional
   }
 
-  // Flyer panel — large, centered, contain (show full flyer)
-  const frameX = 48;
-  const frameY = 170;
-  const frameW = W - 96;
-  const frameH = 980;
+  ctx.fillStyle = "#f5f0e8";
+  ctx.font = "500 22px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("BLOOM", 148, 108);
+  ctx.fillStyle = "rgba(245,240,232,0.45)";
+  ctx.font = "400 16px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("FLOWER WALL RENTALS", 148, 132);
 
-  // Soft panel behind flyer
-  ctx.fillStyle = "#12100d";
-  roundRect(ctx, frameX, frameY, frameW, frameH, 28);
+  // From website pill
+  ctx.font = "500 15px 'DM Sans', system-ui, sans-serif";
+  const fromLabel = "FROM THE WEBSITE";
+  const fromW = ctx.measureText(fromLabel).width + 28;
+  const fromX = W - 72 - fromW;
+  ctx.fillStyle = "rgba(201,169,110,0.18)";
+  roundRect(ctx, fromX, 94, fromW, 34, 17);
   ctx.fill();
-  ctx.strokeStyle = "rgba(201,169,110,0.28)";
-  ctx.lineWidth = 2;
-  roundRect(ctx, frameX, frameY, frameW, frameH, 28);
-  ctx.stroke();
+  ctx.fillStyle = "#c9a96e";
+  ctx.fillText(fromLabel, fromX + 14, 116);
+
+  // ── Hero flyer card with depth ──
+  const cardX = 64;
+  const cardY = 190;
+  const cardW = W - 128;
+  const cardH = 860;
+
+  // Shadow
+  ctx.save();
+  ctx.shadowColor = "rgba(0,0,0,0.55)";
+  ctx.shadowBlur = 60;
+  ctx.shadowOffsetY = 28;
+  ctx.fillStyle = "#111";
+  roundRect(ctx, cardX, cardY, cardW, cardH, 32);
+  ctx.fill();
+  ctx.restore();
+
+  // Gold edge
+  const edge = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
+  edge.addColorStop(0, "rgba(201,169,110,0.65)");
+  edge.addColorStop(0.45, "rgba(201,169,110,0.15)");
+  edge.addColorStop(1, "rgba(201,169,110,0.45)");
+  ctx.fillStyle = edge;
+  roundRect(ctx, cardX - 2, cardY - 2, cardW + 4, cardH + 4, 34);
+  ctx.fill();
 
   ctx.save();
-  roundRect(ctx, frameX + 16, frameY + 16, frameW - 32, frameH - 32, 20);
+  roundRect(ctx, cardX, cardY, cardW, cardH, 32);
   ctx.clip();
-  ctx.fillStyle = "#0a0a0a";
-  ctx.fillRect(frameX + 16, frameY + 16, frameW - 32, frameH - 32);
-
-  if (event.image) {
-    try {
-      const flyer = await loadImage(event.image);
-      drawContain(
-        ctx,
-        flyer,
-        frameX + 16,
-        frameY + 16,
-        frameW - 32,
-        frameH - 32
-      );
-    } catch {
-      // keep dark
-    }
+  ctx.fillStyle = "#12100c";
+  ctx.fillRect(cardX, cardY, cardW, cardH);
+  if (flyer) {
+    drawContain(ctx, flyer, cardX + 10, cardY + 10, cardW - 20, cardH - 20);
   }
   ctx.restore();
 
-  // Info block — tight under flyer (no big empty gap)
-  let y = frameY + frameH + 48;
+  // ── Modern info section ──
+  const infoY = cardY + cardH + 48;
 
+  // Giant date column (editorial)
+  ctx.fillStyle = "#c9a96e";
+  ctx.font = "300 120px 'Cormorant Garamond', Georgia, serif";
+  ctx.fillText(day, 64, infoY + 108);
+
+  ctx.fillStyle = "rgba(201,169,110,0.9)";
+  ctx.font = "500 28px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText(month, 64, infoY + 152);
+
+  // Vertical gold divider
+  ctx.fillStyle = "rgba(201,169,110,0.35)";
+  ctx.fillRect(250, infoY + 18, 2, 150);
+
+  // Title + meta
+  const textX = 290;
   const badge =
     event.role === "hosting" ? "CO-FOUNDED BY NATALI" : "BLOOM ATTENDING";
-  ctx.font = "500 18px 'DM Sans', system-ui, sans-serif";
-  const badgePadX = 22;
-  const badgeW = ctx.measureText(badge).width + badgePadX * 2;
-  ctx.fillStyle = "rgba(201,169,110,0.14)";
-  ctx.strokeStyle = "rgba(201,169,110,0.5)";
-  ctx.lineWidth = 1.5;
-  roundRect(ctx, 64, y, badgeW, 42, 6);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = "#c9a96e";
-  ctx.fillText(badge, 64 + badgePadX, y + 28);
 
-  y += 100;
+  ctx.font = "600 16px 'DM Sans', system-ui, sans-serif";
+  const badgeW = ctx.measureText(badge).width + 28;
+  ctx.fillStyle = "#c9a96e";
+  roundRect(ctx, textX, infoY + 8, badgeW, 36, 18);
+  ctx.fill();
+  ctx.fillStyle = "#0c0c0c";
+  ctx.fillText(badge, textX + 14, infoY + 32);
 
   ctx.fillStyle = "#f5f0e8";
-  ctx.font = "300 72px 'Cormorant Garamond', Georgia, serif";
-  const titleLines = wrapText(ctx, event.title, W - 128).slice(0, 2);
+  ctx.font = "300 64px 'Cormorant Garamond', Georgia, serif";
+  const titleLines = wrapText(ctx, event.title, W - textX - 64).slice(0, 2);
+  let ty = infoY + 110;
   titleLines.forEach((line) => {
-    ctx.fillText(line, 64, y);
-    y += 78;
+    ctx.fillText(line, textX, ty);
+    ty += 68;
   });
 
-  y += 8;
-  ctx.fillStyle = "rgba(245,240,232,0.7)";
-  ctx.font = "400 28px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText(event.dateLabel, 64, y);
-  y += 44;
-  ctx.fillText(`${event.time}  ·  ${event.location}`, 64, y);
+  // Detail chips
+  const chipsY = Math.max(ty + 28, infoY + 200);
+  const chips = [
+    { label: weekday },
+    { label: event.time },
+    { label: event.location },
+  ].filter((c) => c.label);
 
-  // Bottom brand strip — pinned to story bottom
-  ctx.fillStyle = "rgba(201,169,110,0.16)";
-  ctx.fillRect(64, H - 168, W - 128, 1);
+  let chipX = textX;
+  ctx.font = "500 18px 'DM Sans', system-ui, sans-serif";
+  chips.forEach((chip, i) => {
+    const label = i === chips.length - 1 && chip.label.length > 22
+      ? `${chip.label.slice(0, 20)}…`
+      : chip.label;
+    const cw = ctx.measureText(label).width + 32;
+    if (chipX + cw > W - 64) return;
+    ctx.fillStyle = "rgba(245,240,232,0.08)";
+    ctx.strokeStyle = "rgba(245,240,232,0.16)";
+    ctx.lineWidth = 1;
+    roundRect(ctx, chipX, chipsY, cw, 44, 22);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "rgba(245,240,232,0.85)";
+    ctx.fillText(label, chipX + 16, chipsY + 29);
+    chipX += cw + 12;
+  });
+
+  // ── Website CTA — unmistakable “from Bloom site” ──
+  const ctaY = H - 220;
+  ctx.fillStyle = "rgba(201,169,110,0.12)";
+  roundRect(ctx, 48, ctaY, W - 96, 128, 28);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(201,169,110,0.4)";
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, 48, ctaY, W - 96, 128, 28);
+  ctx.stroke();
+
+  ctx.fillStyle = "rgba(245,240,232,0.45)";
+  ctx.font = "500 16px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("SEE THIS EVENT ON", 80, ctaY + 42);
 
   ctx.fillStyle = "#c9a96e";
-  ctx.font = "500 26px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText("bloomflowerwallrentals.com", 64, H - 108);
+  ctx.font = "500 34px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("bloomflowerwallrentals.com", 80, ctaY + 88);
 
-  ctx.fillStyle = "rgba(245,240,232,0.5)";
-  ctx.font = "400 24px 'DM Sans', system-ui, sans-serif";
-  const handle = "@bloomflowerwallrentals";
-  ctx.fillText(handle, W - 64 - ctx.measureText(handle).width, H - 108);
+  // Arrow circle
+  ctx.beginPath();
+  ctx.arc(W - 112, ctaY + 64, 28, 0, Math.PI * 2);
+  ctx.fillStyle = "#c9a96e";
+  ctx.fill();
+  ctx.strokeStyle = "#0c0c0c";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(W - 122, ctaY + 64);
+  ctx.lineTo(W - 102, ctaY + 64);
+  ctx.moveTo(W - 108, ctaY + 56);
+  ctx.lineTo(W - 100, ctaY + 64);
+  ctx.lineTo(W - 108, ctaY + 72);
+  ctx.stroke();
 
   ctx.fillStyle = "rgba(245,240,232,0.35)";
-  ctx.font = "400 20px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText("Find Bloom at this event  ·  Clermont, FL", 64, H - 62);
+  ctx.font = "400 18px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("@bloomflowerwallrentals  ·  Clermont, FL", 64, H - 48);
 
   const blob = await new Promise((resolve) =>
     canvas.toBlob(resolve, "image/png")
