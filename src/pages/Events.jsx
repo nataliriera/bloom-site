@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { upcomingEvents } from "../data/events.js";
+import EventInstagramShare from "../components/EventInstagramShare.jsx";
 import enchantedGardenImg from "../assets/walls/enchanted-garden.jpg";
 
 function PageMeta() {
@@ -204,15 +205,18 @@ function EventCard({ event, index, isNext }) {
           </li>
         </ul>
 
-        <a
-          href={event.eventUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-gold event-cta"
-        >
-          {event.role === "hosting" ? "Learn More" : "Event Details"}
-          <span aria-hidden="true">→</span>
-        </a>
+        <div className="event-actions">
+          <a
+            href={event.eventUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-gold event-cta"
+          >
+            {event.role === "hosting" ? "Learn More" : "Event Details"}
+            <span aria-hidden="true">→</span>
+          </a>
+          <EventInstagramShare event={event} />
+        </div>
       </div>
     </article>
   );
@@ -586,6 +590,13 @@ export default function Events() {
         .event-details strong {
           color: #f5f0e8;
           font-weight: 500;
+        }
+
+        .event-actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 12px;
         }
 
         .btn-gold {
