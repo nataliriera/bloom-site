@@ -1,21 +1,16 @@
 import logoUrl from "../assets/bloom-logo.png";
 
-/** Instagram Stories — exact canvas */
+/** Instagram Stories */
 const W = 1080;
 const H = 1920;
 
-/** Layout bands */
-const TOP_H = Math.round(H * 0.08); // 8%  → 154
-const FLYER_H = Math.round(H * 0.68); // 68% → 1306
-const DETAILS_H = Math.round(H * 0.16); // 16% → 307
-const FOOTER_H = H - TOP_H - FLYER_H - DETAILS_H; // ~8%
-
 const C = {
-  bg: "#F7F3ED",
-  ink: "#222222",
-  inkSoft: "rgba(34,34,34,0.62)",
-  gold: "#C6A46A",
-  goldLine: "rgba(198,164,106,0.45)",
+  bg: "#f4efe6",
+  ink: "#1f1b17",
+  inkSoft: "rgba(31,27,23,0.58)",
+  inkMute: "rgba(31,27,23,0.38)",
+  gold: "#b8955e",
+  goldLine: "rgba(184,149,94,0.32)",
 };
 
 function loadImage(src) {
@@ -56,41 +51,15 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-function formatDate(event) {
-  if (event.dateLabel) return event.dateLabel;
-  if (!event.date) return "";
-  const d = new Date(`${event.date}T12:00:00`);
-  return d.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-function formatTime(event) {
-  if (event.startTime && event.endTime) {
-    return `${event.startTime} – ${event.endTime}`;
-  }
-  if (event.startTime) return event.startTime;
-  return event.time || "";
-}
-
-function formatVenue(event) {
-  const venue = event.venue || event.location || "";
-  const city = event.city || "";
-  if (venue && city) return `${venue}, ${city}`;
-  return venue || city;
-}
-
-function attendingLabel(event) {
-  if (event.role === "hosting") return "CO-FOUNDED BY NATALI";
-  return "BLOOM ATTENDING";
+function roleLabel(event) {
+  if (event.role === "hosting") return "Co-founded by Natali";
+  if (event.role === "bloom") return "Bloom Attending";
+  return null;
 }
 
 /**
- * Exact editorial Instagram Story frame around the event flyer.
- * Proportions: 8% brand · 68% flyer · 16% details · 8% footer
+ * Minimal editorial frame around the event flyer.
+ * The flyer is treated as finished artwork — shown whole, uncropped, unmodified.
  */
 export async function createBloomEventShareCard(event) {
   const canvas = document.createElement("canvas");
@@ -103,123 +72,126 @@ export async function createBloomEventShareCard(event) {
     event.image ? loadImage(event.image).catch(() => null) : Promise.resolve(null),
   ]);
 
-  // ── Background ──
+  const badge = roleLabel(event);
+
+  // Warm ivory field — calm gallery wall
   ctx.fillStyle = C.bg;
   ctx.fillRect(0, 0, W, H);
 
-  // ═══════════════════════════════════════════
-  // TOP BRAND AREA — 8%
-  // ═══════════════════════════════════════════
-  const topY = 0;
-  const topMid = topY + TOP_H / 2;
-
+  // Small Bloom branding
+  const brandY = 86;
   if (logo) {
-    const logoH = 36;
+    const logoH = 32;
     const logoW = (logo.width / logo.height) * logoH;
-    ctx.drawImage(logo, (W - logoW) / 2, topMid - 28, logoW, logoH);
+    ctx.drawImage(logo, 72, brandY, logoW, logoH);
   }
 
-  ctx.fillStyle = C.gold;
-  ctx.font = "500 13px 'DM Sans', system-ui, sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillText(attendingLabel(event), W / 2, topMid + 28);
+  ctx.fillStyle = C.ink;
+  ctx.font = "500 16px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("BLOOM", 120, brandY + 13);
+  ctx.fillStyle = C.inkMute;
+  ctx.font = "400 11px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("FLOWER WALL RENTALS", 120, brandY + 30);
 
-  // ═══════════════════════════════════════════
-  // EVENT FLYER AREA — 68%
-  // Full artwork, centered, uncropped
-  // ═══════════════════════════════════════════
-  const flyerBandTop = TOP_H;
-  const flyerPadX = 72;
-  const flyerPadY = 28;
-  const maxW = W - flyerPadX * 2;
-  const maxH = FLYER_H - flyerPadY * 2;
+  if (badge) {
+    ctx.font = "500 12px 'DM Sans', system-ui, sans-serif";
+    const label = badge.toUpperCase();
+    ctx.fillStyle = C.gold;
+    ctx.fillText(label, W - 72 - ctx.measureText(label).width, brandY + 22);
+  }
+
+  ctx.fillStyle = C.goldLine;
+  ctx.fillRect(72, 148, W - 144, 1);
+
+  // Artwork area — flyer takes most of the story, shown in full
+  const artMaxW = W - 120;
+  const artMaxH = Math.round(H * 0.68);
+  const artTop = 176;
+  let artBottom = artTop + artMaxH;
 
   if (flyer) {
-    const scale = Math.min(maxW / flyer.width, maxH / flyer.height);
+    // Fit entire flyer (no crop, no stretch, no redesign)
+    const scale = Math.min(artMaxW / flyer.width, artMaxH / flyer.height);
     const dw = Math.round(flyer.width * scale);
     const dh = Math.round(flyer.height * scale);
     const dx = Math.round((W - dw) / 2);
-    const dy = Math.round(flyerBandTop + (FLYER_H - dh) / 2);
-    const radius = 24;
+    const dy = artTop;
 
-    // Subtle shadow only
+    const radius = 16;
     ctx.save();
-    ctx.shadowColor = "rgba(34,34,34,0.12)";
-    ctx.shadowBlur = 32;
-    ctx.shadowOffsetY = 12;
+    ctx.shadowColor = "rgba(31,27,23,0.12)";
+    ctx.shadowBlur = 28;
+    ctx.shadowOffsetY = 10;
     ctx.fillStyle = "#ffffff";
     roundRect(ctx, dx, dy, dw, dh, radius);
     ctx.fill();
     ctx.restore();
 
-    // Flyer as intact artwork
     ctx.save();
     roundRect(ctx, dx, dy, dw, dh, radius);
     ctx.clip();
     ctx.drawImage(flyer, dx, dy, dw, dh);
     ctx.restore();
+
+    artBottom = dy + dh;
+  } else {
+    ctx.fillStyle = "rgba(31,27,23,0.04)";
+    roundRect(ctx, 72, artTop, artMaxW, Math.round(artMaxH * 0.5), 16);
+    ctx.fill();
+    artBottom = artTop + Math.round(artMaxH * 0.5);
   }
 
-  // ═══════════════════════════════════════════
-  // EVENT DETAILS AREA — 16%
-  // Left aligned · max 4 lines
-  // ═══════════════════════════════════════════
-  const detailsTop = TOP_H + FLYER_H;
-  const detailsLeft = 88;
-  const detailsWidth = W - detailsLeft * 2;
-  let lineY = detailsTop + 52;
-
-  const title = event.title || "";
-  const dateLine = formatDate(event);
-  const timeLine = formatTime(event);
-  const venueLine = formatVenue(event);
-
-  ctx.textAlign = "left";
-
-  // Title — elegant serif (1–2 lines max within the 4-line budget)
-  ctx.fillStyle = C.ink;
-  ctx.font = "400 40px 'Cormorant Garamond', Georgia, serif";
-  const titleLines = wrapText(ctx, title, detailsWidth).slice(0, 2);
-
-  const detailLines = [
-    ...titleLines.map((t) => ({ text: t, kind: "title" })),
-    dateLine && { text: dateLine, kind: "detail" },
-    timeLine && { text: timeLine, kind: "detail" },
-    venueLine && { text: venueLine, kind: "detail" },
-  ].filter(Boolean);
-
-  // Hard cap: maximum 4 lines of information
-  detailLines.slice(0, 4).forEach((item) => {
-    if (item.kind === "title") {
-      ctx.fillStyle = C.ink;
-      ctx.font = "400 40px 'Cormorant Garamond', Georgia, serif";
-      ctx.fillText(item.text, detailsLeft, lineY);
-      lineY += 48;
-    } else {
-      ctx.fillStyle = C.inkSoft;
-      ctx.font = "400 22px 'DM Sans', system-ui, sans-serif";
-      ctx.fillText(item.text, detailsLeft, lineY);
-      lineY += 34;
-    }
-  });
-
-  // ═══════════════════════════════════════════
-  // FOOTER — 8%
-  // ═══════════════════════════════════════════
-  const footerTop = TOP_H + FLYER_H + DETAILS_H;
-  const footerMid = footerTop + FOOTER_H / 2;
-
-  ctx.fillStyle = C.goldLine;
-  ctx.fillRect(W / 2 - 40, footerTop + 28, 80, 1);
+  // Essentials only — sits under the artwork
+  let infoY = artBottom + 44;
+  const maxInfoBottom = H - 140;
 
   ctx.textAlign = "center";
-  ctx.fillStyle = C.gold;
-  ctx.font = "500 16px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText("bloomflowerwallrentals.com", W / 2, footerMid + 4);
+  ctx.fillStyle = C.ink;
+  ctx.font = "300 44px 'Cormorant Garamond', Georgia, serif";
+  const titleLines = wrapText(ctx, event.title, W - 160).slice(0, 2);
+  titleLines.forEach((line) => {
+    if (infoY > maxInfoBottom) return;
+    ctx.fillText(line, W / 2, infoY);
+    infoY += 50;
+  });
 
-  ctx.fillStyle = C.inkSoft;
-  ctx.font = "400 14px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText("@bloomflowerwallrentals", W / 2, footerMid + 28);
+  if (infoY + 70 < maxInfoBottom) {
+    infoY += 8;
+    ctx.fillStyle = C.goldLine;
+    ctx.fillRect(W / 2 - 16, infoY, 32, 1);
+    infoY += 30;
+
+    ctx.fillStyle = C.inkSoft;
+    ctx.font = "400 20px 'DM Sans', system-ui, sans-serif";
+    if (event.dateLabel) {
+      ctx.fillText(event.dateLabel, W / 2, infoY);
+      infoY += 32;
+    }
+
+    const meta = [event.time, event.location].filter(Boolean).join("  ·  ");
+    if (meta) {
+      ctx.fillStyle = C.inkMute;
+      ctx.font = "400 18px 'DM Sans', system-ui, sans-serif";
+      wrapText(ctx, meta, W - 180)
+        .slice(0, 2)
+        .forEach((line) => {
+          ctx.fillText(line, W / 2, infoY);
+          infoY += 28;
+        });
+    }
+  }
+
+  // Clean footer
+  ctx.fillStyle = C.goldLine;
+  ctx.fillRect(72, H - 110, W - 144, 1);
+
+  ctx.fillStyle = C.gold;
+  ctx.font = "500 17px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("bloomflowerwallrentals.com", W / 2, H - 68);
+
+  ctx.fillStyle = C.inkMute;
+  ctx.font = "400 15px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("@bloomflowerwallrentals", W / 2, H - 40);
 
   ctx.textAlign = "left";
 
