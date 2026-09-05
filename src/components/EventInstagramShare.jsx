@@ -210,7 +210,7 @@ export default function EventInstagramShare({
             </div>
 
             <p className="bloom-share-hint">
-              Clean editorial Story — your flyer front and center, with Bloom branding.
+              Minimal Story frame — your flyer, Bloom branding, and the essentials.
             </p>
 
             <div className="bloom-share-actions">

@@ -1,16 +1,13 @@
 import logoUrl from "../assets/bloom-logo.png";
 
-/** Instagram Stories */
 const W = 1080;
 const H = 1920;
 
 const C = {
-  bg: "#f4efe6",
-  ink: "#1f1b17",
-  inkSoft: "rgba(31,27,23,0.58)",
-  inkMute: "rgba(31,27,23,0.38)",
-  gold: "#b8955e",
-  goldLine: "rgba(184,149,94,0.32)",
+  bg: "#F7F3ED",
+  ink: "#222222",
+  muted: "rgba(34,34,34,0.55)",
+  gold: "#C6A46A",
 };
 
 function loadImage(src) {
@@ -51,15 +48,34 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-function roleLabel(event) {
-  if (event.role === "hosting") return "Co-founded by Natali";
-  if (event.role === "bloom") return "Bloom Attending";
-  return null;
+function dateText(event) {
+  if (event.dateLabel) return event.dateLabel;
+  if (!event.date) return "";
+  return new Date(`${event.date}T12:00:00`).toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function timeText(event) {
+  if (event.startTime && event.endTime) return `${event.startTime} – ${event.endTime}`;
+  if (event.startTime) return event.startTime;
+  return event.time || "";
+}
+
+function venueText(event) {
+  return event.venue || event.location || "";
+}
+
+function attendingText(event) {
+  return event.role === "hosting" ? "Co-founded by Natali" : "Bloom Attending";
 }
 
 /**
- * Minimal editorial frame around the event flyer.
- * The flyer is treated as finished artwork — shown whole, uncropped, unmodified.
+ * Clean luxury editorial Story card.
+ * The event flyer is the artwork — Bloom only frames it.
  */
 export async function createBloomEventShareCard(event) {
   const canvas = document.createElement("canvas");
@@ -72,57 +88,44 @@ export async function createBloomEventShareCard(event) {
     event.image ? loadImage(event.image).catch(() => null) : Promise.resolve(null),
   ]);
 
-  const badge = roleLabel(event);
-
-  // Warm ivory field — calm gallery wall
+  // 1. Warm ivory background
   ctx.fillStyle = C.bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Small Bloom branding
-  const brandY = 86;
+  // 2–3. Small top branding + subtle attending label
+  ctx.textAlign = "center";
+  let y = 72;
+
   if (logo) {
-    const logoH = 32;
+    const logoH = 40;
     const logoW = (logo.width / logo.height) * logoH;
-    ctx.drawImage(logo, 72, brandY, logoW, logoH);
+    ctx.drawImage(logo, (W - logoW) / 2, y, logoW, logoH);
+    y += logoH + 22;
   }
 
-  ctx.fillStyle = C.ink;
-  ctx.font = "500 16px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText("BLOOM", 120, brandY + 13);
-  ctx.fillStyle = C.inkMute;
-  ctx.font = "400 11px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText("FLOWER WALL RENTALS", 120, brandY + 30);
+  ctx.fillStyle = C.gold;
+  ctx.font = "500 14px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText(attendingText(event).toUpperCase(), W / 2, y);
 
-  if (badge) {
-    ctx.font = "500 12px 'DM Sans', system-ui, sans-serif";
-    const label = badge.toUpperCase();
-    ctx.fillStyle = C.gold;
-    ctx.fillText(label, W - 72 - ctx.measureText(label).width, brandY + 22);
-  }
-
-  ctx.fillStyle = C.goldLine;
-  ctx.fillRect(72, 148, W - 144, 1);
-
-  // Artwork area — flyer takes most of the story, shown in full
-  const artMaxW = W - 120;
-  const artMaxH = Math.round(H * 0.68);
-  const artTop = 176;
-  let artBottom = artTop + artMaxH;
+  // 4–5. Large centered flyer (≈70% of height), full artwork
+  const flyerTop = 170;
+  const flyerMaxW = W - 128;
+  const flyerMaxH = Math.round(H * 0.7);
+  let flyerBottom = flyerTop + 200;
 
   if (flyer) {
-    // Fit entire flyer (no crop, no stretch, no redesign)
-    const scale = Math.min(artMaxW / flyer.width, artMaxH / flyer.height);
+    const scale = Math.min(flyerMaxW / flyer.width, flyerMaxH / flyer.height);
     const dw = Math.round(flyer.width * scale);
     const dh = Math.round(flyer.height * scale);
     const dx = Math.round((W - dw) / 2);
-    const dy = artTop;
+    const dy = flyerTop;
+    const radius = 24;
 
-    const radius = 16;
     ctx.save();
-    ctx.shadowColor = "rgba(31,27,23,0.12)";
-    ctx.shadowBlur = 28;
-    ctx.shadowOffsetY = 10;
-    ctx.fillStyle = "#ffffff";
+    ctx.shadowColor = "rgba(34,34,34,0.10)";
+    ctx.shadowBlur = 24;
+    ctx.shadowOffsetY = 8;
+    ctx.fillStyle = "#fff";
     roundRect(ctx, dx, dy, dw, dh, radius);
     ctx.fill();
     ctx.restore();
@@ -133,65 +136,51 @@ export async function createBloomEventShareCard(event) {
     ctx.drawImage(flyer, dx, dy, dw, dh);
     ctx.restore();
 
-    artBottom = dy + dh;
-  } else {
-    ctx.fillStyle = "rgba(31,27,23,0.04)";
-    roundRect(ctx, 72, artTop, artMaxW, Math.round(artMaxH * 0.5), 16);
-    ctx.fill();
-    artBottom = artTop + Math.round(artMaxH * 0.5);
+    flyerBottom = dy + dh;
   }
 
-  // Essentials only — sits under the artwork
-  let infoY = artBottom + 44;
-  const maxInfoBottom = H - 140;
+  // 6. Only title, date, time, venue — under the flyer
+  let infoY = flyerBottom + 48;
+  const maxW = W - 160;
 
   ctx.textAlign = "center";
   ctx.fillStyle = C.ink;
-  ctx.font = "300 44px 'Cormorant Garamond', Georgia, serif";
-  const titleLines = wrapText(ctx, event.title, W - 160).slice(0, 2);
-  titleLines.forEach((line) => {
-    if (infoY > maxInfoBottom) return;
-    ctx.fillText(line, W / 2, infoY);
-    infoY += 50;
-  });
+  ctx.font = "400 42px 'Cormorant Garamond', Georgia, serif";
+  const titleLine = wrapText(ctx, event.title || "", maxW)[0] || "";
+  ctx.fillText(titleLine, W / 2, infoY);
+  infoY += 44;
 
-  if (infoY + 70 < maxInfoBottom) {
-    infoY += 8;
-    ctx.fillStyle = C.goldLine;
-    ctx.fillRect(W / 2 - 16, infoY, 32, 1);
-    infoY += 30;
+  ctx.fillStyle = C.muted;
+  ctx.font = "400 20px 'DM Sans', system-ui, sans-serif";
 
-    ctx.fillStyle = C.inkSoft;
-    ctx.font = "400 20px 'DM Sans', system-ui, sans-serif";
-    if (event.dateLabel) {
-      ctx.fillText(event.dateLabel, W / 2, infoY);
-      infoY += 32;
-    }
+  const date = dateText(event);
+  const time = timeText(event);
+  const venue = venueText(event);
 
-    const meta = [event.time, event.location].filter(Boolean).join("  ·  ");
-    if (meta) {
-      ctx.fillStyle = C.inkMute;
-      ctx.font = "400 18px 'DM Sans', system-ui, sans-serif";
-      wrapText(ctx, meta, W - 180)
-        .slice(0, 2)
-        .forEach((line) => {
-          ctx.fillText(line, W / 2, infoY);
-          infoY += 28;
-        });
-    }
+  if (date) {
+    ctx.fillText(date, W / 2, infoY);
+    infoY += 32;
+  }
+  if (time) {
+    ctx.fillText(time, W / 2, infoY);
+    infoY += 32;
+  }
+  if (venue) {
+    const venueLine = wrapText(ctx, venue, maxW)[0];
+    ctx.fillText(venueLine, W / 2, infoY);
   }
 
-  // Clean footer
-  ctx.fillStyle = C.goldLine;
-  ctx.fillRect(72, H - 110, W - 144, 1);
+  // 7. Clean footer
+  ctx.fillStyle = "rgba(198,164,106,0.4)";
+  ctx.fillRect(W / 2 - 36, H - 108, 72, 1);
 
   ctx.fillStyle = C.gold;
-  ctx.font = "500 17px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText("bloomflowerwallrentals.com", W / 2, H - 68);
+  ctx.font = "500 16px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("bloomflowerwallrentals.com", W / 2, H - 70);
 
-  ctx.fillStyle = C.inkMute;
-  ctx.font = "400 15px 'DM Sans', system-ui, sans-serif";
-  ctx.fillText("@bloomflowerwallrentals", W / 2, H - 40);
+  ctx.fillStyle = C.muted;
+  ctx.font = "400 14px 'DM Sans', system-ui, sans-serif";
+  ctx.fillText("@bloomflowerwallrentals", W / 2, H - 42);
 
   ctx.textAlign = "left";
 
