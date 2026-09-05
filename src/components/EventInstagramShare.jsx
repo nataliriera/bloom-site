@@ -210,8 +210,7 @@ export default function EventInstagramShare({
             </div>
 
             <p className="bloom-share-hint">
-              Editorial share card with your flyer, event details, and Bloom branding —
-              ready for Stories.
+              Soft romantic Story card — floral backdrop, cream invite, and Bloom branding.
             </p>
 
             <div className="bloom-share-actions">
