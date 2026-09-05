@@ -190,7 +190,10 @@ export default function EventInstagramShare({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="bloom-share-sheet-head">
-              <p>Share from Bloom</p>
+              <div>
+                <p>Bloom Events</p>
+                <span className="bloom-share-sheet-sub">Instagram Story preview</span>
+              </div>
               <button type="button" className="bloom-share-close" onClick={closePreview} aria-label="Close">
                 ×
               </button>
@@ -207,8 +210,8 @@ export default function EventInstagramShare({
             </div>
 
             <p className="bloom-share-hint">
-              Modern Bloom Story — flyer, date, and your website branding.
-              Perfect for Instagram Stories.
+              Editorial share card with your flyer, event details, and Bloom branding —
+              ready for Stories.
             </p>
 
             <div className="bloom-share-actions">
@@ -276,51 +279,62 @@ export default function EventInstagramShare({
           position: fixed;
           inset: 0;
           z-index: 10000;
-          background: rgba(0,0,0,0.72);
+          background: rgba(28,24,20,0.82);
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 24px;
-          backdrop-filter: blur(8px);
+          padding: 20px;
+          backdrop-filter: blur(14px);
         }
         .bloom-share-sheet {
-          width: min(420px, 100%);
-          max-height: min(92vh, 860px);
+          width: min(400px, 100%);
+          max-height: min(92vh, 880px);
           overflow: auto;
-          background: #111;
-          border: 1px solid rgba(201,169,110,0.25);
-          border-radius: 18px;
-          padding: 20px 20px 24px;
-          box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+          background: linear-gradient(180deg, #1f1b17 0%, #161310 100%);
+          border: 1px solid rgba(201,169,110,0.22);
+          border-radius: 24px;
+          padding: 22px 20px 22px;
+          box-shadow: 0 36px 90px rgba(0,0,0,0.5);
         }
         .bloom-share-sheet-head {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           justify-content: space-between;
           margin-bottom: 16px;
         }
         .bloom-share-sheet-head p {
           margin: 0;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 22px;
+          font-weight: 300;
+          letter-spacing: 0.02em;
+          text-transform: none;
+          color: #f4efe6;
+        }
+        .bloom-share-sheet-sub {
+          display: block;
+          margin-top: 4px;
           font-family: 'DM Sans', sans-serif;
-          font-size: 11px;
-          letter-spacing: 0.18em;
+          font-size: 10px;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: #c9a96e;
+          color: rgba(201,169,110,0.75);
         }
         .bloom-share-close {
           border: none;
           background: transparent;
-          color: rgba(245,240,232,0.7);
+          color: rgba(244,239,230,0.55);
           font-size: 28px;
           line-height: 1;
           cursor: pointer;
           padding: 0 4px;
         }
         .bloom-share-preview-wrap {
-          border-radius: 14px;
+          border-radius: 18px;
           overflow: hidden;
-          border: 1px solid rgba(201,169,110,0.2);
-          background: #0c0c0c;
+          border: 1px solid rgba(201,169,110,0.18);
+          background: #1c1814;
+          box-shadow: 0 12px 40px rgba(0,0,0,0.35);
         }
         .bloom-share-preview {
           display: block;
@@ -331,8 +345,8 @@ export default function EventInstagramShare({
           margin: 14px 0 18px;
           font-family: 'DM Sans', sans-serif;
           font-size: 13px;
-          line-height: 1.55;
-          color: rgba(245,240,232,0.62);
+          line-height: 1.6;
+          color: rgba(244,239,230,0.58);
           font-weight: 300;
         }
         .bloom-share-actions {
@@ -347,8 +361,9 @@ export default function EventInstagramShare({
           gap: 10px;
           width: 100%;
           border: none;
+          border-radius: 999px;
           background: #c9a96e;
-          color: #0c0c0c;
+          color: #1a1612;
           font-family: 'DM Sans', sans-serif;
           font-size: 11px;
           font-weight: 500;
@@ -360,9 +375,10 @@ export default function EventInstagramShare({
         .bloom-share-primary:hover { background: #d4b280; }
         .bloom-share-secondary {
           width: 100%;
-          border: 1px solid rgba(245,240,232,0.2);
+          border: 1px solid rgba(244,239,230,0.16);
+          border-radius: 999px;
           background: transparent;
-          color: rgba(245,240,232,0.7);
+          color: rgba(244,239,230,0.65);
           font-family: 'DM Sans', sans-serif;
           font-size: 11px;
           letter-spacing: 0.14em;
