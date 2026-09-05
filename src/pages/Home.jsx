@@ -4,7 +4,6 @@ import { upcomingEvents } from "../data/events.js";
 import { useLazyScript } from "../hooks/useLazyScript.js";
 import SnapCarousel from "../components/SnapCarousel.jsx";
 import ReviewsSection from "../components/ReviewsSection.jsx";
-import EventInstagramShare from "../components/EventInstagramShare.jsx";
 
 // 🌿 Update image imports once you have Tropical Oasis + Midnight Noir photos
 import whiteGardenImg from "../assets/walls/white-garden.jpg";
@@ -462,9 +461,6 @@ export default function Home() {
         }
         .home-event-date-month { display: block; font-size: 9px; letter-spacing: 0.18em; color: #c9a96e; }
         .home-event-date-day { display: block; font-family: 'Cormorant Garamond', serif; font-size: 26px; line-height: 1; margin-top: 2px; }
-        .home-event-share {
-          position: absolute; top: 16px; right: 16px; z-index: 3;
-        }
         .home-event-body { padding: 22px 22px 26px; flex: 1; display: flex; flex-direction: column; border-top: 1px solid rgba(201,169,110,0.1); }
         .home-event-pill { display: inline-block; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: #c9a96e; border: 1px solid rgba(201,169,110,0.35); padding: 4px 10px; margin-bottom: 12px; align-self: flex-start; }
         .home-event-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(19px, 2vw, 24px); font-weight: 400; line-height: 1.15; margin-bottom: 8px; }
@@ -473,9 +469,6 @@ export default function Home() {
         .home-event-link { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #c9a96e; display: flex; align-items: center; gap: 8px; }
         .home-event-link span { transition: transform 0.25s ease; }
         .home-event-card:hover .home-event-link span { transform: translateX(4px); }
-        .home-event-main {
-          display: flex; flex-direction: column; flex: 1; text-decoration: none; color: inherit;
-        }
 
         @media (max-width: 900px) {
           .walls-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1145,46 +1138,41 @@ export default function Home() {
               const thumb = event.image || enchantedGardenImg;
               return (
                 <Reveal key={event.id} delay={i * 0.08}>
-                  <div className="home-event-card">
-                    <a
-                      href={event.eventUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="home-event-main"
-                    >
-                      <div className="home-event-visual">
-                        <img
-                          src={thumb}
-                          alt={event.imageAlt}
-                          loading="lazy"
-                          className="home-event-img"
-                          style={
-                            !event.image
-                              ? { opacity: 0.55, filter: "saturate(0.85)" }
-                              : undefined
-                          }
-                        />
-                        <div className="home-event-overlay" />
-                        <div className="home-event-shine" />
-                        <div className="home-event-date">
-                          <span className="home-event-date-month">{month}</span>
-                          <span className="home-event-date-day">{day}</span>
-                        </div>
+                  <a
+                    href={event.eventUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="home-event-card"
+                  >
+                    <div className="home-event-visual">
+                      <img
+                        src={thumb}
+                        alt={event.imageAlt}
+                        loading="lazy"
+                        className="home-event-img"
+                        style={
+                          !event.image
+                            ? { opacity: 0.55, filter: "saturate(0.85)" }
+                            : undefined
+                        }
+                      />
+                      <div className="home-event-overlay" />
+                      <div className="home-event-shine" />
+                      <div className="home-event-date">
+                        <span className="home-event-date-month">{month}</span>
+                        <span className="home-event-date-day">{day}</span>
                       </div>
-                      <div className="home-event-body">
-                        <span className="home-event-pill">{event.category}</span>
-                        <div className="home-event-title">{event.title}</div>
-                        <div className="home-event-loc">{event.location}</div>
-                        <p className="home-event-meta">{event.time}</p>
-                        <span className="home-event-link">
-                          Event details <span>→</span>
-                        </span>
-                      </div>
-                    </a>
-                    <div className="home-event-share">
-                      <EventInstagramShare event={event} variant="compact" />
                     </div>
-                  </div>
+                    <div className="home-event-body">
+                      <span className="home-event-pill">{event.category}</span>
+                      <div className="home-event-title">{event.title}</div>
+                      <div className="home-event-loc">{event.location}</div>
+                      <p className="home-event-meta">{event.time}</p>
+                      <span className="home-event-link">
+                        Event details <span>→</span>
+                      </span>
+                    </div>
+                  </a>
                 </Reveal>
               );
             })}
