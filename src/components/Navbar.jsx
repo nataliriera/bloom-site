@@ -1,16 +1,13 @@
-// components/Navbar.jsx
 import React, { useEffect, useState } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import logo from "../assets/bloom-logo.png";
 
 const nav = [
-  { to: "/", label: "Home" },
-  { to: "/gallery", label: "Styles" },
-  { to: "/pricing", label: "Pricing" },
+  { to: "/", label: "Home", end: true },
+  { to: "/gallery", label: "Flower Walls" },
+  { to: "/styling", label: "Styling" },
+  { to: "/portfolio", label: "Portfolio" },
   { to: "/about", label: "About" },
-  { to: "/events", label: "Events" },
-  { to: "/faq", label: "FAQ" },
-  { to: "/service-areas", label: "Service Areas" },
 ];
 
 export default function Navbar() {
@@ -18,24 +15,16 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  // Close on route change
   useEffect(() => setOpen(false), [location.pathname]);
 
-  // Lock body scroll when open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.width = "100%";
     } else {
       document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
     }
     return () => {
       document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
     };
   }, [open]);
 
@@ -45,7 +34,7 @@ export default function Navbar() {
       if (ticking) return;
       ticking = true;
       window.requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 20);
+        setScrolled(window.scrollY > 12);
         ticking = false;
       });
     }
@@ -57,441 +46,206 @@ export default function Navbar() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-
-        @keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.25; } }
-
-        .bloom-nav-link {
+        .bnav {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
+          background: #0c0c0c;
+          border-bottom: 1px solid rgba(198,164,106,0.12);
+          transition: box-shadow 0.25s ease;
+        }
+        .bnav--scrolled {
+          box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+        }
+        .bnav__inner {
+          width: min(1120px, calc(100% - 40px));
+          margin: 0 auto;
+          height: 72px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 24px;
+        }
+        .bnav__logo {
+          display: flex;
+          align-items: center;
+          flex-shrink: 0;
+        }
+        .bnav__logo img {
+          height: 40px;
+          width: auto;
+          display: block;
+        }
+        .bnav__links {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+        }
+        .bnav__link {
           font-family: 'DM Sans', sans-serif;
           font-size: 11px;
           font-weight: 400;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: rgba(245,240,232,0.85);
+          color: rgba(247,243,237,0.78);
           text-decoration: none;
-          padding: 8px 14px;
+          padding: 8px 12px;
           transition: color 0.2s ease;
-          position: relative;
           white-space: nowrap;
         }
-        .bloom-nav-link:hover { color: #c9a96e; }
-        .bloom-nav-link.active { color: #c9a96e; }
-        .bloom-nav-link.active::after {
+        .bnav__link:hover,
+        .bnav__link.active {
+          color: #c6a46a;
+        }
+        .bnav__cta {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 42px;
+          padding: 0 20px;
+          background: #c6a46a;
+          color: #0c0c0c;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          text-decoration: none;
+          border: 1px solid #c6a46a;
+          transition: background 0.2s ease;
+          white-space: nowrap;
+        }
+        .bnav__cta:hover { background: #b89355; border-color: #b89355; }
+        .bnav__burger {
+          display: none;
+          width: 44px;
+          height: 44px;
+          align-items: center;
+          justify-content: center;
+          background: transparent;
+          border: 0;
+          cursor: pointer;
+          padding: 0;
+        }
+        .bnav__burger span,
+        .bnav__burger span::before,
+        .bnav__burger span::after {
+          display: block;
+          width: 20px;
+          height: 1px;
+          background: #f7f3ed;
+          position: relative;
+          transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .bnav__burger span::before,
+        .bnav__burger span::after {
           content: '';
           position: absolute;
-          bottom: 2px;
-          left: 14px;
-          right: 14px;
-          height: 1px;
-          background: #c9a96e;
+          left: 0;
         }
+        .bnav__burger span::before { top: -6px; }
+        .bnav__burger span::after { top: 6px; }
+        .bnav__burger.open span { background: transparent; }
+        .bnav__burger.open span::before { top: 0; transform: rotate(45deg); }
+        .bnav__burger.open span::after { top: 0; transform: rotate(-45deg); }
 
-        .bloom-mobile-link {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: clamp(34px, 9vw, 56px);
-          font-weight: 300;
-          font-style: italic;
-          color: rgba(245,240,232,0.88);
-          text-decoration: none;
+        .bnav-drawer {
+          position: fixed;
+          inset: 72px 0 0 0;
+          background: #0c0c0c;
+          z-index: 999;
+          padding: 28px 24px 48px;
+          overflow-y: auto;
+          display: none;
+        }
+        .bnav-drawer.open { display: block; }
+        .bnav-drawer a {
           display: block;
-          padding: 14px 0;
-          border-bottom: 1px solid rgba(201,169,110,0.12);
-          transition: color 0.2s ease;
-          line-height: 1.05;
+          font-family: 'Cormorant Garamond', serif;
+          font-size: clamp(32px, 8vw, 44px);
+          font-weight: 300;
+          color: rgba(247,243,237,0.9);
+          text-decoration: none;
+          padding: 12px 0;
+          border-bottom: 1px solid rgba(198,164,106,0.12);
         }
-        .bloom-mobile-link:hover,
-        .bloom-mobile-link.active { color: #c9a96e; }
-
-        .bloom-desktop-nav { display: flex; align-items: center; gap: 0; }
-        .bloom-hamburger    { display: none; }
+        .bnav-drawer a.active,
+        .bnav-drawer a:hover { color: #c6a46a; }
+        .bnav-drawer__cta {
+          display: inline-flex !important;
+          margin-top: 28px;
+          font-family: 'DM Sans', sans-serif !important;
+          font-size: 12px !important;
+          font-weight: 500 !important;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          background: #c6a46a;
+          color: #0c0c0c !important;
+          border: 0 !important;
+          padding: 14px 24px !important;
+        }
 
         @media (max-width: 900px) {
-          .bloom-desktop-nav { display: none !important; }
-          .bloom-hamburger   { display: flex !important; }
+          .bnav__links,
+          .bnav__cta--desktop { display: none !important; }
+          .bnav__burger { display: flex; }
         }
       `}</style>
 
-      {/* ── Fixed top bar ── */}
-      <header
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          background:
-            scrolled || open ? "rgba(10,10,10,0.97)" : "rgba(12,12,12,0.70)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
-          borderBottom:
-            scrolled && !open
-              ? "1px solid rgba(201,169,110,0.12)"
-              : "1px solid transparent",
-          transition: "background 0.35s ease, border-color 0.35s ease",
-        }}
-      >
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              height: scrolled ? 64 : 76,
-              transition: "height 0.3s ease",
-            }}
+      <header className={`bnav${scrolled ? " bnav--scrolled" : ""}`}>
+        <div className="bnav__inner">
+          <Link to="/" className="bnav__logo" aria-label="Bloom home">
+            <img src={logo} alt="Bloom" />
+          </Link>
+
+          <nav className="bnav__links" aria-label="Primary">
+            {nav.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) =>
+                  `bnav__link${isActive ? " active" : ""}`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <Link to="/contact" className="bnav__cta bnav__cta--desktop">
+            Check Availability
+          </Link>
+
+          <button
+            type="button"
+            className={`bnav__burger${open ? " open" : ""}`}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
           >
-            {/* Logo */}
-            <Link
-              to="/"
-              aria-label="Bloom home"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-                zIndex: 1010,
-                position: "relative",
-              }}
-            >
-              <img
-                src={logo}
-                alt="Bloom Flower Wall Rentals"
-                style={{
-                  height: scrolled ? 40 : 48,
-                  width: "auto",
-                  transition: "height 0.3s ease",
-                  filter: "brightness(1.1)",
-                }}
-              />
-            </Link>
-
-            {/* Desktop nav */}
-            <nav className="bloom-desktop-nav">
-              {nav.map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  className={({ isActive }) =>
-                    `bloom-nav-link${isActive ? " active" : ""}`
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-
-              <span
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 10,
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "rgba(201,169,110,0.7)",
-                  border: "1px solid rgba(201,169,110,0.2)",
-                  padding: "5px 14px",
-                  marginLeft: 14,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 7,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                <span
-                  style={{
-                    width: 5,
-                    height: 5,
-                    borderRadius: "50%",
-                    background: "#c9a96e",
-                    display: "inline-block",
-                    animation: "pulse-dot 2.2s ease infinite",
-                  }}
-                />
-                Now Booking
-              </span>
-
-              <Link
-                to="/contact"
-                style={{
-                  marginLeft: 14,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  background: "#c9a96e",
-                  color: "#0c0c0c",
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 11,
-                  fontWeight: 500,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  padding: "11px 22px",
-                  textDecoration: "none",
-                  whiteSpace: "nowrap",
-                  transition: "background 0.2s ease, letter-spacing 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "#d4b280";
-                  e.currentTarget.style.letterSpacing = "0.18em";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "#c9a96e";
-                  e.currentTarget.style.letterSpacing = "0.14em";
-                }}
-              >
-                Request a Quote
-              </Link>
-            </nav>
-
-            {/* Hamburger */}
-            <button
-              className="bloom-hamburger"
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              aria-label={open ? "Close menu" : "Open menu"}
-              type="button"
-              style={{
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 6,
-                background: "transparent",
-                border: "1px solid rgba(201,169,110,0.25)",
-                padding: "10px 12px",
-                cursor: "pointer",
-                zIndex: 1010,
-                position: "relative",
-              }}
-            >
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  style={{
-                    display: "block",
-                    width: 22,
-                    height: 1,
-                    background: "#c9a96e",
-                    transition: "transform 0.28s ease, opacity 0.28s ease",
-                    transform: open
-                      ? i === 0
-                        ? "translateY(7px) rotate(45deg)"
-                        : i === 2
-                        ? "translateY(-7px) rotate(-45deg)"
-                        : "none"
-                      : "none",
-                    opacity: open && i === 1 ? 0 : 1,
-                  }}
-                />
-              ))}
-            </button>
-          </div>
+            <span />
+          </button>
         </div>
       </header>
 
-      {/* ── Mobile full-screen overlay ── */}
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 999,
-          background: "rgba(8,8,8,0.99)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "88px 32px 48px",
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? "auto" : "none",
-          transition: "opacity 0.38s cubic-bezier(0.16,1,0.3,1)",
-          overflowY: "auto",
-        }}
-      >
-        {/* Now booking badge — updated to reflect all 4 walls */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginBottom: 40,
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: 11,
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            color: "rgba(201,169,110,0.6)",
-          }}
-        >
-          <span
-            style={{
-              width: 5,
-              height: 5,
-              borderRadius: "50%",
-              background: "#c9a96e",
-              flexShrink: 0,
-              animation: "pulse-dot 2.2s ease infinite",
-            }}
-          />
-          Now Booking · 4 styles available
-        </div>
-
-        {/* Big italic nav links */}
-        <nav
-          style={{ display: "flex", flexDirection: "column", marginBottom: 44 }}
-        >
-          {nav.map((item, i) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                `bloom-mobile-link${isActive ? " active" : ""}`
-              }
-              style={{
-                opacity: open ? 1 : 0,
-                transform: open ? "none" : "translateY(14px)",
-                transition: `color 0.2s ease, opacity 0.45s ease ${
-                  i * 0.05
-                }s, transform 0.5s ease ${i * 0.05}s`,
-              }}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-
-        {/* CTA + contact details */}
-        <div
-          style={{
-            opacity: open ? 1 : 0,
-            transform: open ? "none" : "translateY(10px)",
-            transition: "opacity 0.45s ease 0.28s, transform 0.5s ease 0.28s",
-          }}
-        >
-          <Link
-            to="/contact"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "#c9a96e",
-              color: "#0c0c0c",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: 12,
-              fontWeight: 500,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              padding: "18px 32px",
-              textDecoration: "none",
-            }}
+      <div className={`bnav-drawer${open ? " open" : ""}`} hidden={!open}>
+        {nav.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) => (isActive ? "active" : undefined)}
           >
-            Request a Quote
-          </Link>
-
-          {/* Contact details + social */}
-          <div
-            style={{
-              marginTop: 28,
-              display: "flex",
-              flexDirection: "column",
-              gap: 8,
-            }}
-          >
-            <a
-              href="tel:+18633355022"
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 13,
-                color: "rgba(245,240,232,0.62)",
-                textDecoration: "none",
-                letterSpacing: "0.06em",
-              }}
-            >
-              (863) 335-5022
-            </a>
-            <a
-              href="mailto:info@bloomflowerwallrentals.com"
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 13,
-                color: "rgba(245,240,232,0.62)",
-                textDecoration: "none",
-                letterSpacing: "0.04em",
-              }}
-            >
-              info@bloomflowerwallrentals.com
-            </a>
-
-            {/* Social links */}
-            <div style={{ display: "flex", gap: 16, marginTop: 8 }}>
-              <a
-                href="https://www.instagram.com/bloomflowerwallrentals/"
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 11,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  color: "#c9a96e",
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 7,
-                }}
-              >
-                <svg
-                  width="13"
-                  height="13"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <path d="M16 11.37a4 4 0 1 1-7.75 1.25 4 4 0 0 1 7.75-1.25z" />
-                  <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
-                </svg>
-                Instagram
-              </a>
-              <a
-                href="https://www.facebook.com/bloomflowerwallrentals"
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 11,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  color: "#c9a96e",
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 7,
-                }}
-              >
-                <svg
-                  width="13"
-                  height="13"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                </svg>
-                Facebook
-              </a>
-            </div>
-          </div>
-        </div>
+            {item.label}
+          </NavLink>
+        ))}
+        <Link to="/contact" className="bnav-drawer__cta">
+          Check Availability
+        </Link>
       </div>
-
-      {/* Spacer for non-hero pages */}
-      <div style={{ height: 76 }} className="bloom-nav-spacer" />
-      <style>{`
-        @media (max-width: 900px) { .bloom-nav-spacer { height: 64px !important; } }
-      `}</style>
     </>
   );
 }

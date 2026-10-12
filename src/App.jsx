@@ -4,8 +4,9 @@ import SiteLayout from "./components/SiteLayout.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 
 import Home from "./pages/Home.jsx";
+import Portfolio from "./pages/Portfolio.jsx";
 import Gallery from "./pages/Gallery.jsx";
-import Pricing from "./pages/Pricing.jsx";
+import Styling from "./pages/Styling.jsx";
 import Faq from "./pages/Faq.jsx";
 import Contact from "./pages/Contact.jsx";
 import ServiceAreas from "./pages/ServiceAreas.jsx";
@@ -23,8 +24,11 @@ export default function App() {
       <Routes>
         <Route element={<SiteLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/homepage-preview" element={<Navigate to="/" replace />} />
+          <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/styling" element={<Styling />} />
+          <Route path="/pricing" element={<Navigate to="/styling#pricing" replace />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/about" element={<About />} />
           <Route path="/events" element={<Events />} />

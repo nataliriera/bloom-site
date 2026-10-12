@@ -24,7 +24,7 @@ function PageMeta({ title, description, canonical }) {
       document.head.appendChild(canon);
     }
     canon.href = canonical;
-  }, []);
+  }, [title, description, canonical]);
   return null;
 }
 
@@ -61,175 +61,92 @@ const sections = [
 
 export default function Terms() {
   return (
-    <LegalPage
-      meta={
-        <PageMeta
-          title="Terms & Conditions | Bloom Flower Wall Rentals"
-          description="Terms and conditions for renting flower walls from Bloom Flower Wall Rentals in Clermont, FL."
-          canonical="https://bloomflowerwallrentals.com/terms"
-        />
-      }
-      title="Terms & Conditions"
-      subtitle='These terms apply to rentals and services provided by Bloom Flower Wall Rentals ("Bloom", "we", "us"). By booking, you agree to these terms.'
-      sections={sections}
-      primaryLabel="Request a Quote"
-      primaryTo="/contact"
-      note="Last updated: February 2026."
-    />
-  );
-}
-
-function LegalPage({
-  meta,
-  title,
-  subtitle,
-  sections,
-  primaryLabel,
-  primaryTo,
-  note,
-}) {
-  return (
-    <div
-      style={{
-        background: "#0c0c0c",
-        color: "#f5f0e8",
-        minHeight: "100vh",
-        fontFamily: "'DM Sans', sans-serif",
-      }}
-    >
-      {meta}
+    <div className="bloom-page legal-page">
+      <PageMeta
+        title="Terms & Conditions | Bloom Flower Wall Rentals"
+        description="Terms and conditions for renting flower walls from Bloom Flower Wall Rentals in Clermont, FL."
+        canonical="https://bloomflowerwallrentals.com/terms"
+      />
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        .btn-gold { display:inline-flex; align-items:center; gap:10px; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:15px 36px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
-        .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
-        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 28px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
-        .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
-        .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:150px; }
-        .legal-inner { max-width: 860px; margin: 0 auto; padding: 100px 48px 120px; }
-        .legal-sections { margin-top: 52px; border-top: 1px solid rgba(201,169,110,0.12); }
+        .legal-page .legal-sections {
+          margin-top: 48px;
+          border-top: 1px solid rgba(26, 22, 18, 0.1);
+        }
+        .legal-page .legal-row {
+          display: grid;
+          grid-template-columns: 1fr 2fr;
+          gap: 40px;
+          padding: 32px 0;
+          border-bottom: 1px solid rgba(26, 22, 18, 0.08);
+        }
+        .legal-page .legal-row h2 {
+          font-family: "Cormorant Garamond", serif;
+          font-size: clamp(18px, 2vw, 22px);
+          font-weight: 400;
+          margin: 0;
+          color: var(--bloom-ink);
+          padding-top: 2px;
+        }
+        .legal-page .legal-row p {
+          margin: 0;
+          font-size: 15px;
+          line-height: 1.75;
+          color: var(--bloom-soft);
+          font-weight: 300;
+        }
+        .legal-page .legal-note {
+          margin-top: 32px;
+          font-size: 12px;
+          color: var(--bloom-mute);
+          letter-spacing: 0.04em;
+        }
+        .legal-page .legal-actions {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          margin-top: 28px;
+        }
         @media (max-width: 640px) {
-          .legal-inner { padding: 72px 24px 96px; }
+          .legal-page .legal-row {
+            grid-template-columns: 1fr;
+            gap: 10px;
+          }
         }
       `}</style>
-      <div className="noise" />
 
-      <div className="legal-inner">
-        {/* Eyebrow */}
-        <p
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: 11,
-            letterSpacing: "0.24em",
-            textTransform: "uppercase",
-            color: "#c9a96e",
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            marginBottom: 20,
-          }}
-        >
-          <span
-            style={{
-              display: "inline-block",
-              width: 28,
-              height: 1,
-              background: "#c9a96e",
-            }}
-          />
-          Bloom Flower Wall Rentals
-        </p>
-
-        <h1
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontSize: "clamp(40px, 7vw, 80px)",
-            fontWeight: 300,
-            lineHeight: 0.92,
-            letterSpacing: "-0.02em",
-            marginBottom: 24,
-          }}
-        >
-          {title}
-        </h1>
-        <p
-          style={{
-            fontSize: 15,
-            lineHeight: 1.75,
-            color: "rgba(245,240,232,0.75)",
-            fontWeight: 300,
-            maxWidth: 560,
-            marginBottom: 40,
-          }}
-        >
-          {subtitle}
-        </p>
-
-        <div
-          style={{
-            display: "flex",
-            gap: 12,
-            flexWrap: "wrap",
-            marginBottom: 0,
-          }}
-        >
-          <Link to={primaryTo} className="btn-gold">
-            {primaryLabel}
-          </Link>
-          <Link to="/" className="btn-outline">
-            Back to Home
-          </Link>
+      <header className="bloom-page-hero">
+        <div className="bloom-wrap" style={{ maxWidth: 860 }}>
+          <p className="bloom-label">Bloom Flower Wall Rentals</p>
+          <h1 className="bloom-h1">Terms & Conditions</h1>
+          <p className="bloom-text">
+            These terms apply to rentals and services provided by Bloom Flower
+            Wall Rentals (&quot;Bloom&quot;, &quot;we&quot;, &quot;us&quot;). By
+            booking, you agree to these terms.
+          </p>
+          <div className="legal-actions">
+            <Link to="/contact" className="bloom-btn bloom-btn--ink">
+              Request a Quote
+            </Link>
+            <Link to="/" className="bloom-btn bloom-btn--line">
+              Back to Home
+            </Link>
+          </div>
         </div>
+      </header>
 
-        {/* Sections */}
-        <div className="legal-sections">
-          {sections.map((s, i) => (
-            <div
-              key={s.title}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 2fr",
-                gap: 40,
-                padding: "36px 0",
-                borderBottom: "1px solid rgba(201,169,110,0.1)",
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: "clamp(17px, 2vw, 22px)",
-                  fontWeight: 400,
-                  color: "#f5f0e8",
-                  paddingTop: 2,
-                }}
-              >
-                {s.title}
+      <section className="bloom-section" style={{ paddingTop: 0 }}>
+        <div className="bloom-wrap" style={{ maxWidth: 860 }}>
+          <div className="legal-sections">
+            {sections.map((s) => (
+              <div key={s.title} className="legal-row">
+                <h2>{s.title}</h2>
+                <p>{s.body}</p>
               </div>
-              <p
-                style={{
-                  fontSize: 14,
-                  color: "rgba(245,240,232,0.80)",
-                  lineHeight: 1.8,
-                  fontWeight: 300,
-                }}
-              >
-                {s.body}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
+          <p className="legal-note">Last updated: February 2026.</p>
         </div>
-
-        <p
-          style={{
-            marginTop: 36,
-            fontSize: 12,
-            color: "rgba(245,240,232,0.52)",
-            letterSpacing: "0.04em",
-          }}
-        >
-          {note}
-        </p>
-      </div>
+      </section>
     </div>
   );
 }

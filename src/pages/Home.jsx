@@ -1,1511 +1,771 @@
-import React, { useState, useEffect, useRef } from "react";
+/**
+ * Bloom homepage — boutique event styling.
+ */
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { upcomingEvents } from "../data/events.js";
-import { useLazyScript } from "../hooks/useLazyScript.js";
-import SnapCarousel from "../components/SnapCarousel.jsx";
-import ReviewsSection from "../components/ReviewsSection.jsx";
+import {
+  reviews,
+  googleProfileUrl,
+  reviewSummary,
+} from "../data/reviews.js";
+import { BloomCtaBand } from "../components/BloomLayout.jsx";
 
-// 🌿 Update image imports once you have Tropical Oasis + Midnight Noir photos
-import whiteGardenImg from "../assets/walls/white-garden.jpg";
-import enchantedGardenImg from "../assets/walls/enchanted-garden.jpg";
-import greeneryWallImg from "../assets/walls/greenery-wall.jpg"; // temp placeholder for Tropical Oasis
-import blushOmbreImg from "../assets/walls/blush-ombre.jpg"; // temp placeholder for Midnight Noir
-import tropicalOasisImg from "../assets/walls/tropical-oasis.jpg";
-import midnightNoirImg from "../assets/walls/midnight-noir.jpg";
+import aboutSetup from "../assets/about-setup.png";
+import whiteGarden from "../assets/walls/white-garden.jpg";
+import whiteGardenBride from "../assets/portfolio/white-garden-2.jpg";
+import enchantedGarden2 from "../assets/walls/enchanted-garden-2.jpg";
+import midnightNoir2 from "../assets/walls/midnight-noir-2.jpg";
+import pinkMix from "../assets/walls/pink-mix.jpg";
+import greeneryWall from "../assets/walls/greenery-wall.jpg";
+import fallIntoWellness from "../assets/events/fall-into-wellness-setup.jpg";
+import summerSoiree from "../assets/home/summer-soiree.jpg";
+import tropicalBigelows from "../assets/portfolio/tropical-oasis-2.jpg";
+import helloGorgeous from "../assets/portfolio/enchanted-6.jpg";
+import floralPillars from "../assets/home/floral-pillars.jpg";
+import fullBloomSetup from "../assets/home/full-bloom-setup.jpg";
 
-const walls = [
-  {
-    name: "White Garden",
-    size: "8×8",
-    vibe: "Soft, photo-ready whites",
-    img: whiteGardenImg,
-    tag: "Most Popular",
-    price: "Starting at $350",
-  },
-  {
-    name: "Enchanted Garden",
-    size: "8×8",
-    vibe: "Colorful, playful florals",
-    img: enchantedGardenImg,
-    tag: "Most Popular",
-    price: "Starting at $350",
-  },
-  {
-    name: "Tropical Oasis",
-    size: "8×8",
-    vibe: "Lush tropical greenery",
-    img: tropicalOasisImg, // swap to tropicalOasisImg once you have the photo
-    tag: "Available Now",
-    price: "Starting at $450",
-  },
-  {
-    name: "Midnight Noir",
-    size: "8×8",
-    vibe: "Dramatic dark florals",
-    img: midnightNoirImg, // swap to midnightNoirImg once you have the photo
-    tag: "Available Now",
-    price: "Starting at $500",
-  },
+const BEHOLD_FEED_ID = "qDJTl17ooRzEHgeQ0dBq";
+const IG_PROFILE = "https://www.instagram.com/bloomflowerwallrentals/";
+
+const portfolioPreview = [
+  { src: fallIntoWellness, alt: "Fall into Wellness White Garden backdrop with floral arrangements" },
+  { src: summerSoiree, alt: "Summer Soirée colorful flower wall" },
+  { src: tropicalBigelows, alt: "Tropical greenery wall sweetheart table for The Bigelows" },
+  { src: helloGorgeous, alt: "Hello Gorgeous neon flower wall with styled table" },
+  { src: floralPillars, alt: "Tall blush and white faux-floral pillar arrangements" },
+  { src: fullBloomSetup, alt: "Ivory crossed-drape backdrop with tall floral arrangements" },
 ];
 
-const faqs = [
-  {
-    q: "What areas do you serve?",
-    a: "We're based in Clermont, FL and serve surrounding areas including Orlando, Winter Garden, Windermere, Kissimmee, Davenport, and Groveland. Travel is quoted based on venue location.",
-  },
-  {
-    q: "Is delivery and setup included?",
-    a: "Delivery, professional setup, and breakdown are available for an additional fee, quoted by venue location and logistics.",
-  },
-  {
-    q: "How long does setup take?",
-    a: "Most installs take about 30–60 minutes depending on venue access and chosen add-ons.",
-  },
-  {
-    q: "Can the wall be used outdoors?",
-    a: "Yes, with restrictions. Outdoor setups require stable, dry conditions and a suitable surface. We'll confirm during quoting.",
-  },
-  {
-    q: "Do you require a deposit?",
-    a: "Yes — your date is reserved with a retainer. Remaining balance is due before the event.",
-  },
+/** Local photos used if Behold media URLs fail */
+const igFallbacks = [
+  aboutSetup,
+  whiteGarden,
+  enchantedGarden2,
+  midnightNoir2,
+  pinkMix,
+  greeneryWall,
 ];
 
-const serviceAreas = [
-  "Clermont",
-  "Groveland",
-  "Minneola",
-  "Winter Garden",
-  "Windermere",
-  "Orlando",
-  "Kissimmee",
-  "Davenport",
-];
+const homepageReviews = [
+  reviews.find((r) => r.name === "Angela Moody"),
+  reviews.find((r) => r.name === "Anna Poulton"),
+  reviews.find((r) => r.name === "Amanda Nethero"),
+].filter(Boolean);
 
-function useInView(threshold = 0.1) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
+function Stars({ count = 5 }) {
+  return (
+    <span className="hp-stars" aria-label={`${count} out of 5 stars`}>
+      {"★".repeat(count)}
+    </span>
+  );
+}
+
+function IgImage({ src, fallback, alt }) {
+  const [current, setCurrent] = useState(src || fallback);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
+    setCurrent(src || fallback);
+  }, [src, fallback]);
 
-  return [ref, visible];
-}
-
-function Reveal({ children, delay = 0, y = 36 }) {
-  const [ref, visible] = useInView();
   return (
-    <div
-      ref={ref}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "none" : `translateY(${y}px)`,
-        transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+    <img
+      src={current}
+      alt={alt}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      onError={() => {
+        if (current !== fallback) setCurrent(fallback);
       }}
-    >
-      {children}
-    </div>
+    />
   );
 }
 
-function Marquee({ items, speed = 45 }) {
-  const doubled = [...items, ...items];
-  return (
-    <div style={{ overflow: "hidden", display: "flex", userSelect: "none" }}>
-      <div
-        style={{
-          display: "flex",
-          animation: `marquee ${speed}s linear infinite`,
-          whiteSpace: "nowrap",
-        }}
-      >
-        {doubled.map((item, i) => (
-          <span
-            key={i}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 20,
-              padding: "0 28px",
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: "clamp(14px, 2vw, 22px)",
-              fontStyle: "italic",
-              fontWeight: 300,
-              color: "rgba(245,240,232,0.78)",
-              letterSpacing: "0.02em",
-            }}
-          >
-            {item}
-            <span style={{ color: "#c9a96e", fontSize: "0.55em" }}>✦</span>
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
+/**
+ * Live Instagram posts via Behold's JSON feed (same feed as the site widget).
+ * Behold's image proxy is currently failing ("Failed to fetch from source"),
+ * so each tile falls back to a real Bloom photo until media sync is restored.
+ */
+function InstagramFeed() {
+  const [posts, setPosts] = useState(null);
 
-function FAQItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div
-      onClick={() => setOpen((o) => !o)}
-      style={{
-        borderBottom: "1px solid rgba(201,169,110,0.15)",
-        padding: "24px 0",
-        cursor: "pointer",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 20,
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "clamp(17px, 2vw, 22px)",
-            fontWeight: 400,
-            lineHeight: 1.3,
-            color: "#f5f0e8",
-          }}
-        >
-          {q}
-        </span>
-        <span
-          style={{
-            color: "#c9a96e",
-            fontSize: 24,
-            fontWeight: 200,
-            flexShrink: 0,
-            display: "inline-block",
-            transition: "transform 0.35s ease",
-            transform: open ? "rotate(45deg)" : "none",
-          }}
-        >
-          +
-        </span>
-      </div>
-      <div
-        style={{
-          overflow: "hidden",
-          maxHeight: open ? 220 : 0,
-          transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
-        }}
-      >
-        <p
-          style={{
-            marginTop: 16,
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: 15,
-            color: "rgba(245,240,232,0.82)",
-            lineHeight: 1.8,
-            fontWeight: 300,
-          }}
-        >
-          {a}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-const SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: "Bloom Flower Wall Rentals",
-  description:
-    "Luxury flower wall rentals for weddings, baby showers, birthdays, and events in Clermont, FL and surrounding areas. Delivery, setup, and breakdown available.",
-  url: "https://bloomflowerwallrentals.com",
-  telephone: "+1-863-335-5022",
-  email: "info@bloomflowerwallrentals.com",
-  image: "https://bloomflowerwallrentals.com/white-wall.png",
-  priceRange: "$$",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Clermont",
-    addressRegion: "FL",
-    addressCountry: "US",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 28.5494,
-    longitude: -81.7729,
-  },
-  areaServed: [
-    { "@type": "City", name: "Clermont" },
-    { "@type": "City", name: "Minneola" },
-    { "@type": "City", name: "Groveland" },
-    { "@type": "City", name: "Winter Garden" },
-    { "@type": "City", name: "Windermere" },
-    { "@type": "City", name: "Kissimmee" },
-    { "@type": "City", name: "Orlando" },
-    { "@type": "City", name: "Davenport" },
-  ],
-  serviceType: [
-    "Flower Wall Rental",
-    "Wedding Backdrop Rental",
-    "Event Decor Rental",
-    "Photo Backdrop Rental",
-  ],
-  sameAs: [
-    "https://www.instagram.com/bloomflowerwallrentals",
-    "https://www.facebook.com/bloomflowerwallrentals",
-  ],
-};
-
-function PageMeta() {
   useEffect(() => {
-    document.title =
-      "Bloom Flower Wall Rentals | Clermont, FL — Luxury Backdrops for Weddings & Events";
+    const controller = new AbortController();
 
-    const setMeta = (sel, attr, val) => {
-      let el = document.querySelector(sel);
-      if (!el) {
-        el = document.createElement("meta");
-        document.head.appendChild(el);
+    async function load() {
+      try {
+        const res = await fetch(`https://feeds.behold.so/${BEHOLD_FEED_ID}`, {
+          signal: controller.signal,
+        });
+        if (!res.ok) throw new Error(`Behold feed ${res.status}`);
+        const data = await res.json();
+        setPosts(Array.isArray(data.posts) ? data.posts.slice(0, 6) : []);
+      } catch (err) {
+        if (err.name === "AbortError") return;
+        setPosts([]);
       }
-      el.setAttribute(attr, val);
-    };
-
-    setMeta(
-      'meta[name="description"]',
-      "content",
-      "Bloom Flower Wall Rentals — luxurious flower wall backdrops for weddings, showers, and events in Clermont, FL and surrounding areas. White, blush, ivory & mixed styles. Delivery, setup & breakdown available."
-    );
-    setMeta(
-      'meta[property="og:title"]',
-      "content",
-      "Bloom Flower Wall Rentals | Clermont, FL"
-    );
-    setMeta(
-      'meta[property="og:description"]',
-      "content",
-      "Luxury flower wall rentals for weddings & events in Clermont, FL. White, blush, ivory, and mixed styles. Delivery + setup available."
-    );
-    setMeta(
-      'meta[property="og:url"]',
-      "content",
-      "https://bloomflowerwallrentals.com/"
-    );
-    setMeta(
-      'meta[property="og:image"]',
-      "content",
-      "https://bloomflowerwallrentals.com/white-wall.png"
-    );
-    setMeta(
-      'meta[property="og:image:alt"]',
-      "content",
-      "White garden flower wall by Bloom Flower Wall Rentals"
-    );
-    setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
-    setMeta(
-      'meta[name="twitter:title"]',
-      "content",
-      "Bloom Flower Wall Rentals | Clermont, FL"
-    );
-    setMeta(
-      'meta[name="twitter:description"]',
-      "content",
-      "Luxury flower wall backdrops for weddings & events. Serving Clermont, FL and surrounding areas."
-    );
-    setMeta(
-      'meta[name="twitter:image"]',
-      "content",
-      "https://bloomflowerwallrentals.com/white-wall.png"
-    );
-
-    let canon = document.querySelector('link[rel="canonical"]');
-    if (!canon) {
-      canon = document.createElement("link");
-      canon.rel = "canonical";
-      document.head.appendChild(canon);
     }
-    canon.href = "https://bloomflowerwallrentals.com/";
 
-    let ld = document.getElementById("ld-localbusiness");
-    if (!ld) {
-      ld = document.createElement("script");
-      ld.id = "ld-localbusiness";
-      ld.type = "application/ld+json";
-      document.head.appendChild(ld);
-    }
-    ld.textContent = JSON.stringify(SCHEMA);
+    load();
+    return () => controller.abort();
   }, []);
 
-  return null;
+  if (posts === null) {
+    return (
+      <div className="hp-ig__grid" aria-busy="true" aria-label="Loading Instagram posts">
+        {igFallbacks.map((_, i) => (
+          <div key={i} className="hp-ig__skeleton" />
+        ))}
+      </div>
+    );
+  }
+
+  const tiles =
+    posts.length > 0
+      ? posts.map((post, i) => ({
+          key: post.id,
+          href: post.permalink || IG_PROFILE,
+          src:
+            post.sizes?.medium?.mediaUrl ||
+            post.sizes?.small?.mediaUrl ||
+            post.thumbnailUrl,
+          fallback: igFallbacks[i % igFallbacks.length],
+          alt:
+            (post.prunedCaption || post.caption || "Bloom on Instagram").slice(
+              0,
+              100
+            ),
+        }))
+      : igFallbacks.map((src, i) => ({
+          key: `fallback-${i}`,
+          href: IG_PROFILE,
+          src,
+          fallback: src,
+          alt: "Bloom on Instagram",
+        }));
+
+  return (
+    <div className="hp-ig__grid">
+      {tiles.map((tile) => (
+        <a
+          key={tile.key}
+          href={tile.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={tile.alt}
+        >
+          <IgImage src={tile.src} fallback={tile.fallback} alt={tile.alt} />
+        </a>
+      ))}
+    </div>
+  );
 }
 
 export default function Home() {
-  const [heroIn, setHeroIn] = useState(false);
-  const instagramRef = useRef(null);
-
-  useEffect(() => {
-    const t = setTimeout(() => setHeroIn(true), 80);
-    return () => clearTimeout(t);
-  }, []);
-
-  useLazyScript(instagramRef, {
-    src: "https://w.behold.so/widget.js",
-    type: "module",
-    id: "behold-widget",
-  });
-
-  const eyebrow = (text) => (
-    <p
-      style={{
-        fontFamily: "'DM Sans', sans-serif",
-        fontSize: 11,
-        letterSpacing: "0.24em",
-        textTransform: "uppercase",
-        color: "#c9a96e",
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        marginBottom: 18,
-      }}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          width: 28,
-          height: 1,
-          background: "#c9a96e",
-          flexShrink: 0,
-        }}
-      />
-      {text}
-    </p>
-  );
-
   return (
-    <div
-      style={{
-        background: "#0c0c0c",
-        color: "#f5f0e8",
-        overflowX: "hidden",
-        minHeight: "100vh",
-      }}
-    >
-      <PageMeta />
-
+    <div className="hp-preview">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap');
-        :root { --gold: #c9a96e; --cream: #f5f0e8; }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes slowpan { 0% { transform: scale(1.0); } 100% { transform: scale(1.08) translateX(-1.5%); } }
-        @keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.25; } }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
-        .wall-card .wall-img { transition: transform 1s cubic-bezier(0.16,1,0.3,1); }
-        .wall-card:hover .wall-img { transform: scale(1.07); }
-
-        .btn-gold { display:inline-flex; align-items:center; gap:10px; background:var(--gold); color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:15px 36px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; white-space:nowrap; }
-        .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
-        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:var(--cream); font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 36px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; white-space:nowrap; }
-        .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
-
-        .ig-follow { transition: opacity 0.2s; }
-        .ig-follow:hover { opacity: 1 !important; }
-        .ig-follow:hover span { color: #c9a96e !important; }
-
-        .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:150px; }
-
-        .addon-row { transition: background 0.2s; }
-        .addon-row:hover { background: rgba(201,169,110,0.03); }
-
-        .hero-content { padding: 0 48px 80px; }
-        .inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
-        .inner-narrow { max-width: 860px; margin: 0 auto; padding: 0 48px; }
-
-        .walls-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
-        .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(201,169,110,0.08); }
-        .addons-header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; margin-bottom: 68px; }
-        .section-header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
-        .addon-inner { display: flex; align-items: center; gap: 32px; flex: 1; min-width: 240px; }
-
-        .area-pill { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; padding:8px 18px; border:1px solid rgba(201,169,110,0.2); color:rgba(245,240,232,0.75); background:transparent; white-space:nowrap; }
-
-        .home-events-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: rgba(201,169,110,0.08); }
-        .home-event-card {
-          display: flex; flex-direction: column; background: #0a0a0a; text-decoration: none; color: inherit;
-          height: 100%; overflow: hidden; position: relative;
-          transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease;
+        .hp-preview {
+          --cream: #f7f3ed;
+          --cream-deep: #efe9e0;
+          --ink: #1a1612;
+          --soft: rgba(26,22,18,0.62);
+          --mute: rgba(26,22,18,0.4);
+          --gold: #c6a46a;
+          --dark: #0c0c0c;
+          background: var(--cream);
+          color: var(--ink);
+          font-family: 'DM Sans', sans-serif;
+          font-weight: 300;
+          min-height: 100vh;
         }
-        .home-event-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.4); }
-        .home-event-card:hover .home-event-img { transform: scale(1.06); }
-        .home-event-card:hover .home-event-shine { opacity: 1; }
-        .home-event-visual { position: relative; aspect-ratio: 4/5; overflow: hidden; background: #111; }
-        .home-event-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
-        .home-event-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(10,10,10,0.92) 100%); pointer-events: none; }
-        .home-event-shine { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,169,110,0.12) 0%, transparent 50%); opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
-        .home-event-date {
-          position: absolute; top: 16px; left: 16px; z-index: 2;
-          background: rgba(12,12,12,0.85); border: 1px solid rgba(201,169,110,0.35);
-          backdrop-filter: blur(8px); padding: 10px 14px; text-align: center; min-width: 54px;
+        .hp-preview *, .hp-preview *::before, .hp-preview *::after { box-sizing: border-box; }
+        .hp-preview img { display: block; max-width: 100%; }
+
+        .hp-wrap {
+          width: min(1120px, calc(100% - 40px));
+          margin: 0 auto;
         }
-        .home-event-date-month { display: block; font-size: 9px; letter-spacing: 0.18em; color: #c9a96e; }
-        .home-event-date-day { display: block; font-family: 'Cormorant Garamond', serif; font-size: 26px; line-height: 1; margin-top: 2px; }
-        .home-event-body { padding: 22px 22px 26px; flex: 1; display: flex; flex-direction: column; border-top: 1px solid rgba(201,169,110,0.1); }
-        .home-event-pill { display: inline-block; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: #c9a96e; border: 1px solid rgba(201,169,110,0.35); padding: 4px 10px; margin-bottom: 12px; align-self: flex-start; }
-        .home-event-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(19px, 2vw, 24px); font-weight: 400; line-height: 1.15; margin-bottom: 8px; }
-        .home-event-loc { font-size: 11px; color: rgba(245,240,232,0.5); letter-spacing: 0.06em; margin-bottom: 14px; }
-        .home-event-meta { font-size: 12px; color: rgba(245,240,232,0.62); margin-bottom: 16px; flex: 1; }
-        .home-event-link { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #c9a96e; display: flex; align-items: center; gap: 8px; }
-        .home-event-link span { transition: transform 0.25s ease; }
-        .home-event-card:hover .home-event-link span { transform: translateX(4px); }
+
+        .hp-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          min-height: 48px;
+          padding: 0 28px;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 12px;
+          font-weight: 500;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          text-decoration: none;
+          border: 1px solid transparent;
+          transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        }
+        .hp-btn--gold {
+          background: var(--gold);
+          color: var(--dark);
+          border-color: var(--gold);
+        }
+        .hp-btn--gold:hover { background: #b89355; border-color: #b89355; }
+        .hp-btn--ghost {
+          background: transparent;
+          color: #f7f3ed;
+          border-color: rgba(247,243,237,0.55);
+        }
+        .hp-btn--ghost:hover {
+          background: rgba(247,243,237,0.1);
+          border-color: #f7f3ed;
+        }
+        .hp-btn--ink {
+          background: var(--ink);
+          color: var(--cream);
+          border-color: var(--ink);
+        }
+        .hp-btn--ink:hover { background: #2a2420; }
+        .hp-btn--line {
+          background: transparent;
+          color: var(--ink);
+          border-color: rgba(26,22,18,0.28);
+        }
+        .hp-btn--line:hover { border-color: var(--ink); }
+
+        .hp-h2 {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 300;
+          font-size: clamp(32px, 4.5vw, 48px);
+          line-height: 1.1;
+          letter-spacing: -0.01em;
+          margin: 0 0 16px;
+        }
+        .hp-text {
+          font-size: 16px;
+          line-height: 1.7;
+          color: var(--soft);
+          margin: 0;
+          max-width: 540px;
+        }
+        .hp-label {
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: var(--gold);
+          margin: 0 0 14px;
+        }
+
+        /* HERO */
+        .hp-hero {
+          position: relative;
+          min-height: min(92vh, 820px);
+          display: grid;
+          align-items: end;
+          overflow: hidden;
+          background: #e8e0d4;
+        }
+        .hp-hero__media {
+          position: absolute;
+          inset: 0;
+        }
+        .hp-hero__media img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: 12% 22%;
+        }
+        .hp-hero__shade {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(105deg, rgba(26,22,18,0.72) 0%, rgba(26,22,18,0.48) 42%, rgba(26,22,18,0.22) 100%),
+            linear-gradient(to top, rgba(26,22,18,0.55) 0%, rgba(26,22,18,0.18) 50%, rgba(26,22,18,0.28) 100%);
+        }
+        .hp-hero__copy {
+          position: relative;
+          z-index: 1;
+          width: min(1120px, calc(100% - 40px));
+          margin: 0 auto;
+          padding: 72px 0 64px;
+          max-width: 720px;
+          justify-self: start;
+        }
+        .hp-hero__kicker {
+          font-size: 11px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: rgba(247,243,237,0.85);
+          margin: 0 0 18px;
+        }
+        .hp-hero h1 {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 300;
+          font-size: clamp(36px, 5.5vw, 58px);
+          line-height: 1.08;
+          color: #faf7f2;
+          margin: 0 0 18px;
+          text-shadow: 0 1px 18px rgba(26,22,18,0.2);
+        }
+        .hp-hero__support {
+          font-size: 16px;
+          line-height: 1.65;
+          color: rgba(247,243,237,0.9);
+          margin: 0 0 32px;
+          max-width: 520px;
+        }
+        .hp-hero__actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+
+        /* PROMO BANNER */
+        .hp-banner {
+          background: var(--ink);
+          border-bottom: 1px solid rgba(198,164,106,0.28);
+        }
+        .hp-banner a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          width: min(1120px, calc(100% - 40px));
+          margin: 0 auto;
+          padding: 14px 0;
+          font-size: 13px;
+          letter-spacing: 0.04em;
+          color: rgba(247,243,237,0.9);
+          text-decoration: none;
+          transition: color 0.2s ease;
+        }
+        .hp-banner a:hover { color: var(--gold); }
+        .hp-banner__mark {
+          color: var(--gold);
+          font-size: 11px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          font-weight: 500;
+        }
+
+        /* INTRO */
+        .hp-intro {
+          padding: 88px 0;
+        }
+        .hp-intro__grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 48px 56px;
+          align-items: center;
+        }
+        .hp-intro__copy .hp-text + .hp-text {
+          margin-top: 18px;
+        }
+        .hp-intro__media {
+          overflow: hidden;
+          background: #e4ddd2;
+          aspect-ratio: 4 / 5;
+          max-height: 520px;
+        }
+        .hp-intro__media img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 30%;
+        }
+        .hp-intro__rule {
+          border: 0;
+          border-top: 1px solid rgba(26,22,18,0.1);
+          margin: 88px 0 0;
+        }
+
+        /* PORTFOLIO */
+        .hp-work {
+          padding: 88px 0;
+        }
+        .hp-work__head {
+          margin-bottom: 36px;
+          max-width: 480px;
+        }
+        .hp-work__grid {
+          display: grid;
+          grid-template-columns: 1.35fr 1fr 1fr;
+          grid-template-rows: 280px 280px;
+          gap: 12px;
+        }
+        .hp-work__grid a {
+          display: block;
+          overflow: hidden;
+          background: #e4ddd2;
+        }
+        .hp-work__grid a:first-child {
+          grid-row: 1 / 3;
+        }
+        .hp-work__grid img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.6s ease;
+        }
+        .hp-work__grid a:hover img {
+          transform: scale(1.03);
+        }
+        .hp-work__cta {
+          margin-top: 32px;
+        }
+
+        /* INSTAGRAM */
+        .hp-ig {
+          padding: 112px 0;
+          background: #1b1b1b;
+          color: #f7f3ed;
+        }
+        .hp-ig__head {
+          text-align: center;
+          max-width: 520px;
+          margin: 0 auto 28px;
+        }
+        .hp-ig__head .hp-label {
+          color: var(--gold);
+        }
+        .hp-ig__head .hp-h2 {
+          color: #faf7f2;
+        }
+        .hp-ig__head .hp-text {
+          max-width: none;
+          margin: 0 auto;
+          color: rgba(247,243,237,0.72);
+        }
+        .hp-ig__cta {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 48px;
+        }
+        .hp-ig__grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          max-width: 960px;
+          margin: 0 auto;
+        }
+        .hp-ig__grid a,
+        .hp-ig__skeleton {
+          display: block;
+          aspect-ratio: 1;
+          overflow: hidden;
+          border-radius: 14px;
+          background: #2a2a2a;
+        }
+        .hp-ig__skeleton {
+          background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+          background-size: 200% 100%;
+          animation: hp-shimmer 1.2s ease-in-out infinite;
+        }
+        @keyframes hp-shimmer {
+          0% { background-position: 100% 0; }
+          100% { background-position: -100% 0; }
+        }
+        .hp-ig__grid img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.55s ease;
+        }
+        .hp-ig__grid a:hover img {
+          transform: scale(1.06);
+        }
+
+        /* REVIEWS */
+        .hp-reviews {
+          padding: 88px 0;
+        }
+        .hp-reviews__head {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: end;
+          justify-content: space-between;
+          gap: 16px;
+          margin-bottom: 36px;
+        }
+        .hp-reviews__meta {
+          font-size: 13px;
+          color: var(--soft);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .hp-stars {
+          color: var(--gold);
+          letter-spacing: 0.08em;
+          font-size: 14px;
+        }
+        .hp-reviews__grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 28px 36px;
+        }
+        .hp-review blockquote {
+          margin: 0 0 16px;
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 20px;
+          font-weight: 300;
+          line-height: 1.45;
+          color: var(--ink);
+        }
+        .hp-review cite {
+          display: block;
+          font-style: normal;
+          font-size: 12px;
+          letter-spacing: 0.04em;
+          color: var(--mute);
+        }
+        .hp-review__source {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          margin-bottom: 12px;
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--mute);
+        }
+        .hp-reviews__cta {
+          margin-top: 36px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+
+        /* FINAL CTA */
+        .hp-cta {
+          padding: 0 0 100px;
+        }
+        .hp-cta__box {
+          background: var(--cream-deep);
+          padding: clamp(48px, 8vw, 72px) clamp(28px, 5vw, 64px);
+          text-align: center;
+        }
+        .hp-cta__box .hp-h2 { margin-bottom: 14px; }
+        .hp-cta__box .hp-text {
+          margin: 0 auto 28px;
+          max-width: 440px;
+        }
 
         @media (max-width: 900px) {
-          .walls-grid { grid-template-columns: repeat(2, 1fr); }
-          .steps-grid { grid-template-columns: 1fr; }
-          .hero-content { padding: 0 24px 60px; }
-          .inner { padding: 0 24px; }
-          .inner-narrow { padding: 0 24px; }
-          .addon-inner { flex-wrap: wrap; gap: 12px; }
-          .addons-header-row { flex-direction: column; align-items: flex-start; }
-          .section-header-row { flex-direction: column; align-items: flex-start; }
+          .hp-intro__grid {
+            grid-template-columns: 1fr;
+            gap: 36px;
+          }
+          .hp-intro__media {
+            aspect-ratio: 16 / 10;
+            max-height: 380px;
+          }
+          .hp-intro__rule { margin-top: 64px; }
+          .hp-work__grid {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+          }
+          .hp-work__grid a:first-child {
+            grid-column: 1 / -1;
+            grid-row: auto;
+            min-height: 320px;
+          }
+          .hp-work__grid a { min-height: 220px; }
+          .hp-ig__grid { gap: 16px; }
+          .hp-reviews__grid { grid-template-columns: 1fr; gap: 28px; }
         }
-
-        @media (max-width: 580px) {
-          .hero-btns { flex-direction: column; align-items: flex-start; }
-          .btn-gold, .btn-outline { width: 100%; justify-content: center; }
+        @media (max-width: 640px) {
+          .hp-hero { min-height: 78vh; }
+          .hp-hero__copy { padding: 56px 0 48px; }
+          .hp-banner a {
+            flex-direction: column;
+            gap: 4px;
+            text-align: center;
+            padding: 16px 0;
+            font-size: 12px;
+          }
+          .hp-intro, .hp-work, .hp-reviews { padding: 64px 0; }
+          .hp-ig { padding: 80px 0; }
+          .hp-intro__rule { margin-top: 64px; }
+          .hp-cta { padding-bottom: 72px; }
+          .hp-work__grid { grid-template-columns: 1fr; }
+          .hp-work__grid a { min-height: 260px; }
+          .hp-ig__grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+          }
+          .hp-ig__cta .hp-btn { width: auto; }
+          .hp-btn { width: 100%; }
+          .hp-hero__actions .hp-btn { width: auto; flex: 1 1 auto; }
         }
       `}</style>
 
-      <div className="noise" />
-
-      {/* ══════════ 1. HERO ══════════ */}
-      <section
-        style={{
-          position: "relative",
-          height: "100vh",
-          minHeight: 580,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ position: "absolute", inset: 0 }}>
-          <img
-            src="/white-wall.png"
-            alt=""
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              filter: "brightness(0.2) saturate(0.45)",
-              animation: "slowpan 20s ease-in-out infinite alternate",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to top, rgba(12,12,12,1) 0%, rgba(12,12,12,0.55) 45%, rgba(12,12,12,0.15) 100%)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "radial-gradient(ellipse 70% 60% at 65% 25%, rgba(201,169,110,0.08) 0%, transparent 70%)",
-            }}
-          />
+      {/* 1. HERO */}
+      <section className="hp-hero">
+        <div className="hp-hero__media" aria-hidden="true">
+          <img src={whiteGardenBride} alt="" />
+          <div className="hp-hero__shade" />
         </div>
-
-        <div
-          style={{
-            position: "absolute",
-            top: 24,
-            right: 24,
-            display: "flex",
-            alignItems: "center",
-            gap: 9,
-            opacity: heroIn ? 1 : 0,
-            transition: "opacity 1s ease 1.3s",
-          }}
-        >
-          <span
-            style={{
-              width: 7,
-              height: 7,
-              borderRadius: "50%",
-              background: "#c9a96e",
-              display: "block",
-              animation: "pulse-dot 2.2s ease infinite",
-            }}
-          />
-          <span
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: 11,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: "rgba(245,240,232,0.78)",
-            }}
-          >
-            Now Booking
-          </span>
-        </div>
-
-        <div
-          className="hero-content"
-          style={{
-            position: "relative",
-            maxWidth: 1280,
-            width: "100%",
-            margin: "0 auto",
-          }}
-        >
-          <div
-            style={{
-              opacity: heroIn ? 1 : 0,
-              transform: heroIn ? "none" : "translateY(14px)",
-              transition: "opacity 0.9s ease 0.1s, transform 0.9s ease 0.1s",
-            }}
-          >
-            {eyebrow("Clermont, FL · Luxury Flower Wall Rentals")}
-          </div>
-
-          <h1
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: "clamp(52px, 10vw, 136px)",
-              fontWeight: 300,
-              lineHeight: 0.92,
-              letterSpacing: "-0.02em",
-              marginBottom: 40,
-              opacity: heroIn ? 1 : 0,
-              transform: heroIn ? "none" : "translateY(32px)",
-              transition: "opacity 1.1s ease 0.22s, transform 1.1s ease 0.22s",
-            }}
-          >
-            Your event,
-            <br />
-            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-              unforgettable.
-            </em>
-          </h1>
-
-          <div
-            className="hero-btns"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 14,
-              alignItems: "center",
-              opacity: heroIn ? 1 : 0,
-              transform: heroIn ? "none" : "translateY(18px)",
-              transition: "opacity 1s ease 0.42s, transform 1s ease 0.42s",
-            }}
-          >
-            <Link to="/contact" className="btn-gold">
+        <div className="hp-hero__copy">
+          <p className="hp-hero__kicker">Clermont · Central Florida</p>
+          <h1>Statement Backdrops &amp; Floral Styling for Central Florida Events</h1>
+          <p className="hp-hero__support">
+            Premium faux flower walls, custom floral styling, signage, and
+            photo-ready event installations for weddings, celebrations, corporate
+            events, and brands.
+          </p>
+          <div className="hp-hero__actions">
+            <Link to="/contact" className="hp-btn hp-btn--gold">
               Check Availability
             </Link>
-            <a href="#walls" className="btn-outline">
-              View Walls
-            </a>
-            <span
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 13,
-                color: "rgba(245,240,232,0.70)",
-                fontWeight: 300,
-              }}
-            >
-              From{" "}
-              <strong style={{ color: "#c9a96e", fontWeight: 500 }}>
-                $350
-              </strong>
-            </span>
-          </div>
-
-          <a
-            href="https://instagram.com/bloomflowerwallrentals"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ig-follow"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              marginTop: 24,
-              textDecoration: "none",
-              opacity: heroIn ? 0.55 : 0,
-              transition: "opacity 1s ease 0.65s",
-            }}
-          >
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#c9a96e"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-              <circle cx="12" cy="12" r="4" />
-              <circle cx="17.5" cy="6.5" r="1" fill="#c9a96e" stroke="none" />
-            </svg>
-            <span
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 12,
-                color: "rgba(245,240,232,0.85)",
-                letterSpacing: "0.1em",
-              }}
-            >
-              Follow us @bloomflowerwallrentals
-            </span>
-          </a>
-        </div>
-
-        <div
-          style={{
-            position: "absolute",
-            bottom: 24,
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 10,
-            opacity: heroIn ? 0.4 : 0,
-            transition: "opacity 1s ease 1.6s",
-          }}
-        >
-          <div
-            style={{
-              width: 1,
-              height: 48,
-              background: "linear-gradient(180deg, #c9a96e, transparent)",
-            }}
-          />
-          <span
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: 9,
-              letterSpacing: "0.28em",
-              textTransform: "uppercase",
-              color: "#c9a96e",
-            }}
-          >
-            Scroll
-          </span>
-        </div>
-      </section>
-
-      {/* ══════════ 2. MARQUEE ══════════ */}
-      <div
-        style={{
-          borderTop: "1px solid rgba(201,169,110,0.12)",
-          borderBottom: "1px solid rgba(201,169,110,0.12)",
-          padding: "18px 0",
-          background: "#0e0e0e",
-        }}
-      >
-        <Marquee
-          items={[
-            "Flower Wall Rentals",
-            "Weddings",
-            "Baby Showers",
-            "Birthday Events",
-            "Brand Activations",
-            "Neon Signs",
-            "Custom Signage",
-            "Balloon Installs",
-            "Clermont FL",
-            "Orlando FL",
-            "Winter Garden FL",
-          ]}
-        />
-      </div>
-
-      {/* ══════════ 3. WALL GALLERY ══════════ */}
-      <section id="walls" style={{ paddingTop: 100 }}>
-        <div className="inner" style={{ paddingBottom: 52 }}>
-          <Reveal>
-            <div className="section-header-row">
-              <div>
-                {eyebrow("Our Collection")}
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "clamp(38px, 6vw, 78px)",
-                    fontWeight: 300,
-                    lineHeight: 0.95,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  Choose your
-                  <br />
-                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                    flower wall
-                  </em>
-                </h2>
-              </div>
-              <Link to="/gallery" className="btn-outline">
-                Full Gallery →
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-
-        <SnapCarousel className="walls-grid" hint="Swipe for more walls" bleed={false}>
-          {walls.map((w, i) => (
-            <Reveal key={w.name} delay={i * 0.08}>
-              <div
-                className="wall-card"
-                style={{
-                  position: "relative",
-                  overflow: "hidden",
-                  aspectRatio: "3/4",
-                  background: "#111",
-                  cursor: "pointer",
-                }}
-              >
-                <img
-                  className="wall-img"
-                  src={w.img}
-                  alt={`${w.name} flower wall rental Clermont FL`}
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    opacity: 0.72,
-                  }}
-                  loading="lazy"
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(180deg, transparent 28%, rgba(12,12,12,0.92) 100%)",
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 16,
-                    left: 16,
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 10,
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    background: "rgba(12,12,12,0.5)",
-                    border: "1px solid rgba(201,169,110,0.35)",
-                    color: "#c9a96e",
-                    padding: "5px 12px",
-                    backdropFilter: "blur(8px)",
-                  }}
-                >
-                  {w.tag}
-                </div>
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    padding: 24,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: "clamp(22px, 3vw, 30px)",
-                      fontWeight: 400,
-                      lineHeight: 1.05,
-                      marginBottom: 4,
-                    }}
-                  >
-                    {w.name}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: 11,
-                      color: "rgba(245,240,232,0.80)",
-                      letterSpacing: "0.06em",
-                      marginBottom: 6,
-                    }}
-                  >
-                    {w.size} · {w.vibe}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: 17,
-                      color: "#c9a96e",
-                      fontWeight: 400,
-                      marginBottom: 14,
-                    }}
-                  >
-                    {w.price}
-                  </div>
-                  <Link
-                    to="/contact"
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: 11,
-                      color: "#c9a96e",
-                      textDecoration: "none",
-                      letterSpacing: "0.14em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Check Date →
-                  </Link>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </SnapCarousel>
-      </section>
-
-      {/* ══════════ 4. QUOTE BREAK ══════════ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          padding: "110px 24px",
-          textAlign: "center",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(ellipse 90% 70% at 50% 50%, rgba(201,169,110,0.065) 0%, transparent 100%)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 1,
-            background:
-              "linear-gradient(90deg, transparent, rgba(201,169,110,0.18) 50%, transparent)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 1,
-            background:
-              "linear-gradient(90deg, transparent, rgba(201,169,110,0.18) 50%, transparent)",
-          }}
-        />
-        <Reveal y={20}>
-          <div style={{ maxWidth: 900, margin: "0 auto" }}>
-            <span
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "clamp(16px, 2.5vw, 26px)",
-                color: "#c9a96e",
-                opacity: 0.5,
-                display: "block",
-                marginBottom: 24,
-                letterSpacing: "0.12em",
-              }}
-            >
-              ✦ ✦ ✦
-            </span>
-            <p
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "clamp(30px, 5.5vw, 76px)",
-                fontWeight: 300,
-                lineHeight: 1.05,
-                letterSpacing: "-0.015em",
-                color: "#f5f0e8",
-              }}
-            >
-              "Weekends fill fast —<br />
-              <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                secure your date early.
-              </em>
-              "
-            </p>
-            <div style={{ marginTop: 44 }}>
-              <Link
-                to="/contact"
-                className="btn-gold"
-                style={{ fontSize: 13, padding: "16px 48px" }}
-              >
-                Check Availability
-              </Link>
-            </div>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* ══════════ 5. HOW IT WORKS ══════════ */}
-      <section style={{ padding: "100px 0", background: "#090909" }}>
-        <div className="inner">
-          <Reveal>
-            {eyebrow("The Process")}
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "clamp(36px, 5vw, 72px)",
-                fontWeight: 300,
-                lineHeight: 0.95,
-                letterSpacing: "-0.01em",
-                marginBottom: 64,
-              }}
-            >
-              Simple from first message
-              <br />
-              <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                to final setup
-              </em>
-            </h2>
-          </Reveal>
-
-          <div className="steps-grid">
-            {[
-              {
-                n: "01",
-                title: "Tell us your date & vibe",
-                body: "Share your event date, venue, and the style you're imagining. The more detail, the better your quote.",
-              },
-              {
-                n: "02",
-                title: "Receive your custom quote",
-                body: "We confirm availability and send full pricing — usually within 24 hours. No pressure, no obligation.",
-              },
-              {
-                n: "03",
-                title: "You're on the calendar",
-                body: "Reserve your date with a retainer. Add-ons like neon and signage can be layered in anytime before the event.",
-              },
-            ].map((step, i) => (
-              <Reveal key={step.n} delay={i * 0.1}>
-                <div
-                  style={{
-                    background: "#090909",
-                    padding: "44px 36px",
-                    height: "100%",
-                    minHeight: 240,
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 24,
-                      right: 28,
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: 80,
-                      fontWeight: 300,
-                      color: "rgba(201,169,110,0.06)",
-                      lineHeight: 1,
-                      userSelect: "none",
-                    }}
-                  >
-                    {step.n}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: 10,
-                      letterSpacing: "0.24em",
-                      textTransform: "uppercase",
-                      color: "#c9a96e",
-                      opacity: 0.6,
-                      marginBottom: 18,
-                    }}
-                  >
-                    Step {step.n}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: "clamp(20px, 2vw, 26px)",
-                      fontWeight: 400,
-                      marginBottom: 14,
-                      lineHeight: 1.15,
-                    }}
-                  >
-                    {step.title}
-                  </div>
-                  <p
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: 14,
-                      color: "rgba(245,240,232,0.75)",
-                      lineHeight: 1.8,
-                      fontWeight: 300,
-                    }}
-                  >
-                    {step.body}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal delay={0.25}>
-            <div
-              style={{
-                display: "flex",
-                gap: 14,
-                marginTop: 44,
-                flexWrap: "wrap",
-              }}
-            >
-              <Link to="/contact" className="btn-gold">
-                Check Availability
-              </Link>
-              <Link to="/pricing" className="btn-outline">
-                View Pricing
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <ReviewsSection />
-
-      {/* ══════════ 6b. UPCOMING EVENTS ══════════ */}
-      <section style={{ padding: "100px 0", background: "#090909" }}>
-        <div className="inner" style={{ paddingBottom: 48 }}>
-          <Reveal>
-            <div className="section-header-row">
-              <div>
-                {eyebrow("Meet Me In Person")}
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "clamp(34px, 5vw, 68px)",
-                    fontWeight: 300,
-                    lineHeight: 0.95,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  Upcoming
-                  <br />
-                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                    events
-                  </em>
-                </h2>
-              </div>
-              <Link to="/events" className="btn-outline">
-                View All Events →
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-        <div className="inner">
-          <SnapCarousel className="home-events-grid" hint="Swipe for events">
-            {upcomingEvents.map((event, i) => {
-              const d = new Date(`${event.date}T12:00:00`);
-              const month = d
-                .toLocaleDateString("en-US", { month: "short" })
-                .toUpperCase();
-              const day = d.getDate();
-              const thumb = event.image || enchantedGardenImg;
-              return (
-                <Reveal key={event.id} delay={i * 0.08}>
-                  <a
-                    href={event.eventUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="home-event-card"
-                  >
-                    <div className="home-event-visual">
-                      <img
-                        src={thumb}
-                        alt={event.imageAlt}
-                        loading="lazy"
-                        className="home-event-img"
-                        style={
-                          !event.image
-                            ? { opacity: 0.55, filter: "saturate(0.85)" }
-                            : undefined
-                        }
-                      />
-                      <div className="home-event-overlay" />
-                      <div className="home-event-shine" />
-                      <div className="home-event-date">
-                        <span className="home-event-date-month">{month}</span>
-                        <span className="home-event-date-day">{day}</span>
-                      </div>
-                    </div>
-                    <div className="home-event-body">
-                      <span className="home-event-pill">{event.category}</span>
-                      <div className="home-event-title">{event.title}</div>
-                      <div className="home-event-loc">{event.location}</div>
-                      <p className="home-event-meta">{event.time}</p>
-                      <span className="home-event-link">
-                        Event details <span>→</span>
-                      </span>
-                    </div>
-                  </a>
-                </Reveal>
-              );
-            })}
-          </SnapCarousel>
-        </div>
-      </section>
-
-      {/* ══════════ 7. SERVICE AREA ══════════ */}
-      <section
-        style={{
-          padding: "80px 0",
-          background: "#090909",
-          borderTop: "1px solid rgba(201,169,110,0.08)",
-        }}
-      >
-        <div className="inner">
-          <Reveal>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                gap: 32,
-              }}
-            >
-              <div>
-                {eyebrow("Where We Go")}
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "clamp(28px, 4vw, 52px)",
-                    fontWeight: 300,
-                    lineHeight: 1,
-                    marginBottom: 8,
-                  }}
-                >
-                  Serving{" "}
-                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                    Central Florida
-                  </em>
-                </h2>
-                <p
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 13,
-                    color: "rgba(245,240,232,0.65)",
-                    fontWeight: 300,
-                    marginBottom: 28,
-                    maxWidth: 420,
-                  }}
-                >
-                  Based in Clermont, FL. Delivery quoted by venue location — ask
-                  about your area.
-                </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-                  {serviceAreas.map((area) => (
-                    <span key={area} className="area-pill">
-                      {area}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <Link to="/contact" className="btn-gold">
-                Check My Area
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ══════════ 8. ADD-ONS ══════════ */}
-      <section style={{ background: "#080808", padding: "100px 0" }}>
-        <div className="inner">
-          <Reveal>
-            <div className="addons-header-row">
-              <div>
-                {eyebrow("Elevate It")}
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "clamp(34px, 5vw, 68px)",
-                    fontWeight: 300,
-                    lineHeight: 0.95,
-                  }}
-                >
-                  Make it
-                  <br />
-                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                    completely yours
-                  </em>
-                </h2>
-              </div>
-            </div>
-          </Reveal>
-
-          <div style={{ borderTop: "1px solid rgba(201,169,110,0.12)" }}>
-            {[
-              {
-                n: "01",
-                title: "Neon Signs",
-                text: "Statement glow — beloved at weddings and showers.",
-              },
-              {
-                n: "02",
-                title: "Custom Signage",
-                text: "Names, dates, or branded moments, beautifully lettered.",
-              },
-              {
-                n: "03",
-                title: "Balloon Installs",
-                text: "Organic garlands paired perfectly with your wall.",
-              },
-              {
-                n: "04",
-                title: "Extra Florals",
-                text: "Added volume and accent blooms for a richer look.",
-              },
-            ].map((a, i) => (
-              <Reveal key={a.title} delay={i * 0.07}>
-                <div
-                  className="addon-row"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 24,
-                    padding: "28px 8px",
-                    borderBottom: "1px solid rgba(201,169,110,0.1)",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <div className="addon-inner">
-                    <span
-                      style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: 11,
-                        color: "rgba(201,169,110,0.35)",
-                        letterSpacing: "0.08em",
-                        minWidth: 22,
-                        flexShrink: 0,
-                      }}
-                    >
-                      {a.n}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "'Cormorant Garamond', serif",
-                        fontSize: "clamp(20px, 2.2vw, 30px)",
-                        fontWeight: 400,
-                        flexShrink: 0,
-                      }}
-                    >
-                      {a.title}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: 14,
-                        color: "rgba(245,240,232,0.70)",
-                        fontWeight: 300,
-                      }}
-                    >
-                      {a.text}
-                    </span>
-                  </div>
-                  <Link
-                    to="/contact"
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: 11,
-                      color: "#c9a96e",
-                      textDecoration: "none",
-                      letterSpacing: "0.14em",
-                      textTransform: "uppercase",
-                      flexShrink: 0,
-                    }}
-                  >
-                    Request Quote →
-                  </Link>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════ 9. FAQ ══════════ */}
-      <section style={{ padding: "100px 0" }}>
-        <div className="inner-narrow">
-          <Reveal>
-            {eyebrow("Common Questions")}
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "clamp(34px, 5vw, 64px)",
-                fontWeight: 300,
-                lineHeight: 1,
-                marginBottom: 56,
-              }}
-            >
-              Before you{" "}
-              <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                reach out
-              </em>
-            </h2>
-          </Reveal>
-          {faqs.map((f, i) => (
-            <Reveal key={f.q} delay={i * 0.05}>
-              <FAQItem q={f.q} a={f.a} />
-            </Reveal>
-          ))}
-          <Reveal delay={0.28}>
-            <Link
-              to="/faq"
-              style={{
-                display: "inline-block",
-                marginTop: 44,
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 12,
-                color: "#c9a96e",
-                textDecoration: "none",
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-              }}
-            >
-              View Full FAQ →
+            <Link to="/portfolio" className="hp-btn hp-btn--ghost">
+              View Portfolio
             </Link>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* ══════════ 10. INSTAGRAM GRID ══════════ */}
-      <section
-        ref={instagramRef}
-        style={{ padding: "100px 0", background: "#0a0a0a" }}
-      >
-        <div className="inner" style={{ paddingBottom: 52 }}>
-          <Reveal>
-            <div className="section-header-row">
-              <div>
-                {eyebrow("Follow Along")}
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "clamp(34px, 5vw, 68px)",
-                    fontWeight: 300,
-                    lineHeight: 0.95,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  See us on
-                  <br />
-                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                    Instagram
-                  </em>
-                </h2>
-              </div>
-              <a
-                href="https://instagram.com/bloomflowerwallrentals"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-outline"
-              >
-                @bloomflowerwallrentals →
-              </a>
+      {/* 1b. PROMO BANNER */}
+      <aside className="hp-banner">
+        <Link to="/styling">
+          <span className="hp-banner__mark">New</span>
+          <span>The Full Bloom Setup: full ceremony styling from $995</span>
+        </Link>
+      </aside>
+
+      {/* 2. WHAT BLOOM DOES */}
+      <section className="hp-intro">
+        <div className="hp-wrap">
+          <div className="hp-intro__grid">
+            <div className="hp-intro__copy">
+              <p className="hp-label">About Bloom</p>
+              <h2 className="hp-h2">More Than a Flower Wall</h2>
+              <p className="hp-text">
+                Bloom creates custom backdrops, floral styling, signage, and
+                photo-ready event installations for weddings, celebrations, corporate
+                events, and brands throughout Central Florida. Every piece is
+                crafted with premium faux florals that photograph like fresh.
+              </p>
+              <p className="hp-text">
+                From a simple flower wall rental to a fully styled setup, each design
+                is tailored to the event and the space. Always in bloom, never
+                wilting in the Florida heat.
+              </p>
             </div>
-          </Reveal>
+            <div className="hp-intro__media">
+              <img
+                src={aboutSetup}
+                alt="Bloom floral backdrop install at an event"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <hr className="hp-intro__rule" />
         </div>
+      </section>
 
-        <div
-          style={{ padding: "0 24px 36px", maxWidth: 1200, margin: "0 auto" }}
-        >
-          <div data-behold-id="qDJTl17ooRzEHgeQ0dBq"></div>
+      {/* 3. PORTFOLIO PREVIEW */}
+      <section className="hp-work">
+        <div className="hp-wrap">
+          <div className="hp-work__head">
+            <p className="hp-label">Portfolio</p>
+            <h2 className="hp-h2">Recent Work</h2>
+            <p className="hp-text">Real events, real spaces, styled by Bloom.</p>
+          </div>
+          <div className="hp-work__grid">
+            {portfolioPreview.map((item) => (
+              <Link to="/portfolio" key={item.alt} aria-label={item.alt}>
+                <img src={item.src} alt={item.alt} loading="lazy" />
+              </Link>
+            ))}
+          </div>
+          <div className="hp-work__cta">
+            <Link to="/portfolio" className="hp-btn hp-btn--gold">
+              View Full Portfolio
+            </Link>
+          </div>
         </div>
+      </section>
 
-        <div style={{ textAlign: "center", marginTop: 36 }}>
-          <Reveal>
+      {/* 4. INSTAGRAM — Behold JSON feed + photo fallback while media proxy is down */}
+      <section className="hp-ig">
+        <div className="hp-wrap">
+          <div className="hp-ig__head">
+            <p className="hp-label">Instagram</p>
+            <h2 className="hp-h2">@bloomflowerwallrentals</h2>
+            <p className="hp-text">
+              Latest posts from Bloom: real installs and event moments.
+            </p>
+          </div>
+          <div className="hp-ig__cta">
             <a
-              href="https://instagram.com/bloomflowerwallrentals"
+              href={IG_PROFILE}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 12,
-                color: "#c9a96e",
-                textDecoration: "none",
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-              }}
+              className="hp-btn hp-btn--gold"
             >
-              View all posts on Instagram →
+              Follow @bloomflowerwallrentals
             </a>
-          </Reveal>
+          </div>
+          <InstagramFeed />
         </div>
       </section>
 
-      {/* ══════════ 11. FOOTER CTA ══════════ */}
-      <section
-        style={{
-          padding: "80px 24px",
-          borderTop: "1px solid rgba(201,169,110,0.1)",
-          textAlign: "center",
-        }}
-      >
-        <Reveal>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginBottom: 16,
-            }}
-          >
-            {eyebrow("Get in Touch")}
+      {/* 5. GOOGLE REVIEWS */}
+      <section className="hp-reviews">
+        <div className="hp-wrap">
+          <div className="hp-reviews__head">
+            <div>
+              <p className="hp-label">Google Reviews</p>
+              <h2 className="hp-h2">What clients say</h2>
+            </div>
+            <div className="hp-reviews__meta">
+              <Stars count={reviewSummary.rating} />
+              <span>{reviewSummary.label}</span>
+            </div>
           </div>
-          <h2
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "clamp(28px, 4vw, 52px)",
-              fontWeight: 300,
-              marginBottom: 32,
-            }}
-          >
-            Ready to make it{" "}
-            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-              unforgettable?
-            </em>
-          </h2>
-          <Link to="/contact" className="btn-gold">
-            Request a Quote
-          </Link>
-        </Reveal>
+          <div className="hp-reviews__grid">
+            {homepageReviews.map((r) => (
+              <article className="hp-review" key={r.name}>
+                <div className="hp-review__source">
+                  <Stars count={r.rating} /> Google
+                </div>
+                <blockquote>
+                  “
+                  {r.text.length > 220
+                    ? `${r.text.slice(0, 217).trim()}…`
+                    : r.text}
+                  ”
+                </blockquote>
+                <cite>
+                  {r.name}
+                  {r.event ? ` · ${r.event}` : ""}
+                </cite>
+              </article>
+            ))}
+          </div>
+          <div className="hp-reviews__cta">
+            <a
+              href={googleProfileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hp-btn hp-btn--line"
+            >
+              See all reviews on Google
+            </a>
+            <a
+              href="https://g.page/r/CVcq0lr2QLbhEBM/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hp-btn hp-btn--line"
+            >
+              Leave a Review
+            </a>
+          </div>
+        </div>
       </section>
+
+      {/* 6. FINAL CTA */}
+      <BloomCtaBand />
     </div>
   );
 }

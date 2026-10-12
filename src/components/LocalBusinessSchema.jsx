@@ -6,7 +6,7 @@ export default function LocalBusinessSchema() {
     "@type": "LocalBusiness",
     name: "Bloom Flower Wall Rentals",
     description:
-      "Luxury flower wall rentals for weddings and events in Clermont, Florida and surrounding areas. Packages start at $350. Delivery, professional setup, and breakdown are available for an additional fee.",
+      "Premium faux flower wall rentals, draping, and floral styling for weddings and events in Clermont, Florida and surrounding areas. Packages start at $350. Setup and breakdown included in every rental. Delivery quoted separately by venue.",
     url: "https://bloomflowerwallrentals.com",
     telephone: "+1-863-335-5022",
     email: "info@bloomflowerwallrentals.com",

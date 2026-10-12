@@ -12,223 +12,23 @@ const initial = {
   location: "",
   setupType: "",
   serviceOption: "",
-  addOns: "",
   message: "",
+  _gotcha: "",
 };
 
 function normalizePhone(val) {
   return val.replace(/[^\d+\-\s().]/g, "");
 }
+
 function isValidPhone(val) {
   return val.replace(/\D/g, "").length >= 10;
 }
 
-function FormField({ label, required, error, id, children }) {
-  return (
-    <div>
-      <label
-        htmlFor={id}
-        style={{
-          display: "block",
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: 11,
-          letterSpacing: "0.14em",
-          textTransform: "uppercase",
-          color: error ? "rgba(220,100,100,0.95)" : "rgba(245,240,232,0.6)",
-          marginBottom: 10,
-        }}
-      >
-        {label}
-        {required && (
-          <span style={{ color: "#c9a96e", marginLeft: 4 }} aria-hidden="true">
-            *
-          </span>
-        )}
-      </label>
-      {children}
-      {error && (
-        <p
-          role="alert"
-          style={{
-            marginTop: 6,
-            fontSize: 11,
-            color: "rgba(220,100,100,0.9)",
-            letterSpacing: "0.02em",
-          }}
-        >
-          {error}
-        </p>
-      )}
-    </div>
-  );
-}
-
-function iStyle(focused, error) {
-  return {
-    width: "100%",
-    background: "rgba(255,255,255,0.03)",
-    border: `1px solid ${
-      error
-        ? "rgba(220,100,100,0.55)"
-        : focused
-        ? "rgba(201,169,110,0.6)"
-        : "rgba(201,169,110,0.18)"
-    }`,
-    boxShadow: focused && !error ? "0 0 0 3px rgba(201,169,110,0.07)" : "none",
-    color: "#f5f0e8",
-    fontFamily: "'DM Sans', sans-serif",
-    fontSize: 14,
-    padding: "13px 16px",
-    outline: "none",
-    transition: "border-color 0.25s, box-shadow 0.25s",
-    appearance: "none",
-    WebkitAppearance: "none",
-  };
-}
-
-function Input({
-  id,
-  name,
-  type = "text",
-  value,
-  onChange,
-  onBlur,
-  placeholder,
-  required,
-  autoComplete,
-  inputMode,
-  error,
-}) {
-  const [f, setF] = useState(false);
-  return (
-    <input
-      id={id}
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      onBlur={(e) => {
-        setF(false);
-        onBlur && onBlur(e);
-      }}
-      onFocus={() => setF(true)}
-      required={required}
-      placeholder={placeholder}
-      autoComplete={autoComplete}
-      inputMode={inputMode}
-      aria-required={required}
-      aria-invalid={!!error}
-      style={iStyle(f, error)}
-    />
-  );
-}
-
-function Select({
-  id,
-  name,
-  value,
-  onChange,
-  onBlur,
-  required,
-  error,
-  children,
-}) {
-  const [f, setF] = useState(false);
-  return (
-    <select
-      id={id}
-      name={name}
-      value={value}
-      onChange={onChange}
-      onBlur={(e) => {
-        setF(false);
-        onBlur && onBlur(e);
-      }}
-      onFocus={() => setF(true)}
-      required={required}
-      aria-required={required}
-      aria-invalid={!!error}
-      style={{ ...iStyle(f, error), cursor: "pointer" }}
-    >
-      {children}
-    </select>
-  );
-}
-
-function Textarea({
-  id,
-  name,
-  value,
-  onChange,
-  onBlur,
-  required,
-  placeholder,
-  rows = 5,
-  error,
-}) {
-  const [f, setF] = useState(false);
-  return (
-    <textarea
-      id={id}
-      name={name}
-      value={value}
-      onChange={onChange}
-      onBlur={(e) => {
-        setF(false);
-        onBlur && onBlur(e);
-      }}
-      onFocus={() => setF(true)}
-      required={required}
-      placeholder={placeholder}
-      rows={rows}
-      aria-required={required}
-      aria-invalid={!!error}
-      style={{ ...iStyle(f, error), resize: "vertical" }}
-    />
-  );
-}
-
-function InfoRow({ label, value }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "14px 0",
-        borderBottom: "1px solid rgba(201,169,110,0.1)",
-      }}
-    >
-      <span
-        style={{
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: 11,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          color: "rgba(245,240,232,0.82)",
-        }}
-      >
-        {label}
-      </span>
-      <span
-        style={{
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: 13,
-          color: "#f5f0e8",
-          fontWeight: 400,
-        }}
-      >
-        {value}
-      </span>
-    </div>
-  );
-}
-
 function PageMeta() {
   useEffect(() => {
-    const t = "Request a Quote | Bloom Flower Wall Rentals — Clermont, FL";
+    const t = "Request a Quote | Bloom Flower Wall Rentals, Clermont, FL";
     const d =
-      "Request a flower wall rental quote from Bloom in Clermont, FL. Packages from $350. We reply within 24–48 hours. Serving weddings, showers, birthdays & events across Central Florida.";
+      "Check availability and request a premium faux flower wall rental quote from Bloom in Clermont, FL. We reply within 24–48 hours. Serving Central Florida events.";
     document.title = t;
     const m = (sel, a, v) => {
       let el = document.querySelector(sel);
@@ -276,6 +76,34 @@ function validate(name, value) {
   if (name === "phone" && value && !isValidPhone(value))
     return "Enter a valid phone number (at least 10 digits).";
   return null;
+}
+
+function Field({
+  id,
+  label,
+  required,
+  error,
+  children,
+  full,
+}) {
+  return (
+    <div
+      className={`bloom-field${error ? " bloom-field--error" : ""}${
+        full ? " bloom-field--full" : ""
+      }`}
+    >
+      <label htmlFor={id}>
+        {label}
+        {required ? " *" : ""}
+      </label>
+      {children}
+      {error ? (
+        <p className="bloom-field__error" role="alert">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
 }
 
 export default function Contact() {
@@ -341,9 +169,9 @@ export default function Contact() {
           location: form.location,
           setupType: form.setupType || "Not specified",
           serviceOption: form.serviceOption || "Not specified",
-          addOns: form.addOns || "None",
           message: form.message,
-          _subject: "New quote request — Bloom Flower Wall Rentals",
+          _subject: "New quote request: Bloom Flower Wall Rentals",
+          _gotcha: form._gotcha,
         }),
       });
       const data = await res.json();
@@ -359,352 +187,110 @@ export default function Contact() {
     }
   }
 
-  const eyebrow = (text) => (
-    <p
-      style={{
-        fontFamily: "'DM Sans', sans-serif",
-        fontSize: 11,
-        letterSpacing: "0.24em",
-        textTransform: "uppercase",
-        color: "#c9a96e",
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        marginBottom: 16,
-      }}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          width: 28,
-          height: 1,
-          background: "#c9a96e",
-          flexShrink: 0,
-        }}
-      />
-      {text}
-    </p>
-  );
-
-  const colLabel = (text) => (
-    <div
-      style={{
-        fontFamily: "'DM Sans', sans-serif",
-        fontSize: 10,
-        fontWeight: 500,
-        letterSpacing: "0.22em",
-        textTransform: "uppercase",
-        color: "#c9a96e",
-        marginBottom: 20,
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-      }}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          width: 18,
-          height: 1,
-          background: "#c9a96e",
-        }}
-      />
-      {text}
-    </div>
-  );
+  const err = (name) => (touched[name] && errors[name] ? errors[name] : null);
 
   return (
-    <div
-      style={{
-        background: "#0c0c0c",
-        color: "#f5f0e8",
-        minHeight: "100vh",
-        fontFamily: "'DM Sans', sans-serif",
-      }}
-    >
+    <div className="bloom-page">
       <PageMeta />
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        ::placeholder { color: rgba(245,240,232,0.58) !important; }
-        select option { background: #1a1a1a; color: #f5f0e8; }
-        .contact-grid { display:grid; grid-template-columns:1fr 1.35fr; gap:2px; background:rgba(201,169,110,0.08); margin-top:64px; }
-        .form-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-        .contact-inner { max-width:1280px; margin:0 auto; padding:100px 48px 120px; }
-        .info-panel { background:#0a0a0a; padding:52px 44px; }
-        .form-panel { background:#0e0e0e; padding:52px 44px; }
-        .btn-gold { display:inline-flex; align-items:center; justify-content:center; gap:10px; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:15px 36px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
-        .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
-        .btn-gold:disabled { opacity:0.55; cursor:not-allowed; letter-spacing:0.14em; }
-        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:14px 28px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
-        .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
-        .contact-link { font-family:'DM Sans',sans-serif; font-size:14px; color:rgba(245,240,232,0.85); text-decoration:none; font-weight:300; transition:color 0.2s ease; display:block; padding:10px 0; border-bottom:1px solid rgba(201,169,110,0.08); }
-        .contact-link:hover { color:#c9a96e; }
-        .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:150px; }
-        @media (max-width:900px) { .contact-grid { grid-template-columns:1fr; } .contact-inner { padding:72px 24px 100px; } .info-panel,.form-panel { padding:40px 28px; } .contact-grid { margin-top:48px; } }
-        @media (max-width:600px) { .form-grid-2 { grid-template-columns:1fr; } }
+        .contact-layout {
+          display: grid;
+          grid-template-columns: 0.85fr 1.15fr;
+          gap: 64px;
+          align-items: start;
+        }
+        .contact-aside p + p {
+          margin-top: 16px;
+        }
+        .contact-aside a {
+          color: var(--bloom-ink);
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+        .contact-aside a:hover {
+          color: var(--bloom-gold-hover);
+        }
+        .contact-meta {
+          margin-top: 36px;
+          padding-top: 28px;
+          border-top: 1px solid rgba(26, 22, 18, 0.1);
+        }
+        .contact-meta p {
+          margin: 0 0 10px;
+          font-size: 14px;
+          line-height: 1.6;
+          color: var(--bloom-soft);
+        }
+        .contact-success {
+          padding: 48px 0;
+        }
+        .contact-form select option {
+          background: #fff;
+          color: var(--bloom-ink);
+        }
+        @media (max-width: 860px) {
+          .contact-layout {
+            grid-template-columns: 1fr;
+            gap: 40px;
+          }
+        }
       `}</style>
 
-      <div className="noise" />
-
-      <div className="contact-inner">
-        {/* Header */}
-        <div style={{ maxWidth: 680 }}>
-          {eyebrow("Get in Touch")}
-          <h1
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: "clamp(44px, 7vw, 88px)",
-              fontWeight: 300,
-              lineHeight: 0.92,
-              letterSpacing: "-0.02em",
-              marginBottom: 28,
-            }}
-          >
-            Request
-            <br />
-            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>a Quote</em>
-          </h1>
-          <p
-            style={{
-              fontSize: 15,
-              lineHeight: 1.75,
-              color: "rgba(245,240,232,0.85)",
-              fontWeight: 300,
-              maxWidth: 480,
-              marginBottom: 32,
-            }}
-          >
-            Share your date, venue, and style — we'll reply with availability
-            and full pricing within 24–48 hours. Packages start at{" "}
-            <strong style={{ color: "#c9a96e", fontWeight: 500 }}>$350</strong>.
+      <header className="bloom-page-hero">
+        <div className="bloom-wrap">
+          <p className="bloom-label">Contact</p>
+          <h1 className="bloom-h1">Check Availability</h1>
+          <p className="bloom-text">
+            Tell us about your event: date, venue, and what you’re looking for.
+            We’ll reply within 24–48 hours with availability and a quote.
           </p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <Link to="/pricing" className="btn-outline">
-              See Pricing
-            </Link>
-            <Link to="/gallery" className="btn-outline">
-              Browse Walls
-            </Link>
-          </div>
+          <a href="#quote-form" className="bloom-btn bloom-btn--gold bloom-page-hero__cta">
+            Tell Us About Your Event
+          </a>
         </div>
+      </header>
 
-        {/* Main grid */}
-        <div className="contact-grid">
-          {/* ── Info panel ── */}
-          <div className="info-panel">
-            <div
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: 28,
-                fontWeight: 400,
-                marginBottom: 12,
-              }}
-            >
-              Bloom Flower Wall Rentals
-            </div>
-            <p
-              style={{
-                fontSize: 14,
-                lineHeight: 1.75,
-                color: "rgba(245,240,232,0.85)",
-                fontWeight: 300,
-                marginBottom: 36,
-              }}
-            >
-              Luxury flower wall rentals in Clermont, FL and surrounding areas.
-              Delivery, setup, and breakdown available for an additional fee.
+      <section className="bloom-section" style={{ paddingTop: 0 }}>
+        <div className="bloom-wrap contact-layout">
+          <aside className="contact-aside">
+            <p className="bloom-label">Bloom</p>
+            <h2 className="bloom-h3">Clermont, FL</h2>
+            <p className="bloom-text">
+              Premium faux flower walls, floral styling, draping, and custom
+              backdrops for Central Florida events. No image uploads needed.
+              Describe your vision or send inspo after we reply.
             </p>
-
-            {/* Contact links */}
-            <div style={{ marginBottom: 36 }}>
-              {colLabel("Contact")}
-              <a
-                href="mailto:info@bloomflowerwallrentals.com"
-                className="contact-link"
-                style={{ wordBreak: "break-all" }}
-              >
-                info@bloomflowerwallrentals.com
-              </a>
-              <a href="tel:+18633355022" className="contact-link">
-                (863) 335-5022
-              </a>
-              {/* WhatsApp / text link */}
-              <a
-                href="https://wa.me/18633355022?text=Hi%20Bloom!%20I%27d%20like%20to%20request%20a%20quote%20for%20a%20flower%20wall%20rental."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-link"
-              >
-                Text or WhatsApp us →
-              </a>
-              <a
-                href="https://www.instagram.com/bloomflowerwallrentals/"
-                target="_blank"
-                rel="noreferrer"
-                className="contact-link"
-              >
-                @bloomflowerwallrentals
-              </a>
+            <div className="contact-meta">
+              <p>
+                <a href="mailto:info@bloomflowerwallrentals.com">
+                  info@bloomflowerwallrentals.com
+                </a>
+              </p>
+              <p>
+                <a href="tel:+18633355022">(863) 335-5022</a>
+              </p>
+              <p>
+                <Link to="/styling#pricing">View starting prices →</Link>
+              </p>
             </div>
+          </aside>
 
-            {/* At a glance */}
-            <div style={{ marginBottom: 36 }}>
-              {colLabel("At a Glance")}
-              <InfoRow label="Reply time" value="Within 24–48 hours" />
-              <InfoRow label="Deposit" value="50% to reserve" />
-              <InfoRow label="Starting at" value="$350" />
-              <InfoRow label="Service area" value="Central Florida" />
-            </div>
-
-            {/* Policy cards */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                background: "rgba(201,169,110,0.08)",
-              }}
-            >
-              {[
-                {
-                  title: "Deposit policy",
-                  body: "A 50% deposit reserves your date and is applied to your total. Remaining balance is due one week before the event. Pre-order or custom styles may require a higher, non-refundable deposit.",
-                },
-                {
-                  title: "Add-ons",
-                  body: "Neon signs, custom signage, balloons, and styling are optional and only included if listed on your quote.",
-                },
-                {
-                  title: "Delivery & setup",
-                  body: "Delivery, setup, and breakdown are available for an additional fee quoted by venue location and logistics. Let us know in the form and we'll include it in your quote.",
-                },
-              ].map((card) => (
-                <div
-                  key={card.title}
-                  style={{ background: "#0a0a0a", padding: "24px 28px" }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: 18,
-                      fontWeight: 400,
-                      marginBottom: 8,
-                    }}
-                  >
-                    {card.title}
-                  </div>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: "rgba(245,240,232,0.85)",
-                      lineHeight: 1.75,
-                      fontWeight: 300,
-                    }}
-                  >
-                    {card.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <p
-              style={{
-                marginTop: 24,
-                fontSize: 12,
-                color: "rgba(245,240,232,0.68)",
-                lineHeight: 1.6,
-              }}
-            >
-              Tip: After submitting, reply to your confirmation email with any
-              venue photos — it helps us recommend the best placement.
-            </p>
-          </div>
-
-          {/* ── Form panel ── */}
-          <div className="form-panel">
+          <div>
             {status === "success" ? (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  justifyContent: "center",
-                  minHeight: 400,
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 52,
-                    color: "#c9a96e",
-                    marginBottom: 20,
-                    display: "block",
-                  }}
-                >
-                  ✦
-                </span>
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "clamp(32px, 4vw, 48px)",
-                    fontWeight: 300,
-                    marginBottom: 16,
-                  }}
-                >
-                  Thank you!
-                </h2>
-                <p
-                  style={{
-                    fontSize: 14,
-                    color: "rgba(245,240,232,0.6)",
-                    lineHeight: 1.8,
-                    fontWeight: 300,
-                    maxWidth: 400,
-                    marginBottom: 16,
-                  }}
-                >
-                  Your request was sent. We typically reply within{" "}
-                  <strong style={{ color: "#f5f0e8", fontWeight: 400 }}>
-                    24–48 hours
-                  </strong>{" "}
-                  with availability, recommendations, and your quote.
+              <div className="contact-success">
+                <p className="bloom-label">Sent</p>
+                <h2 className="bloom-h2">Thank you</h2>
+                <p className="bloom-text">
+                  Your request was received. We typically reply within 24–48
+                  hours with availability, recommendations, and your quote.
                 </p>
-                <div
-                  style={{
-                    background: "#131313",
-                    border: "1px solid rgba(201,169,110,0.15)",
-                    padding: "24px 28px",
-                    marginBottom: 32,
-                    width: "100%",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: 17,
-                      fontWeight: 400,
-                      marginBottom: 8,
-                    }}
-                  >
-                    What happens next
-                  </div>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: "rgba(245,240,232,0.85)",
-                      lineHeight: 1.75,
-                      fontWeight: 300,
-                    }}
-                  >
-                    We'll confirm availability, recommend the best setup for
-                    your space, and send your full quote with deposit
-                    instructions.
-                  </p>
-                </div>
+                <p className="bloom-text" style={{ marginBottom: 28 }}>
+                  Next: we’ll confirm the date, suggest a setup for your space,
+                  and send deposit instructions once you’re ready to book.
+                </p>
                 <button
                   type="button"
-                  className="btn-gold"
+                  className="bloom-btn bloom-btn--gold"
                   onClick={() => setStatus("idle")}
                 >
                   Send Another Request
@@ -712,69 +298,61 @@ export default function Contact() {
               </div>
             ) : (
               <>
-                <div
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 26,
-                    fontWeight: 400,
-                    marginBottom: 8,
-                  }}
-                >
-                  Quote Request
-                </div>
-                <p
-                  style={{
-                    fontSize: 13,
-                    color: "rgba(245,240,232,0.82)",
-                    fontWeight: 300,
-                    marginBottom: 36,
-                  }}
-                >
-                  Fields marked <span style={{ color: "#c9a96e" }}>*</span> are
-                  required. The more details you share, the faster we can
-                  confirm availability.
+                <p className="bloom-label">Quote request</p>
+                <h2 className="bloom-h3" style={{ marginBottom: 8 }}>
+                  Tell Us About Your Event
+                </h2>
+                <p className="bloom-text" style={{ marginBottom: 32 }}>
+                  Required fields are marked *. The more detail you share, the
+                  faster we can confirm.
                 </p>
 
                 <form
+                  id="quote-form"
+                  className="contact-form"
                   onSubmit={onSubmit}
                   noValidate
                   aria-label="Quote request form"
-                  style={{ display: "flex", flexDirection: "column", gap: 20 }}
                 >
                   <input
                     type="text"
                     name="_gotcha"
+                    value={form._gotcha}
+                    onChange={updateField}
                     style={{ display: "none" }}
-                    tabIndex="-1"
+                    tabIndex={-1}
                     autoComplete="off"
                     aria-hidden="true"
                   />
 
-                  <div className="form-grid-2">
-                    <FormField
-                      label="Full Name"
-                      required
+                  <div className="bloom-form-grid">
+                    <Field
                       id="f-name"
-                      error={touched.name && errors.name}
+                      label="Name"
+                      required
+                      error={err("name")}
                     >
-                      <Input
+                      <input
                         id="f-name"
                         name="name"
+                        type="text"
                         value={form.name}
                         onChange={updateField}
                         onBlur={handleBlur}
                         required
                         autoComplete="name"
-                        error={touched.name && errors.name}
+                        aria-required="true"
+                        aria-invalid={!!err("name")}
                       />
-                    </FormField>
-                    <FormField
+                    </Field>
+
+                    <Field
+                      id="f-email"
                       label="Email"
                       required
-                      id="f-email"
-                      error={touched.email && errors.email}
+                      error={err("email")}
                     >
-                      <Input
+                      <input
                         id="f-email"
                         name="email"
                         type="email"
@@ -784,19 +362,18 @@ export default function Contact() {
                         required
                         autoComplete="email"
                         inputMode="email"
-                        error={touched.email && errors.email}
+                        aria-required="true"
+                        aria-invalid={!!err("email")}
                       />
-                    </FormField>
-                  </div>
+                    </Field>
 
-                  <div className="form-grid-2">
-                    <FormField
+                    <Field
+                      id="f-phone"
                       label="Phone"
                       required
-                      id="f-phone"
-                      error={touched.phone && errors.phone}
+                      error={err("phone")}
                     >
-                      <Input
+                      <input
                         id="f-phone"
                         name="phone"
                         type="tel"
@@ -807,23 +384,66 @@ export default function Contact() {
                         autoComplete="tel"
                         inputMode="tel"
                         placeholder="(863) 000-0000"
-                        error={touched.phone && errors.phone}
+                        aria-required="true"
+                        aria-invalid={!!err("phone")}
                       />
-                    </FormField>
-                    <FormField
+                    </Field>
+
+                    <Field
+                      id="f-eventDate"
+                      label="Event Date"
+                      required
+                      error={err("eventDate")}
+                    >
+                      <input
+                        id="f-eventDate"
+                        name="eventDate"
+                        type="date"
+                        value={form.eventDate}
+                        onChange={updateField}
+                        onBlur={handleBlur}
+                        required
+                        aria-required="true"
+                        aria-invalid={!!err("eventDate")}
+                      />
+                    </Field>
+
+                    <Field
+                      id="f-location"
+                      label="Venue / City"
+                      required
+                      error={err("location")}
+                      full
+                    >
+                      <input
+                        id="f-location"
+                        name="location"
+                        type="text"
+                        value={form.location}
+                        onChange={updateField}
+                        onBlur={handleBlur}
+                        required
+                        placeholder="Clermont, Winter Garden, Orlando…"
+                        aria-required="true"
+                        aria-invalid={!!err("location")}
+                      />
+                    </Field>
+
+                    <Field
+                      id="f-eventType"
                       label="Event Type"
                       required
-                      id="f-eventType"
-                      error={touched.eventType && errors.eventType}
+                      error={err("eventType")}
                     >
-                      <Select
+                      <select
                         id="f-eventType"
                         name="eventType"
                         value={form.eventType}
                         onChange={updateField}
                         onBlur={handleBlur}
                         required
-                        error={touched.eventType && errors.eventType}
+                        aria-required="true"
+                        aria-invalid={!!err("eventType")}
                       >
                         <option value="">Select one…</option>
                         <option>Wedding</option>
@@ -833,50 +453,31 @@ export default function Contact() {
                         <option>Quinceañera</option>
                         <option>Corporate / brand event</option>
                         <option>Other</option>
-                      </Select>
-                    </FormField>
-                  </div>
+                      </select>
+                    </Field>
 
-                  <div className="form-grid-2">
-                    <FormField
-                      label="Event Date"
-                      required
-                      id="f-eventDate"
-                      error={touched.eventDate && errors.eventDate}
-                    >
-                      <Input
-                        id="f-eventDate"
-                        name="eventDate"
-                        type="date"
-                        value={form.eventDate}
+                    <Field id="f-serviceOption" label="Service Interest">
+                      <select
+                        id="f-serviceOption"
+                        name="serviceOption"
+                        value={form.serviceOption}
                         onChange={updateField}
-                        onBlur={handleBlur}
-                        required
-                        error={touched.eventDate && errors.eventDate}
-                      />
-                    </FormField>
-                    <FormField
-                      label="City / Venue"
-                      required
-                      id="f-location"
-                      error={touched.location && errors.location}
-                    >
-                      <Input
-                        id="f-location"
-                        name="location"
-                        value={form.location}
-                        onChange={updateField}
-                        onBlur={handleBlur}
-                        required
-                        placeholder="Clermont, Winter Garden, Orlando…"
-                        error={touched.location && errors.location}
-                      />
-                    </FormField>
-                  </div>
+                      >
+                        <option value="">Select one…</option>
+                        <option>Flower Wall</option>
+                        <option>The Full Bloom Setup — $995</option>
+                        <option>The Full Bloom Setup + Flower Wall — $1,295</option>
+                        <option>Floral Styling</option>
+                        <option>Custom Backdrop</option>
+                        <option>Draping</option>
+                        <option>Signage</option>
+                        <option>Corporate / Branded Event</option>
+                        <option>Not Sure Yet</option>
+                      </select>
+                    </Field>
 
-                  <div className="form-grid-2">
-                    <FormField label="Indoor / Outdoor" id="f-setupType">
-                      <Select
+                    <Field id="f-setupType" label="Indoor / Outdoor">
+                      <select
                         id="f-setupType"
                         name="setupType"
                         value={form.setupType}
@@ -885,76 +486,42 @@ export default function Contact() {
                         <option value="">Select one…</option>
                         <option>Indoor</option>
                         <option>Outdoor</option>
-                        <option>Not sure yet</option>
-                      </Select>
-                    </FormField>
-                    <FormField
-                      label="Need Delivery / Setup / Breakdown?"
-                      id="f-serviceOption"
-                    >
-                      {/* <Select
-                        id="f-serviceOption"
-                        name="serviceOption"
-                        value={form.serviceOption}
-                        onChange={updateField}
-                      >
-                        <option value="">Select one…</option>
-                        <option value="Yes — please quote delivery/setup/breakdown">
-                          Yes — please include in quote
-                        </option>
-                        <option value="No — I will arrange pickup/return">
-                          No — I'll arrange pickup/return
-                        </option>
-                        <option value="Not sure yet">Not sure yet</option>
-                      </Select> */}
-                    </FormField>
-                  </div>
+                        <option>Not sure</option>
+                      </select>
+                    </Field>
 
-                  <FormField label="Add-ons (optional)" id="f-addOns">
-                    <Input
-                      id="f-addOns"
-                      name="addOns"
-                      value={form.addOns}
-                      onChange={updateField}
-                      placeholder="Custom sign, neon, balloon garland…"
-                    />
-                  </FormField>
-
-                  <FormField
-                    label="Tell us about your event"
-                    required
-                    id="f-message"
-                    error={touched.message && errors.message}
-                  >
-                    <Textarea
+                    <Field
                       id="f-message"
-                      name="message"
-                      value={form.message}
-                      onChange={updateField}
-                      onBlur={handleBlur}
+                      label="Inspiration / Details"
                       required
-                      rows={5}
-                      placeholder="Theme, colors, venue notes, setup window, timeline…"
-                      error={touched.message && errors.message}
-                    />
-                  </FormField>
+                      error={err("message")}
+                      full
+                    >
+                      <textarea
+                        id="f-message"
+                        name="message"
+                        value={form.message}
+                        onChange={updateField}
+                        onBlur={handleBlur}
+                        required
+                        rows={5}
+                        placeholder="Theme, colors, venue notes, setup window…"
+                        aria-required="true"
+                        aria-invalid={!!err("message")}
+                      />
+                    </Field>
+                  </div>
 
                   {status === "error" && (
                     <p
                       role="alert"
-                      style={{
-                        fontSize: 12,
-                        color: "rgba(220,100,100,0.9)",
-                        lineHeight: 1.6,
-                        padding: "12px 16px",
-                        border: "1px solid rgba(220,100,100,0.25)",
-                        background: "rgba(220,100,100,0.05)",
-                      }}
+                      className="bloom-field__error"
+                      style={{ marginTop: 20, lineHeight: 1.6 }}
                     >
                       {errorMsg} If it persists, email{" "}
                       <a
                         href="mailto:info@bloomflowerwallrentals.com"
-                        style={{ color: "#c9a96e" }}
+                        style={{ color: "var(--bloom-gold)" }}
                       >
                         info@bloomflowerwallrentals.com
                       </a>
@@ -968,23 +535,19 @@ export default function Contact() {
                       alignItems: "center",
                       gap: 20,
                       flexWrap: "wrap",
-                      marginTop: 8,
+                      marginTop: 28,
                     }}
                   >
                     <button
                       type="submit"
-                      className="btn-gold"
+                      className="bloom-btn bloom-btn--gold"
                       disabled={status === "sending"}
-                      style={{ flex: "0 0 auto" }}
                     >
-                      {status === "sending" ? "Sending…" : "Submit Request →"}
+                      {status === "sending" ? "Sending…" : "Submit Request"}
                     </button>
                     <p
-                      style={{
-                        fontSize: 12,
-                        color: "rgba(245,240,232,0.68)",
-                        lineHeight: 1.6,
-                      }}
+                      className="bloom-text"
+                      style={{ margin: 0, fontSize: 13 }}
                     >
                       We typically reply within 24–48 hours.
                     </p>
@@ -994,48 +557,7 @@ export default function Contact() {
             )}
           </div>
         </div>
-
-        {/* Bottom CTA */}
-        <div
-          style={{
-            marginTop: 2,
-            background: "linear-gradient(135deg,#18140c 0%,#1e1a0e 100%)",
-            border: "1px solid rgba(201,169,110,0.2)",
-            padding: "40px 48px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: 24,
-          }}
-        >
-          <div>
-            <div
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "clamp(20px, 3vw, 28px)",
-                fontWeight: 400,
-                marginBottom: 6,
-              }}
-            >
-              Want a style we don't have in stock?
-            </div>
-            <p
-              style={{
-                fontSize: 13,
-                color: "rgba(245,240,232,0.85)",
-                fontWeight: 300,
-              }}
-            >
-              If your event is 6–8+ weeks out, we can often source additional
-              styles by request. Ask us about pre-order options.
-            </p>
-          </div>
-          <Link to="/gallery" className="btn-gold">
-            Browse All Styles
-          </Link>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

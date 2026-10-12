@@ -10,7 +10,8 @@ export default defineConfig({
       dynamicRoutes: [
         "/",
         "/gallery",
-        "/pricing",
+        "/styling",
+        "/portfolio",
         "/about",
         "/events",
         "/faq",

@@ -8,7 +8,7 @@ const categories = [
     questions: [
       {
         q: "How far in advance should I book?",
-        a: "We recommend 4–6 weeks, especially for weekends. If your date is sooner, message us — last-minute availability happens. For pre-order wall styles, you'll need 6–8+ weeks notice.",
+        a: "We recommend 4–6 weeks, especially for weekends. If your date is sooner, message us. Last-minute availability happens. For pre-order wall styles, you'll need 6–8+ weeks notice.",
       },
       {
         q: "How do I book?",
@@ -24,11 +24,11 @@ const categories = [
       },
       {
         q: "What is your cancellation policy?",
-        a: "Deposits are non-refundable. If you need to reschedule, we'll do our best to accommodate a new date based on availability. Please reach out as soon as possible — the more notice, the better.",
+        a: "Deposits are non-refundable. If you need to reschedule, we'll do our best to accommodate a new date based on availability. Please reach out as soon as possible. The more notice, the better.",
       },
       {
         q: "What's the starting price?",
-        a: "Packages start at $350. Your final quote depends on your wall style, add-ons, and delivery/setup/breakdown logistics.",
+        a: "Packages start at $350. Your final quote depends on your wall style, add-ons, and delivery logistics. Setup & breakdown are included in every rental.",
       },
     ],
   },
@@ -42,7 +42,7 @@ const categories = [
       },
       {
         q: "How big are the flower walls?",
-        a: "All of our walls are 8 feet wide by 8 feet tall. This is large enough to fit a full group photo, a sweetheart table backdrop, or a dessert table feature — and fills a wall beautifully without overwhelming a space. Plan for at least an 8ft wide area plus a little room on the sides.",
+        a: "All of our walls are 8 feet wide by 8 feet tall. That's large enough for a full group photo, a sweetheart table backdrop, or a dessert table feature, and it fills a wall beautifully without overwhelming a space. Plan for at least an 8ft wide area plus a little room on the sides.",
       },
       {
         q: "Can I request a different style wall?",
@@ -50,11 +50,11 @@ const categories = [
       },
       {
         q: "Are the flowers real?",
-        a: "No — all of our walls use high-quality artificial florals. This means they look lush and fresh all day without wilting, are safe for indoor and outdoor use (with some restrictions), and are more budget-friendly than fresh floral installations.",
+        a: "Bloom specializes in premium faux florals. Always in bloom, never wilting in the Florida heat. They photograph like fresh, stay lush all day, and are built for indoor and outdoor use (with some weather restrictions).",
       },
       {
         q: "Can I see the walls before booking?",
-        a: "We don't have a permanent showroom, but you can see our walls in action on our Instagram @bloomflowerwallrentals and on our gallery page. If you want to connect in person, reach out — we're happy to chat!",
+        a: "We don't have a permanent showroom, but you can see our walls in action on our Instagram @bloomflowerwallrentals and on our gallery page. If you want to connect in person, reach out. We're happy to chat!",
       },
     ],
   },
@@ -64,7 +64,7 @@ const categories = [
     questions: [
       {
         q: "Is delivery and setup included in the rental price?",
-        a: "Delivery, professional setup, and breakdown are available for an additional fee, quoted based on venue location and logistics. We'll include the full delivery quote so there are no surprises.",
+        a: "Setup & breakdown are included in every rental. Delivery is quoted separately by venue based on location and logistics. We'll include the full delivery quote so there are no surprises.",
       },
       {
         q: "What areas do you serve?",
@@ -76,7 +76,7 @@ const categories = [
       },
       {
         q: "Can the wall be used outdoors?",
-        a: "Sometimes. Outdoor setups require safe conditions — low wind, shade when possible, and a flat stable surface. We'll confirm weather and placement details during quoting to keep everything secure and photo-ready.",
+        a: "Sometimes. Outdoor setups need safe conditions: low wind, shade when possible, and a flat stable surface. We'll confirm weather and placement details during quoting to keep everything secure and photo-ready.",
       },
       {
         q: "What is your weather policy for outdoor events?",
@@ -84,7 +84,7 @@ const categories = [
       },
       {
         q: "Do you stay for the event?",
-        a: "We don't typically stay for the full event — we set up before guests arrive and return for breakdown at the agreed pickup time. If you need us on-site during the event, let us know and we can discuss options.",
+        a: "We don't typically stay for the full event. We set up before guests arrive and return for breakdown at the agreed pickup time. If you need us on-site during the event, let us know and we can discuss options.",
       },
       {
         q: "What if something gets damaged during the event?",
@@ -98,11 +98,11 @@ const categories = [
     questions: [
       {
         q: "What add-ons are available?",
-        a: "We offer custom acrylic signage (names, phrases, welcome messages), balloon garlands, neon signs, and prop table styling. Add-ons are optional and priced separately — visit our pricing page for current rates.",
+        a: "We offer custom acrylic signage (names, phrases, welcome messages), balloon garlands, neon signs, and prop table styling. Add-ons are optional and priced separately. Visit our styling page for current starting rates.",
       },
       {
         q: "Are neon signs included in the base price?",
-        a: "No — neon signs are optional add-ons and are not included unless listed in your quote. They're custom quoted based on your text and style.",
+        a: "No. Neon signs are optional add-ons and are not included unless listed in your quote. They're custom quoted based on your text and style.",
       },
       {
         q: "Can I add a custom name or phrase to the wall?",
@@ -110,7 +110,7 @@ const categories = [
       },
       {
         q: "Can I mix and match add-ons?",
-        a: "Absolutely. Your quote is fully customizable. Just tell us what you're imagining — signage, balloons, neon, styling — and we'll build a quote that fits your vision and budget.",
+        a: "Absolutely. Your quote is fully customizable. Just tell us what you're imagining (signage, balloons, neon, styling) and we'll build a quote that fits your vision and budget.",
       },
     ],
   },
@@ -128,103 +128,41 @@ const categories = [
       },
       {
         q: "Can I use the wall for a corporate event or pop-up?",
-        a: "Absolutely — flower walls are a huge hit at brand activations, product launches, and pop-ups. They double as a branded photo moment that guests share on social. We can add custom signage with your logo or brand name.",
+        a: "Absolutely. Flower walls are a huge hit at brand activations, product launches, and pop-ups. They double as a branded photo moment that guests share on social. We can add custom signage with your logo or brand name.",
       },
       {
         q: "Do you do same-day bookings?",
-        a: "Occasionally — if a wall is available and logistics allow, we'll do our best to make it work. Reach out as soon as possible. We always recommend booking in advance to guarantee your date.",
+        a: "Occasionally, if a wall is available and logistics allow, we'll do our best to make it work. Reach out as soon as possible. We always recommend booking in advance to guarantee your date.",
       },
     ],
   },
 ];
 
-function FAQItem({ q, a, index }) {
-  const [open, setOpen] = useState(false);
+function FAQItem({ q, a, index, open, onToggle }) {
   return (
-    <div
-      onClick={() => setOpen((o) => !o)}
-      style={{
-        borderBottom: "1px solid rgba(201,169,110,0.12)",
-        padding: "26px 0",
-        cursor: "pointer",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          gap: 20,
-        }}
+    <div className="faq-item">
+      <button
+        type="button"
+        className="faq-item__trigger"
+        aria-expanded={open}
+        onClick={onToggle}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 20,
-            flex: 1,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: 11,
-              color: "rgba(201,169,110,0.35)",
-              letterSpacing: "0.08em",
-              minWidth: 22,
-              paddingTop: 3,
-              flexShrink: 0,
-            }}
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "clamp(17px, 2vw, 22px)",
-              fontWeight: 400,
-              lineHeight: 1.3,
-              color: "#f5f0e8",
-            }}
-          >
-            {q}
-          </span>
-        </div>
-        <span
-          style={{
-            color: "#c9a96e",
-            fontSize: 22,
-            fontWeight: 200,
-            flexShrink: 0,
-            display: "inline-block",
-            transition: "transform 0.35s ease",
-            transform: open ? "rotate(45deg)" : "none",
-            paddingTop: 2,
-          }}
-        >
+        <span className="faq-item__index">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <span className="faq-item__q">{q}</span>
+        <span className={`faq-item__icon${open ? " is-open" : ""}`} aria-hidden="true">
           +
         </span>
-      </div>
+      </button>
       <div
+        className="faq-item__panel"
         style={{
-          overflow: "hidden",
-          maxHeight: open ? 400 : 0,
-          transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
+          maxHeight: open ? 480 : 0,
+          opacity: open ? 1 : 0,
         }}
       >
-        <p
-          style={{
-            marginTop: 16,
-            marginLeft: 42,
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: 14,
-            color: "rgba(245,240,232,0.80)",
-            lineHeight: 1.8,
-            fontWeight: 300,
-          }}
-        >
-          {a}
-        </p>
+        <p className="faq-item__a">{a}</p>
       </div>
     </div>
   );
@@ -232,7 +170,7 @@ function FAQItem({ q, a, index }) {
 
 function PageMeta() {
   useEffect(() => {
-    const t = "FAQ | Bloom Flower Wall Rentals — Clermont, FL";
+    const t = "FAQ | Bloom Flower Wall Rentals, Clermont, FL";
     const d =
       "Answers to common questions about flower wall rentals in Clermont, FL. Pricing, delivery, booking, add-ons, and more. Serving all of Central Florida.";
     document.title = t;
@@ -261,7 +199,6 @@ function PageMeta() {
     }
     c.href = "https://bloomflowerwallrentals.com/faq";
 
-    // FAQ Schema — makes Q&As appear directly in Google search results
     const faqSchema = {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -287,214 +224,225 @@ function PageMeta() {
 
 export default function Faq() {
   const [activeCategory, setActiveCategory] = useState("booking");
+  const [openIndex, setOpenIndex] = useState(0);
 
-  const eyebrow = (text) => (
-    <p
-      style={{
-        fontFamily: "'DM Sans', sans-serif",
-        fontSize: 11,
-        letterSpacing: "0.24em",
-        textTransform: "uppercase",
-        color: "#c9a96e",
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        marginBottom: 16,
-      }}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          width: 28,
-          height: 1,
-          background: "#c9a96e",
-          flexShrink: 0,
-        }}
-      />
-      {text}
-    </p>
-  );
+  const active = categories.find((c) => c.id === activeCategory);
+  const activeQuestions = active?.questions || [];
 
-  const colLabel = (text) => (
-    <div
-      style={{
-        fontFamily: "'DM Sans', sans-serif",
-        fontSize: 10,
-        fontWeight: 500,
-        letterSpacing: "0.22em",
-        textTransform: "uppercase",
-        color: "#c9a96e",
-        marginBottom: 20,
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-      }}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          width: 18,
-          height: 1,
-          background: "#c9a96e",
-        }}
-      />
-      {text}
-    </div>
-  );
-
-  const activeQuestions =
-    categories.find((c) => c.id === activeCategory)?.questions || [];
+  const selectCategory = (id) => {
+    setActiveCategory(id);
+    setOpenIndex(0);
+  };
 
   return (
-    <div
-      style={{
-        background: "#0c0c0c",
-        color: "#f5f0e8",
-        minHeight: "100vh",
-        fontFamily: "'DM Sans', sans-serif",
-      }}
-    >
+    <div className="bloom-page faq-page">
       <PageMeta />
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        .noise { position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.025;
-          background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-          background-size:150px; }
-        .faq-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:2px; background:rgba(201,169,110,0.07); margin-top:64px; }
-        .faq-main { background:#0a0a0a; padding:52px 44px; }
-        .faq-aside { background:#0e0e0e; padding:52px 36px; display:flex; flex-direction:column; gap:2px; }
-        .aside-card { background:#0a0a0a; padding:28px; }
-        .inner { max-width:1280px; margin:0 auto; padding:0 48px; }
-        .btn-gold { display:inline-flex; align-items:center; gap:10px; background:#c9a96e; color:#0c0c0c; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:14px 32px; border:none; cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
-        .btn-gold:hover { background:#d4b280; letter-spacing:0.18em; }
-        .btn-outline { display:inline-flex; align-items:center; gap:10px; background:transparent; color:#f5f0e8; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; padding:13px 28px; border:1px solid rgba(245,240,232,0.52); cursor:pointer; text-decoration:none; transition:all 0.25s ease; }
-        .btn-outline:hover { border-color:#c9a96e; color:#c9a96e; }
-        .cat-btn { display:block; width:100%; text-align:left; background:none; border:none; border-bottom:1px solid rgba(201,169,110,0.08); cursor:pointer; font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; padding:13px 0; color:rgba(245,240,232,0.5); transition:color 0.2s; }
-        .cat-btn:hover { color:rgba(245,240,232,0.85); }
-        .cat-btn.active { color:#c9a96e; }
-        @media (max-width:860px) {
-          .faq-grid { grid-template-columns:1fr; }
-          .inner { padding:0 24px; }
-          .faq-main { padding:40px 28px; }
-          .faq-aside { padding:40px 28px; }
-          .cat-pills { display:flex !important; flex-wrap:wrap; gap:8px; }
-          .cat-btn { width:auto; border:1px solid rgba(201,169,110,0.2); padding:8px 14px; font-size:10px; border-bottom: 1px solid rgba(201,169,110,0.2); }
-          .cat-btn.active { border-color:#c9a96e; background:rgba(201,169,110,0.06); }
+        .faq-page .faq-layout {
+          display: grid;
+          grid-template-columns: 220px 1fr;
+          gap: clamp(40px, 6vw, 80px);
+          align-items: start;
+        }
+        .faq-page .faq-nav {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          padding-top: 4px;
+        }
+        .faq-page .faq-nav__link {
+          background: none;
+          border: none;
+          padding: 10px 0;
+          text-align: left;
+          font-family: "DM Sans", sans-serif;
+          font-size: 13px;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          color: var(--bloom-mute);
+          cursor: pointer;
+          border-bottom: 1px solid transparent;
+          transition: color 0.2s ease;
+        }
+        .faq-page .faq-nav__link:hover {
+          color: var(--bloom-ink);
+        }
+        .faq-page .faq-nav__link.is-active {
+          color: var(--bloom-ink);
+          border-bottom-color: rgba(26, 22, 18, 0.18);
+        }
+        .faq-page .faq-cat-title {
+          margin: 0 0 8px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid rgba(26, 22, 18, 0.1);
+        }
+        .faq-page .faq-item {
+          border-bottom: 1px solid rgba(26, 22, 18, 0.1);
+        }
+        .faq-page .faq-item__trigger {
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+          width: 100%;
+          padding: 22px 0;
+          background: none;
+          border: none;
+          cursor: pointer;
+          text-align: left;
+          color: inherit;
+        }
+        .faq-page .faq-item__index {
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          color: var(--bloom-mute);
+          min-width: 22px;
+          padding-top: 6px;
+          flex-shrink: 0;
+        }
+        .faq-page .faq-item__q {
+          flex: 1;
+          font-family: "Cormorant Garamond", serif;
+          font-size: clamp(18px, 2.2vw, 24px);
+          font-weight: 400;
+          line-height: 1.3;
+          color: var(--bloom-ink);
+        }
+        .faq-page .faq-item__icon {
+          font-size: 22px;
+          font-weight: 200;
+          color: var(--bloom-gold);
+          line-height: 1;
+          padding-top: 4px;
+          flex-shrink: 0;
+          transition: transform 0.3s ease;
+        }
+        .faq-page .faq-item__icon.is-open {
+          transform: rotate(45deg);
+        }
+        .faq-page .faq-item__panel {
+          overflow: hidden;
+          transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        }
+        .faq-page .faq-item__a {
+          margin: 0 0 24px;
+          padding-left: 38px;
+          font-size: 15px;
+          line-height: 1.75;
+          color: var(--bloom-soft);
+          font-weight: 300;
+          max-width: 580px;
+        }
+        .faq-page .faq-aside {
+          margin-top: 48px;
+          padding-top: 36px;
+          border-top: 1px solid rgba(26, 22, 18, 0.1);
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
+        }
+        .faq-page .faq-aside ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+        .faq-page .faq-aside li {
+          font-size: 14px;
+          line-height: 1.7;
+          color: var(--bloom-soft);
+          padding: 8px 0;
+          border-bottom: 1px solid rgba(26, 22, 18, 0.06);
+        }
+        .faq-page .faq-aside a {
+          color: var(--bloom-ink);
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+        @media (max-width: 860px) {
+          .faq-page .faq-layout {
+            grid-template-columns: 1fr;
+            gap: 28px;
+          }
+          .faq-page .faq-nav {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(26, 22, 18, 0.1);
+          }
+          .faq-page .faq-nav__link {
+            padding: 6px 0;
+          }
+          .faq-page .faq-aside {
+            grid-template-columns: 1fr;
+            gap: 32px;
+          }
+          .faq-page .faq-item__a {
+            padding-left: 0;
+          }
         }
       `}</style>
-      <div className="noise" />
 
-      {/* ── Header ── */}
-      <section style={{ padding: "100px 0 0" }}>
-        <div className="inner">
-          {eyebrow("Common Questions")}
-          <h1
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: "clamp(44px, 7vw, 88px)",
-              fontWeight: 300,
-              lineHeight: 0.92,
-              letterSpacing: "-0.02em",
-              marginBottom: 28,
-            }}
-          >
-            FAQ
-            <br />
-            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-              before you book
-            </em>
-          </h1>
-          <p
-            style={{
-              fontSize: 15,
-              lineHeight: 1.75,
-              color: "rgba(245,240,232,0.78)",
-              fontWeight: 300,
-              maxWidth: 480,
-              marginBottom: 28,
-            }}
-          >
-            Quick answers to common questions. Packages start at{" "}
-            <strong style={{ color: "#c9a96e", fontWeight: 500 }}>$350</strong>.
-            Delivery/setup/breakdown available for an additional fee.
+      <header className="bloom-page-hero">
+        <div className="bloom-wrap">
+          <p className="bloom-label">Common Questions</p>
+          <h1 className="bloom-h1">FAQ</h1>
+          <p className="bloom-text">
+            Quick answers about booking, premium faux flower walls, delivery,
+            and add-ons. Packages start at $350. Setup & breakdown included in
+            every rental. Delivery quoted separately by venue.
           </p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <Link to="/contact" className="btn-gold">
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 28 }}>
+            <Link to="/contact" className="bloom-btn bloom-btn--ink">
               Request a Quote
             </Link>
-            <Link to="/pricing" className="btn-outline">
+            <Link to="/styling#pricing" className="bloom-btn bloom-btn--line">
               See Pricing
             </Link>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* ── Main content ── */}
-      <section style={{ padding: "0 0 100px" }}>
-        <div className="inner">
-          <div className="faq-grid">
-            {/* ── FAQ main panel ── */}
-            <div className="faq-main">
-              {/* Category tabs */}
-              <div style={{ marginBottom: 36 }}>
-                <div
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 10,
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "rgba(245,240,232,0.3)",
-                    marginBottom: 12,
-                  }}
-                >
-                  Browse by topic
-                </div>
-                <div className="cat-pills" style={{ display: "block" }}>
-                  {categories.map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setActiveCategory(cat.id)}
-                      className={`cat-btn${
-                        activeCategory === cat.id ? " active" : ""
-                      }`}
-                    >
-                      {cat.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Active category heading */}
-              <div
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: "clamp(20px, 2.5vw, 28px)",
-                  fontWeight: 400,
-                  marginBottom: 6,
-                  paddingBottom: 20,
-                  borderBottom: "1px solid rgba(201,169,110,0.15)",
-                }}
+      <section className="bloom-section" style={{ paddingTop: 0 }}>
+        <div className="bloom-wrap faq-layout">
+          <nav className="faq-nav" aria-label="FAQ topics">
+            <p className="bloom-label" style={{ marginBottom: 8 }}>
+              Topics
+            </p>
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                className={`faq-nav__link${
+                  activeCategory === cat.id ? " is-active" : ""
+                }`}
+                onClick={() => selectCategory(cat.id)}
               >
-                {categories.find((c) => c.id === activeCategory)?.label}
-              </div>
+                {cat.label}
+              </button>
+            ))}
+          </nav>
 
-              {/* Questions */}
-              <div style={{ borderTop: "none" }}>
-                {activeQuestions.map((f, i) => (
-                  <FAQItem key={f.q} q={f.q} a={f.a} index={i} />
-                ))}
-              </div>
+          <div>
+            <h2 className="bloom-h3 faq-cat-title">{active?.label}</h2>
+            <div>
+              {activeQuestions.map((item, i) => (
+                <FAQItem
+                  key={item.q}
+                  q={item.q}
+                  a={item.a}
+                  index={i}
+                  open={openIndex === i}
+                  onToggle={() =>
+                    setOpenIndex((prev) => (prev === i ? -1 : i))
+                  }
+                />
+              ))}
             </div>
 
-            {/* ── Sidebar ── */}
             <div className="faq-aside">
-              {/* Fastest quote checklist */}
-              <div className="aside-card">
-                {colLabel("For the fastest quote")}
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 0 }}
-                >
+              <div>
+                <p className="bloom-label">For the fastest quote</p>
+                <ul>
                   {[
                     "Event date + start time",
                     "Venue name + city",
@@ -502,231 +450,43 @@ export default function Faq() {
                     "Preferred wall style",
                     "Any add-ons (signage, neon, balloons)",
                   ].map((item) => (
-                    <div
-                      key={item}
-                      style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: 13,
-                        color: "rgba(245,240,232,0.75)",
-                        fontWeight: 300,
-                        padding: "10px 0",
-                        borderBottom: "1px solid rgba(201,169,110,0.08)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 12,
-                      }}
-                    >
-                      <span style={{ color: "#c9a96e", fontSize: 10 }}>✦</span>
-                      {item}
-                    </div>
+                    <li key={item}>{item}</li>
                   ))}
-                </div>
+                </ul>
               </div>
-
-              {/* Booking ahead */}
-              <div className="aside-card">
-                {colLabel("Booking ahead")}
-                <p
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 13,
-                    color: "rgba(245,240,232,0.75)",
-                    lineHeight: 1.8,
-                    fontWeight: 300,
-                  }}
-                >
-                  If your event is{" "}
-                  <strong style={{ color: "#f5f0e8", fontWeight: 400 }}>
-                    6–8+ weeks
-                  </strong>{" "}
-                  away, we may be able to source additional wall styles by
-                  request. Visit our gallery to browse all options.
+              <div>
+                <p className="bloom-label">How booking works</p>
+                <ul>
+                  <li>We confirm availability</li>
+                  <li>Send your custom quote</li>
+                  <li>Date reserved once deposit is paid</li>
+                </ul>
+                <p className="bloom-text" style={{ marginTop: 20, maxWidth: "none" }}>
+                  If your event is 6–8+ weeks away, we may source additional wall
+                  styles.{" "}
+                  <Link to="/gallery">Browse the gallery</Link>.
                 </p>
-              </div>
-
-              {/* How booking works */}
-              <div className="aside-card">
-                {colLabel("How booking works")}
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 14 }}
-                >
-                  {[
-                    "We confirm availability",
-                    "Send your custom quote",
-                    "Date reserved once deposit is paid",
-                  ].map((step, i) => (
-                    <div
-                      key={step}
-                      style={{
-                        display: "flex",
-                        gap: 14,
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: "'Cormorant Garamond', serif",
-                          fontSize: 20,
-                          color: "rgba(201,169,110,0.4)",
-                          lineHeight: 1,
-                          flexShrink: 0,
-                          minWidth: 18,
-                        }}
-                      >
-                        {i + 1}
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "'DM Sans', sans-serif",
-                          fontSize: 13,
-                          color: "rgba(245,240,232,0.75)",
-                          lineHeight: 1.6,
-                          fontWeight: 300,
-                        }}
-                      >
-                        {step}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* CTA card */}
-              <div
-                style={{
-                  background:
-                    "linear-gradient(135deg, #18140c 0%, #1e1a0e 100%)",
-                  border: "1px solid rgba(201,169,110,0.2)",
-                  padding: "32px 28px",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 26,
-                    fontWeight: 300,
-                    marginBottom: 10,
-                  }}
-                >
-                  Still not sure?
-                </div>
-                <p
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 13,
-                    color: "rgba(245,240,232,0.75)",
-                    lineHeight: 1.8,
-                    fontWeight: 300,
-                    marginBottom: 24,
-                  }}
-                >
-                  Send your theme and venue photo (if you have one). I'll help
-                  you pick the best placement and add-ons for your space.
-                </p>
-                <Link
-                  to="/contact"
-                  className="btn-gold"
-                  style={{ width: "100%", justifyContent: "center" }}
-                >
-                  Message Me
-                </Link>
-              </div>
-
-              {/* Portfolio note */}
-              <div className="aside-card">
-                {colLabel("See it in action")}
-                <p
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 13,
-                    color: "rgba(245,240,232,0.75)",
-                    lineHeight: 1.8,
-                    fontWeight: 300,
-                    marginBottom: 16,
-                  }}
-                >
-                  We're always adding new event photos. Follow us on Instagram
-                  for the latest setups and inspo.
-                </p>
-                <a
-                  href="https://instagram.com/bloomflowerwallrentals"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 11,
-                    color: "#c9a96e",
-                    textDecoration: "none",
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  @bloomflowerwallrentals →
-                </a>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Bottom CTA ── */}
-      <section
-        style={{
-          padding: "80px 0",
-          borderTop: "1px solid rgba(201,169,110,0.1)",
-          background: "#090909",
-        }}
-      >
-        <div className="inner">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: 32,
-              background: "linear-gradient(135deg, #18140c 0%, #1e1a0e 100%)",
-              border: "1px solid rgba(201,169,110,0.2)",
-              padding: "40px 48px",
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: "clamp(20px, 3vw, 30px)",
-                  fontWeight: 400,
-                  marginBottom: 6,
-                }}
-              >
-                Ready to make it{" "}
-                <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                  unforgettable?
-                </em>
-              </div>
-              <p
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 13,
-                  color: "rgba(245,240,232,0.75)",
-                  fontWeight: 300,
-                }}
-              >
-                Send your event date + venue and we'll confirm availability
-                within 24–48 hours.
-              </p>
-            </div>
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <Link to="/contact" className="btn-gold">
-                Request a Quote
-              </Link>
-              <Link to="/gallery" className="btn-outline">
-                Browse Walls
-              </Link>
-            </div>
+      <div className="bloom-cta-band">
+        <div className="bloom-wrap">
+          <div className="bloom-cta-band__box">
+            <p className="bloom-label">Still deciding</p>
+            <h2 className="bloom-h2">Message us</h2>
+            <p className="bloom-text">
+              Send your event date, venue, and vibe. We’ll confirm availability
+              within 24–48 hours.
+            </p>
+            <Link to="/contact" className="bloom-btn bloom-btn--gold">
+              Contact Bloom
+            </Link>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
