@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import aboutSetup from "../assets/about-setup.png";
 import enchantedGarden2 from "../assets/walls/enchanted-garden-2.jpg";
 import midnightNoir from "../assets/walls/midnight-noir.jpg";
 import whiteGarden2 from "../assets/walls/white-garden-2.jpg";
-import blushOmbre from "../assets/walls/blush-ombre.jpg";
+import fallIntoWellness from "../assets/events/fall-into-wellness-setup.jpg";
+import fullBloomSetup from "../assets/home/full-bloom-setup.jpg";
+import happilyEverAfterNeon from "../assets/styling/happily-ever-after-neon.jpg";
 import {
   BloomPageHero,
   BloomSectionHead,
@@ -109,8 +110,8 @@ const services = [
   {
     title: "Custom Floral Styling",
     body: "Full floral moments designed around your palette, venue, and guest experience. More than a single wall rental.",
-    image: enchantedGarden2,
-    alt: "Colorful custom floral wall with event signage",
+    image: fallIntoWellness,
+    alt: "Fall into Wellness white flower wall with tall floral arrangements",
   },
   {
     title: "Styled Backdrops",
@@ -121,14 +122,14 @@ const services = [
   {
     title: "Draping",
     body: drapingBody,
-    image: aboutSetup,
-    alt: "Ivory draped backdrop styling by Bloom",
+    image: fullBloomSetup,
+    alt: "Ivory crossed-drape backdrop with tall floral arrangements",
   },
   {
     title: "Custom Signage & LED",
     body: "Welcome signs, LED lettering, and custom details that complete the look and give guests a place to gather.",
-    image: blushOmbre,
-    alt: "Soft blush floral styling with event details",
+    image: happilyEverAfterNeon,
+    alt: "Happily Ever After neon sign on a colorful flower wall",
   },
   {
     title: "Corporate & Branded Installs",
